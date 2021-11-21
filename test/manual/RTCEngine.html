@@ -1,0 +1,25 @@
+<!-- RTCEngine은 mocha로 테스트 불가하므로 수동 테스트 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test: RTCEngine</title>
+</head>
+<body>
+    <h2>sender</h2>
+    <button id="createTransactionBtn">create transaction</button>
+    <input type="file" id="fileInput">
+
+    <h2>receiver</h2>
+    <input type="text" id="sessionCodeInput">
+    <button id="submitSessionCodeBtn">connect</button>
+</body>
+
+<script src="../injectmap.js"></script>
+<script src="./RTCEngine.test.js" type="module"></script>
+
+</html>
+

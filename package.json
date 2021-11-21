@@ -1,0 +1,19 @@
+{
+  "name": "rtc-engine",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "idb-keyval": "^6.0.3",
+    "json-rpc-2.0": "^0.2.19",
+    "mitt": "^3.0.0",
+    "observable-class": "^0.1.0",
+    "simple-eta": "^3.0.2",
+    "socket.io-client": "^4.4.0"
+  }
+}
