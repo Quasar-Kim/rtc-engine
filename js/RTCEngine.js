@@ -203,19 +203,21 @@ export default class RTCEngine extends ObservableClass {
     }
   }
   
-  async readable(label, options) {
+  async readable(label) {
     const socket = await this.socket(label)
-    return new TransactionReader(socket, options)
+    const metadata = await once(socket, 'metadata')
+    return new TransactionReader(socket, metadata)
   }
 
-  async writable(label, options) {
+  async writable(label, metadata) {
     const socket = await this.socket(label)
-    return new TransactionWriter(socket, options)
+    socket.writeEvent('metadata', metadata)
+    return new TransactionWriter(socket, metadata)
   }
 
   async channel(label) {
     const socket = await this.socket(label)
-    return new Channel(socket)
+    return new Channel(socket, this)
   }
 
   restartIce() {
@@ -228,9 +230,9 @@ export default class RTCEngine extends ObservableClass {
     debug('RTC 연결 해제됨')
   }
 
-  async getReport(dataStream) {
+  async getReport(socket) {
     for (const [, report] of await this.pc.getStats()) {
-      if (report.type === 'data-channel' && report.dataChannelIdentifier === dataStream.dataChannel.id) {
+      if (report.type === 'data-channel' && report.dataChannelIdentifier === socket.dataChannel.id) {
         return report
       }
     }

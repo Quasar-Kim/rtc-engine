@@ -30,14 +30,9 @@ export default class TransactionWriter extends Transaction {
      * 
      * @param {RTCSocket} socket 
      */
-    constructor(socket, options = {}) {
-        super(socket)
+    constructor(socket, metadata = { size: 0 }) {
+        super(socket, metadata)
 
-        const size = options?.size
-        this.abortController = new AbortController()
-        const chunkingStream = new TransformStream(new ChunkProducer(CHUNK_SIZE))
-
-        let isFirstChunk = true
         const writable = new WritableStream({
             start: () => {
                 // cancel 이벤트 오면 에러 발생시켜서 스트림을 멈춤
@@ -55,13 +50,6 @@ export default class TransactionWriter extends Transaction {
              * @param {Uint8Array} data 
              */
             write: async data => {
-                // start()는 실제 데이터가 들어오는것과 상관없이 바로 실행되기 때문에
-                // 첫번째 청크를 받고 나서 진행율 트레킹 시작
-                if (isFirstChunk) {
-                    isFirstChunk = false
-                    this.startProgressTracking(size)
-                }
-
                 // 일시정지 기능
                 if (this.paused.get()) {
                     await wait(this.paused).toBe(false)
@@ -70,11 +58,10 @@ export default class TransactionWriter extends Transaction {
                 await socket.write(data.buffer)
                 await wait(socket.ready).toBe(true)
 
-                this.processed += data.length
+                this.processed = this.processed.get() + data.length
             },
             close: async () => {
                 // 여기는 위 write가 완료되어야 호출되므로 일단 모든 메시지가 데이터 채널의 버퍼로 들어간 상태
-
                 // 데이터 채널의 버퍼가 비면 닫기(close() 시 버퍼에 있는 메시지는 전송될지 확신할 수 없음)
                 if (socket.dataChannel.bufferedAmount > 0) {
                     debug('소켓 닫기 대기중')
@@ -84,8 +71,9 @@ export default class TransactionWriter extends Transaction {
 
                 // 전송 완료 이벤트 전달
                 socket.writeEvent('done')
-                this.paused = true
                 socket.close()
+                this.paused = true
+                this.done = true
                 debug('소켓 닫음')
             },
             // abort되면 abort 이벤트 전달
@@ -101,9 +89,12 @@ export default class TransactionWriter extends Transaction {
             }
         })
 
+        this.abortController = new AbortController()
+
         // 이렇게 하면 pipeTo(transactionWriter.stream)처럼 사용 가능
         // 뒤의 catch()문은 abort시 에러가 두군데에서 발생하는데(여기와 this.stream에 pipeTo 한 부분)
         // 여기서 에러가 발생하지 않게 하기 위한 것임
+        const chunkingStream = new TransformStream(new ChunkProducer(CHUNK_SIZE))
         chunkingStream.readable.pipeTo(writable, { signal: this.abortController.signal }).catch(() => {})
         this.stream = chunkingStream.writable
     }

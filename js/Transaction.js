@@ -1,4 +1,4 @@
-import ObservableClass from 'observable-class'
+import ObservableClass, { wait, observe } from 'observable-class'
 import progressTracker from 'simple-eta'
 import prettyBytes from 'pretty-bytes'
 
@@ -7,38 +7,58 @@ function debug(...args) {
 }
 
 export default class Transaction extends ObservableClass {
-    static observableProps = ['paused']
+    static observableProps = ['paused', 'processed', 'done']
 
-    constructor(socket) {
+    constructor(socket, metadata = { size: 0 }) {
         super()
-        
+
         /** @type {RTCDataChannel} */
         this.socket = socket
         this.paused = false
-        this.metadata = {}
+        this.metadata = metadata
+        this.done = false
 
         // 전송 상태 트레킹
         this.lastPausedTimestamp = 0
         this.pausedMilliSeconds = 0
         this.processed = 0 // byte or length
+
+        this.initProgressTracking()
     }
 
-    // data가 File이면 사이즈 속성이 사용됨
-    // 그렇지 않으면 options.size가 사용됨
-    startProgressTracking(size) {
-        // 사이즈를 알수 있는 경우 progressTracker 사용
-        this.size = size
-        this.progressTracker = progressTracker({ min: 0, max: this.size, historyTimeConstant: 30 })
-        this.progressTrackerInterval = setInterval(() => {
+    async initProgressTracking() {
+        await wait(this.processed).toBeChanged()
+
+        // transaction writer 쪽에선 처음 시작부터 속도 측정시
+        // 데이터 채널의 버퍼가 다 차기 전이라 속도가 비정상적으로 빠르게 측정되므로 1초 후 시작
+        await new Promise(resolve => setTimeout(resolve, 1000))
+
+        const processed = this.processed.get()
+        this.progressTracker = progressTracker({ 
+            min: processed, 
+            max: this.metadata.size + processed,
+            historyTimeConstant: 10
+        })
+
+        const timeout = setInterval(() => {
             if (this.paused.get()) return
 
+            
             const timestamp = Date.now() - this.pausedMilliSeconds
-            // debug(this.processed, timestamp, '에 레포트됨')
-            this.progressTracker.report(this.processed, timestamp)
+            this.progressTracker.report(this.processed.get(), timestamp)
+            // debug(this.processed.get(), timestamp, '에 레포트됨')
+
+            if (this.processed.get() === this.metadata.size) {
+                clearInterval(timeout)
+            }
         }, 100)
     }
 
     get eta() {
+        if (!this.progressTracker) {
+            return NaN
+        }
+
         if (this.paused.get()) {
             return Math.round(this.progressTracker?.estimate(this.lastPausedTimestamp))
         }
@@ -47,10 +67,14 @@ export default class Transaction extends ObservableClass {
     }
 
     get progress() {
-        return Math.round(this.processed / this.size * 100)
+        return Math.round(this.processed.get() / this.metadata.size * 100)
     }
 
     get speed() {
+        if (!this.progressTracker) {
+            return 'NaNB/s'
+        }
+
         if (this.paused.get()) {
             return '0B/s'
         }
