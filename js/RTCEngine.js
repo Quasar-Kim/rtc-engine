@@ -156,7 +156,9 @@ export default class RTCEngine extends ObservableClass {
     this.pc.addEventListener('datachannel', saveDataChannelsToMap)
 
     // 데이터 채널 만들면 연결 시작
-    const dataChannel = this.pc.createDataChannel('RTCEngine_initiator')
+    if (this.polite) {
+      this.pc.createDataChannel('RTCEngine_initiator')
+    }
 
     // 메시지 라우팅
     this.signaler.on('message', msg => {

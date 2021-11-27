@@ -63,19 +63,21 @@ export default class TransactionWriter extends Transaction {
                     await wait(this.paused).toBe(false)
                 }
 
-                socket.write(data.buffer)
+                await socket.write(data.buffer)
+                await wait(socket.ready).toBe(true)
             },
             close: async () => {
-                // 전송 완료 이벤트 전달
-                socket.writeEvent('done')
+                // 여기는 위 write가 완료되어야 호출되므로 일단 모든 메시지가 데이터 채널의 버퍼로 들어간 상태
 
-                // 버퍼가 비면 닫기(close() 시 버퍼에 있는 메시지는 전송될지 확신할 수 없음)
+                // 데이터 채널의 버퍼가 비면 닫기(close() 시 버퍼에 있는 메시지는 전송될지 확신할 수 없음)
                 if (socket.dataChannel.bufferedAmount > 0) {
-                    debug('버퍼가 아직 비지 않음, 대기중')
+                    debug('소켓 닫기 대기중')
                     socket.dataChannel.bufferedAmountLowThreshold = 0
                     await once(socket.dataChannel, 'bufferedamountlow')
                 }
 
+                // 전송 완료 이벤트 전달
+                socket.writeEvent('done')
                 socket.close()
                 debug('소켓 닫음')
             },

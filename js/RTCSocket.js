@@ -1,5 +1,6 @@
 import Mitt from './util/Mitt.js'
 import once from './util/once.js'
+import { wait } from 'observable-class'
 
 function debug(...args) {
     console.log('[RTCSocket]', ...args)
@@ -11,6 +12,8 @@ function debug(...args) {
 const DATA_CHANNEL_BUFFER_SIZE = 10 * 1024 * 1024 // 10MB
 
 export default class RTCSocket extends Mitt {
+    static observableProps = ['ready']
+
     // options - received boolean
     constructor(dataChannel, options = {}) {
         super()
@@ -19,6 +22,10 @@ export default class RTCSocket extends Mitt {
         this.dataChannel = dataChannel
         this.dataChannel.binaryType = 'arraybuffer'
         this.dataChannel.addEventListener('message', ({ data }) => this.recvData(data))
+
+        // 앞의 메시지가 버퍼 사이즈 문제로 인해 대기 중이라면 이게 true로 설정됨
+        // 뒤의 메시지는 이 속성이 false가 되면 처리됨
+        this.ready = true
 
         if (options.received) {
             this.writeEvent('__received')
@@ -64,8 +71,9 @@ export default class RTCSocket extends Mitt {
             if (data.byteLength > DATA_CHANNEL_BUFFER_SIZE) {
                 throw new Error('data size exceeds datachannel buffer size')
             }
-
+            
             if (data.byteLength + this.dataChannel.bufferedAmount > DATA_CHANNEL_BUFFER_SIZE) {
+                this.ready = false
                 this.dataChannel.bufferedAmountLowThreshold = DATA_CHANNEL_BUFFER_SIZE - data.byteLength
                 await once(this.dataChannel, 'bufferedamountlow')
                 this.dataChannel.bufferedAmountLowThreshold = 0
@@ -79,6 +87,11 @@ export default class RTCSocket extends Mitt {
         }
 
         this.dataChannel.send(msg)
+        this.ready = true
+    }
+
+    get ready() {
+
     }
 
     close() {

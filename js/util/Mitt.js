@@ -1,10 +1,13 @@
+import ObservableClass from 'observable-class'
+
 /**
  * This is a slightly modified version of Mitt package by developit.
  * Mitt: Tiny (~200b) functional event emitter / pubsub.
  */
 
- export default class Mitt {
+ export default class Mitt extends ObservableClass {
     constructor(all) {
+        super()
         this.all = all || new Map()
     }
 

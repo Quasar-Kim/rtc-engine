@@ -1,4 +1,4 @@
-// https://generator.jspm.io/#HcxBDsIgEIXhWZh4GgilauKOqwAdzVgKDTMh6cqV93bS7f++vN8F4Prtkg3WN1WEFxU0HAf24K2zd6AlmRWPEUt4aJjhw62avmeje3DW2+kJG4mEWWcHLTH2EZPe5BKZlUyambZdE0o8nQdueUWx1JQRVgk3df4Phe8z7pAA
+// https://generator.jspm.io/#HcxBDgIhDIXhLkw8DQ0wauKOqwBWU4eBCSUks3LlvW3c/u/L+54Azp8+sqH64krw5EJG4qQePFq8Aj+SWemYsYSbhgXe0qrpeza6B4se3R02HiMsOltoSajPmPQmlyiixKED4W3XRCP+nQdpeaWB3JQx1REu6vwPJH8kBpAA
 
 const map = `
 {
@@ -7,7 +7,7 @@ const map = `
     "idb-keyval": "https://ga.jspm.io/npm:idb-keyval@6.0.3/dist/index.js",
     "json-rpc-2.0": "https://ga.jspm.io/npm:json-rpc-2.0@0.2.19/dist/dev.index.js",
     "mitt": "https://ga.jspm.io/npm:mitt@3.0.0/dist/mitt.mjs",
-    "observable-class": "https://ga.jspm.io/npm:observable-class@0.1.0/ObservableClass.js",
+    "observable-class": "https://ga.jspm.io/npm:observable-class@0.1.1/dist/ObservableClass.js",
     "simple-eta": "https://ga.jspm.io/npm:simple-eta@3.0.2/index.js",
     "socket.io-client": "https://ga.jspm.io/npm:socket.io-client@4.1.2/wrapper.mjs"
   },
