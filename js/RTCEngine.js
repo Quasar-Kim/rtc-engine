@@ -1,6 +1,6 @@
 // RTC 연결 형성 및 관리
 import ObservableMap from './util/ObservableMap.js'
-import ObservableClass, { wait } from 'observable-class'
+import ObservableClass, { wait, observe } from 'observable-class'
 import RTCSocket from './RTCSocket.js'
 import once from './util/once.js'
 import Channel from './Channel.js'
@@ -26,19 +26,25 @@ export default class RTCEngine extends ObservableClass {
 
   // 가능한 옵션: turn, autoConnect
   // autoConnect: constructor 호출 시 자동으로 connect도?
-  constructor(signaler, options = { turn: [], autoConnect: true }) {
+  constructor(signaler, userOptions) {
     super()
 
+    this.options = Object.assign({
+      turn: [],
+      autoConnect: true,
+      // reconnectAttempt: 5,
+    }, userOptions)
+
     const iceServers = [stun]
-    if (options.turn?.length > 0) {
-      iceServers.push(options.turn)
+    if (this.options.turn?.length > 0) {
+      iceServers.push(this.options.turn)
     }
 
     this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed 
     this.pc = new RTCPeerConnection({ iceServers })
     this.signaler = signaler
 
-    if (options.autoConnect) {
+    if (this.options.autoConnect) {
       this.connect()
     }
   }
@@ -68,7 +74,7 @@ export default class RTCEngine extends ObservableClass {
 
   async start() {
     // 아래 내부 함수들은 모두 this로 RTCEngine 인스턴스에 접근할 수 있게 하기 위해
-    // 모두 화살표 함수임(고치지 마라)
+    // 모두 화살표 함수임
     const sendLocalDescription = async () => {
       try {
         this.makingOffer = true
@@ -168,6 +174,26 @@ export default class RTCEngine extends ObservableClass {
         setIceCandidate(msg.candidate)
       }
     })
+
+    // 재연결 로직
+    // connection이 failed이고, 인터넷에 연결되어 있고, 시그널러가 준비되어 있을 때 ice restart를 시도함
+    let reconnectAttempt = 0
+    observe(this.connection).onChange(() => {
+      if (this.connection.get() !== 'failed') return
+
+      const reconnect = async () => {
+        await this.signaler.ready
+        this.restartIce()
+        debug('재연결 시도하는 중...')
+      }
+
+      if (navigator.onLine) {
+        reconnect()
+      } else {
+        debug('오프라인 상태, 인터넷 연결 대기 중')
+        window.addEventListener('online', reconnect, { once: true })
+      }
+    })
   }
 
   // socket.io의 connect()와 비슷하게 연결 시작과 재연결 수동 시작의 기능을 동시에 함
@@ -189,7 +215,7 @@ export default class RTCEngine extends ObservableClass {
       const dataChannel = this.pc.createDataChannel(label)
       const socket = new RTCSocket(dataChannel)
       await once(socket, '__received')
-      return socket  
+      return socket
     } else {
       let dataChannel
       if (this.dataChannels.has(label)) {
@@ -198,11 +224,11 @@ export default class RTCEngine extends ObservableClass {
         // start() 안에서 pc의 'datachannel' 이벤트 발생시 this.dataChannels에 레이블을 키로 RTCDataChannel을 넣음
         dataChannel = await this.dataChannels.wait(label).toBeDefined()
       }
-      
-      return new RTCSocket(dataChannel, { received: true })  
+
+      return new RTCSocket(dataChannel, { received: true })
     }
   }
-  
+
   async readable(label) {
     const socket = await this.socket(label)
     const metadata = await once(socket, 'metadata')

@@ -87,6 +87,18 @@ export default class SocketSignaler extends Mitt {
         }
     }
 
+    get ready() {
+        return new Promise(async resolve => {
+            if (this.rpcClient.socket.connected) {
+                resolve()
+                return
+            }
+
+            await once(this.rpcClient.socket, 'connect')
+            resolve()
+        })
+    }
+
     close() {
         debug('연결 해제 요청')
         this.rpcClient.close()
