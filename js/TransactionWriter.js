@@ -42,9 +42,13 @@ export default class TransactionWriter extends Transaction {
             start: () => {
                 // cancel 이벤트 오면 에러 발생시켜서 스트림을 멈춤
                 socket.on('cancel', reason => {
+                    this.paused = true
                     socket.close()
                     throw new Error('Canceled from receiver: ' + reason)
                 })
+                // readable측에서 요청하는 pause / resume 이벤트 받기
+                socket.on('pause', () => this.pause())
+                socket.on('resume', () => this.resume())
             },
             /**
              * 
@@ -65,6 +69,8 @@ export default class TransactionWriter extends Transaction {
 
                 await socket.write(data.buffer)
                 await wait(socket.ready).toBe(true)
+
+                this.processed += data.length
             },
             close: async () => {
                 // 여기는 위 write가 완료되어야 호출되므로 일단 모든 메시지가 데이터 채널의 버퍼로 들어간 상태
@@ -78,25 +84,41 @@ export default class TransactionWriter extends Transaction {
 
                 // 전송 완료 이벤트 전달
                 socket.writeEvent('done')
+                this.paused = true
                 socket.close()
                 debug('소켓 닫음')
             },
             // abort되면 abort 이벤트 전달
             abort: async reason => {
-                socket.writeEvent('abort', reason)
+                if (reason instanceof Error) {
+                    socket.writeEvent('abort', { name: reason.name, message: reason.message })
+                } else {
+                    socket.writeEvent('abort', reason)
+                }
+
+                this.paused = true
+                debug('abort됨')
             }
         })
 
-        // readable측에서 요청하는 pause / resume 이벤트 받기
-        socket.on('pause', this.pause)
-        socket.on('resume', this.resume)
-
         // 이렇게 하면 pipeTo(transactionWriter.stream)처럼 사용 가능
-        chunkingStream.readable.pipeTo(writable, { signal: this.abortController.signal })
+        // 뒤의 catch()문은 abort시 에러가 두군데에서 발생하는데(여기와 this.stream에 pipeTo 한 부분)
+        // 여기서 에러가 발생하지 않게 하기 위한 것임
+        chunkingStream.readable.pipeTo(writable, { signal: this.abortController.signal }).catch(() => {})
         this.stream = chunkingStream.writable
     }
 
     stop() {
         this.abortController.abort()
+    }
+
+    pause() {
+        super.pause()
+        this.socket.writeEvent('pause')
+    }
+
+    resume() {
+        super.resume()
+        this.socket.writeEvent('resume')
     }
 }

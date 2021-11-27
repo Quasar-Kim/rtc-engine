@@ -47,6 +47,7 @@ export default class FileSaver {
                     chunks.push(chunk)
                 },
                 close: () => {
+                    debug('blob 생성중')
                     const blob = new Blob(chunks)
                     // blob의 사이즈 체크
                     if (blob.size !== size) {

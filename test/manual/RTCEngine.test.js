@@ -10,7 +10,7 @@ document.querySelector('#createTransactionBtn').addEventListener('click', async 
     // 시그널러 셋업
     await signaler.createSessionCode()
     await signaler.waitForConnection()
-    
+
     // 연결
     await engine.connect()
     const channel = await engine.channel('file')
@@ -21,15 +21,38 @@ document.querySelector('#createTransactionBtn').addEventListener('click', async 
     const file = fileInputElem.files[0]
 
     // 파일 정보 입력
-    channel.send({ 
+    channel.send({
         name: file.name,
         size: file.size
     })
 
     // 파일 보내기
     const transaction = await engine.writable('test', { size: file.size })
+
+    // 플로우 컨트롤
+    document.querySelector('#senderFlowToggleBtn').addEventListener('click', () => {
+        if (transaction.paused.get()) {
+            transaction.resume()
+        } else {
+            transaction.pause()
+        }
+    })
+    document.querySelector('#abortBtn').addEventListener('click', () => transaction.stop())
+
+    // 속도, ETA 등 전송 트레킹 기능 테스트
+    setInterval(() => {
+        const state = document.querySelector('#senderStateText')
+        state.innerHTML = `
+        <ul>
+            <li>${transaction.progress} %</li>
+            <li>${transaction.eta}s 남음</li>
+            <li>${transaction.speed}</li>
+        </ul>
+        `
+        state.style.color = transaction.paused.get() ? 'red' : 'blue'
+    }, 1000)
+
     await file.stream().pipeTo(transaction.stream)
-    console.log('transaction done')
 })
 
 document.querySelector('#submitSessionCodeBtn').addEventListener('click', async () => {
@@ -46,7 +69,29 @@ document.querySelector('#submitSessionCodeBtn').addEventListener('click', async 
     const transaction = await engine.readable('test', { size: fileInfo.size })
     const fileSaver = new FileSaver()
     const destination = await fileSaver.open(fileInfo)
-    
+
+    // 플로우 컨트롤
+    document.querySelector('#receiverFlowToggleBtn').addEventListener('click', () => {
+        if (transaction.paused.get()) {
+            transaction.resume()
+        } else {
+            transaction.pause()
+        }
+    })
+    document.querySelector('#cancelBtn').addEventListener('click', () => transaction.stop())
+
+    // 속도, ETA 등 전송 트레킹 기능 테스트
+    setInterval(() => {
+        const state = document.querySelector('#receiverStateText')
+        state.innerHTML = `
+            <ul>
+                <li>${transaction.progress} %</li>
+                <li>${transaction.eta}s 남음</li>
+                <li>${transaction.speed}</li>
+            </ul>
+            `
+        state.style.color = transaction.paused.get() ? 'red' : 'blue'
+    }, 1000)
+
     await transaction.stream.pipeTo(destination)
-    console.log('receiving done')
 })

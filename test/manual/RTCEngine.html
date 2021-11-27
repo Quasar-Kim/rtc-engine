@@ -12,10 +12,24 @@
     <h2>sender</h2>
     <button id="createTransactionBtn">create transaction</button>
     <input type="file" id="fileInput">
+    <p>
+        <button id="senderFlowToggleBtn">pause/resume</button>
+        <button id="abortBtn">abort</button>
+    </p>
+    <p>
+        <span id="senderStateText"></span>
+    </p>
 
     <h2>receiver</h2>
     <input type="text" id="sessionCodeInput">
     <button id="submitSessionCodeBtn">connect</button>
+    <button id="receiverFlowToggleBtn">pause/resume</button>
+    <button id="cancelBtn">cancel</button>
+    <p>
+        <span id="receiverStateText"></span>
+    </p>
+
+
 </body>
 
 <script src="../injectmap.js"></script>

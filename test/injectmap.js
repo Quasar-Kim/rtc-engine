@@ -1,4 +1,4 @@
-// https://generator.jspm.io/#HcxBDgIhDIXhLkw8DQ0wauKOqwBWU4eBCSUks3LlvW3c/u/L+54Azp8+sqH64krw5EJG4qQePFq8Aj+SWemYsYSbhgXe0qrpeza6B4se3R02HiMsOltoSajPmPQmlyiixKED4W3XRCP+nQdpeaWB3JQx1REu6vwPJH8kBpAA
+// https://generator.jspm.io/#HYwxDsIwDEU9MHCZWG1KkdhylSQYZNomVWxF6tSJe2Ox/vfe/14ArmfT7Ki8uRC8eCUnsVMLHgecgZ/JLXT0uIa7DRN8pBbX9uyMhwE9jg/YWDVMhgeoSaj1mOwmr1HElBFH2BupHi4dShJmtCsQ3nazSOM/9SA1L6TI1UqmouFmqf8BWLPkyqMA
 
 const map = `
 {
@@ -8,6 +8,7 @@ const map = `
     "json-rpc-2.0": "https://ga.jspm.io/npm:json-rpc-2.0@0.2.19/dist/dev.index.js",
     "mitt": "https://ga.jspm.io/npm:mitt@3.0.0/dist/mitt.mjs",
     "observable-class": "https://ga.jspm.io/npm:observable-class@0.1.1/dist/ObservableClass.js",
+    "pretty-bytes": "https://ga.jspm.io/npm:pretty-bytes@5.6.0/index.js",
     "simple-eta": "https://ga.jspm.io/npm:simple-eta@3.0.2/index.js",
     "socket.io-client": "https://ga.jspm.io/npm:socket.io-client@4.1.2/wrapper.mjs"
   },

@@ -61,10 +61,6 @@ export default class RTCSocket extends Mitt {
      * @param {object|string|number|ArrayBuffer} data 
      */
     async write(data) {
-        if (this.dataChannel.readyState !== 'open') {
-            await once(this.dataChannel, 'open')
-        }
-
         let msg
         if (data instanceof ArrayBuffer) {
             // 데이터채널 버퍼 관리
@@ -86,15 +82,16 @@ export default class RTCSocket extends Mitt {
             debug('메시지 전송함', data)
         }
 
+        if (this.dataChannel.readyState !== 'open') {
+            await once(this.dataChannel, 'open')
+        }
+
         this.dataChannel.send(msg)
         this.ready = true
     }
 
-    get ready() {
-
-    }
-
     close() {
         this.dataChannel.close()
+        debug('소켓 닫음')
     }
 }
