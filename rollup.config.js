@@ -4,7 +4,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import replace from '@rollup/plugin-replace'
 
 export default {
-    input: 'js/RTCEngine.js',
+    input: 'js/index.js',
     output: {
         file: 'dist/RTCEngine.prod.js',
         format: 'esm',

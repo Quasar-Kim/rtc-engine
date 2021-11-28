@@ -1,14 +1,13 @@
 {
   "name": "rtc-engine",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An abstraction layer on WebRTC API for messaging and file transaction",
   "type": "module",
-  "browser": "js/RTCEngine.js",
+  "browser": "js/index.js",
   "jsdelivr": "dist/RTCEngine.prod.js",
   "unpkg": "dist/RTCEngine.prod.js",
   "scripts": {
-    "build-prod": "rollup --config rollup.config.prod.js",
-    "build-dev": "rollup --config rollup.config.dev.js"
+    "build": "rollup --config rollup.config.js"
   },
   "author": "Quasar-Kim",
   "license": "MIT",
