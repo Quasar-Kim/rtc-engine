@@ -19,6 +19,7 @@ function splitExtension(fileNameWithExtension) {
 }
 
 function debug(...args) {
+    if (window?.process?.env?.NODE_ENV === 'production') return
     console.log('[FileSaver]', ...args)
 }
 

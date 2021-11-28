@@ -8,6 +8,7 @@ import TransactionWriter from './TransactionWriter.js'
 import TransactionReader from './TransactionReader.js'
 
 function debug(...args) {
+  if (window?.process?.env?.NODE_ENV === 'production') return
   console.log('[RTCEngine]', ...args)
 }
 

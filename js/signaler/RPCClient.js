@@ -3,6 +3,7 @@ import Mitt from '../util/Mitt.js'
 import io from 'socket.io-client'
 
 function debug(...args) {
+    if (window?.process?.env?.NODE_ENV === 'production') return
     console.log('[RPCClient]', ...args)
 }
 

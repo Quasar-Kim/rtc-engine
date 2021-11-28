@@ -2,9 +2,13 @@
   "name": "rtc-engine",
   "version": "0.2.0",
   "description": "An abstraction layer on WebRTC API for messaging and file transaction",
-  "main": "js/RTCEngine.js",
+  "type": "module",
+  "browser": "js/RTCEngine.js",
+  "jsdelivr": "dist/RTCEngine.prod.js",
+  "unpkg": "dist/RTCEngine.prod.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-prod": "rollup --config rollup.config.prod.js",
+    "build-dev": "rollup --config rollup.config.dev.js"
   },
   "author": "Quasar-Kim",
   "license": "MIT",
@@ -16,5 +20,13 @@
     "pretty-bytes": "^5.6.0",
     "simple-eta": "^3.0.2",
     "socket.io-client": "^4.4.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-replace": "^3.0.0",
+    "rollup": "^2.60.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "terser": "^5.10.0"
   }
 }

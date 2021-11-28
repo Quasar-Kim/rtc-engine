@@ -3,6 +3,7 @@ import progressTracker from 'simple-eta'
 import prettyBytes from 'pretty-bytes'
 
 function debug(...args) {
+    if (window?.process?.env?.NODE_ENV === 'production') return
     console.log('[Transaction]', ...args)
 }
 

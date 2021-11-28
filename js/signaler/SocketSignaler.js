@@ -4,6 +4,7 @@ import once from '../util/once.js'
 import ObservableMap from '../util/ObservableMap.js'
 
 function debug(...args) {
+    if (window?.process?.env?.NODE_ENV === 'production') return
     console.log('[SocketSignaler]', ...args)
 }
 

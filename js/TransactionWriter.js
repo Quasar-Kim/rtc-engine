@@ -5,6 +5,7 @@ import { wait } from 'observable-class'
 import once from './util/once.js'
 
 function debug(...args) {
+    if (window?.process?.env?.NODE_ENV === 'production') return
     console.log('[TransactionWriter]', ...args)
 }
 
