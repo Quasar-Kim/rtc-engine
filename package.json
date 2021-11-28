@@ -1,6 +1,6 @@
 {
   "name": "rtc-engine",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "An abstraction layer on WebRTC API for messaging and file transaction",
   "repository": {
     "type": "git",
