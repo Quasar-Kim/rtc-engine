@@ -263,4 +263,12 @@ export default class RTCEngine extends ObservableClass {
       }
     }
   }
+
+  static plugin(plugin) {
+    if (typeof plugin !== 'function') {
+      throw new Error('only function-style plugin is supported')
+    }
+
+    plugin(RTCEngine)
+  }
 }

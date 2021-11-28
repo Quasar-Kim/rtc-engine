@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../injectmap.js"></script>
+    <script type="module">
+        import RTCEngine from '../../js/RTCEngine.js'
+        import testPlugin from './plugin.test.js'
+
+        RTCEngine.plugin(testPlugin)
+
+        const engine = new RTCEngine({}, { autoConnect: false })
+        engine.logConnection()
+    </script>
+</body>
+
+</html>

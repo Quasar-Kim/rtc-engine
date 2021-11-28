@@ -2,6 +2,11 @@
 
 WebRTC 라이브러리. socket.io처럼 내부 로직을 최대한 숨기는걸 목표로 함.
 
+# 설치
+```
+npm install rtc-engine
+```
+
 # 채널 사용하기
 
 ```javascript
