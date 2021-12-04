@@ -52,6 +52,10 @@ export default class RTCEngine extends ObservableClass {
     }
   }
 
+  /**
+   * 무작위로 두 피어의 역할을 정합니다. 여기서 역할은 Perfect Negotiation Pattern에서 사옹되는 polite/impolite 피어를 의미합니다.
+   * @returns {Promise<void>} 역할 배정이 끝나면 resolve되는 promise
+   */
   assignRole () {
     return new Promise(resolve => {
       const seed = Math.random()
@@ -61,20 +65,31 @@ export default class RTCEngine extends ObservableClass {
         seed
       })
 
-      this.signaler.on('message', msg => {
+      this.signaler.on('message', (msg, off) => {
         if (msg.type !== 'role') return
 
         const remoteSeed = msg.seed
         if (remoteSeed > seed) {
           this.polite = true
-        } else {
+        } else if (remoteSeed < seed) {
           this.polite = false
+        } else {
+          this.signaler.send({
+            type: 'role',
+            seed
+          })
         }
+
+        off()
         resolve()
       })
     })
   }
 
+  /**
+   * 엔진을 시작합니다. 시작시 Perfect Negotiation Pattern을 이용해 상대방과 RTC를 형성 및 관리합니다.
+   * 연결이 끊어질 경우 인터넷이 다시 연결될때까지 대기했다가 ice restart를 시도합니다. 이때 메시지가 성공적으로 교환된다면 연결이 다시 형성됩니다.
+   */
   async start () {
     // 아래 내부 함수들은 모두 this로 RTCEngine 인스턴스에 접근할 수 있게 하기 위해
     // 모두 화살표 함수임
@@ -198,7 +213,11 @@ export default class RTCEngine extends ObservableClass {
     })
   }
 
-  // socket.io의 connect()와 비슷하게 연결 시작과 재연결 수동 시작의 기능을 동시에 함
+  /**
+   * 연결을 시작하고, 연결이 성공할때까지 기다립니다.
+   * 또 navigator.onLine이 false인 상태에서 수동으로 재연결을 시도하기 위해서도 사용됩니다.
+   * @returns {Promise<void>} 연결이 성공하면 resolve하는 promise
+   */
   async connect () {
     if (this.connection.get() === 'failed') {
       this.restartIce()
@@ -211,6 +230,11 @@ export default class RTCEngine extends ObservableClass {
     return wait(this.connection).toBe('connected')
   }
 
+  /**
+   * 양쪽 피어에서 사용 가능한 RTCSocket을 엽니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 RTCSocket이 만들어집니다.
+   * @param {string} label 소켓을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
+   * @returns {Promise<RTCSocket>} RTCSocket이 만들어지면 그걸 resolve하는 promise
+   */
   async socket (label) {
     // polite가 채널을 만드는 이유는 없음. 그냥 정한거.
     if (this.polite) {
@@ -231,33 +255,59 @@ export default class RTCEngine extends ObservableClass {
     }
   }
 
+  /**
+   * 데이터를 받기 위한 트렌젝션을 만듭니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 트렌젝션이 만들어집니다.
+   * @param {string} label 트렌젝션을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
+   * @returns {Promise<TransactionReader>} 트렌젝션이 만들어지면 그걸 resolve하는 promise
+   */
   async readable (label) {
     const socket = await this.socket(label)
     const metadata = await once(socket, 'metadata')
     return new TransactionReader(socket, metadata)
   }
 
+  /**
+   * 데이터를 보내기 위한 트렌젝션을 만듭니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 트렌젝션이 만들어집니다.
+   * @param {string} label 트렌젝션을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
+   * @returns {Promise<TransactionWriter>} 트렌젝션이 만들어지면 그걸 resolve하는 promise
+   */
   async writable (label, metadata) {
     const socket = await this.socket(label)
     socket.writeEvent('metadata', metadata)
     return new TransactionWriter(socket, metadata)
   }
 
+  /**
+   * 양방향 데이터 전송을 위한 채널을 엽니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 채널이 만들어집니다.
+   * @param {string} label 채널을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
+   * @returns {Promise<Channel>} 채널이 만들어지면 그걸 resolve하는 promise
+   */
   async channel (label) {
     const socket = await this.socket(label)
     return new Channel(socket, this)
   }
 
+  /**
+   * RTCPeerConnection의 restartIce를 호출합니다. 재연결을 위해서는 connect()를 사용하세요.
+   */
   restartIce () {
     this.pc.restartIce()
     debug('ICE 재시작됨')
   }
 
+  /**
+   * 연결을 닫습니다. 두 피어 사이에 형성된 모든 연결(트렌젝션, 채널 등)도 같이 닫칩니다.
+   */
   close () {
     this.pc.close()
     debug('RTC 연결 해제됨')
   }
 
+  /**
+   * 소켓이 사용하는 데이터 채널의 레포트를 가져옵니다.
+   * @param {RTCSocket} socket 레포트를 읽고 싶은 대상 소켓
+   * @returns {RTCStatsReport} 소켓이 사용하는 데이터 채널의 레포트
+   */
   async getReport (socket) {
     for (const [, report] of await this.pc.getStats()) {
       if (report.type === 'data-channel' && report.dataChannelIdentifier === socket.dataChannel.id) {
@@ -266,6 +316,10 @@ export default class RTCEngine extends ObservableClass {
     }
   }
 
+  /**
+   * 플러그인을 사용합니다.
+   * @param {function} plugin 플러그인 함수. 첫번째 인자로 RTCEngine 클래스가 전달됩니다. 플러그인 함수는 프로토타입을 통해 원하는 메소드를 추가할 수 있습니다.
+   */
   static plugin (plugin) {
     if (typeof plugin !== 'function') {
       throw new Error('only function-style plugin is supported')
