@@ -1,15 +1,24 @@
-# RTCEngine v0.1
+# RTCEngine v0.3
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
-WebRTC 라이브러리. socket.io처럼 내부 로직을 최대한 숨기는걸 목표로 함.
+WebRTC를 이용한 __데이터 전송__ 을 위한 라이브러리입니다. 
+
+비디오와 오디오 전송을 주요 기능으로 하는 다른 라이브러리와 다르게 텍스트와 파일을 쉽게 전송하고 받을 수 있도록 하는걸 목표로 합니다.
+
+# 기능
+- 마음대로 구현할 수 있는 시그널러
+- 자동으로 연결과 재연결
+- 한줄로 끝나는 채널 열기
+- 데이터 채널의 버퍼 자동 관리
+- WHATWG Stream을 이용해 대용량 파일 전송도 가능
 
 # 설치
 ```
 npm install rtc-engine
 ```
 
-# 채널 사용하기
+# 예시: 채널 사용하기
 
 ```javascript
 // 아무 시그널러나 생성(구현은 자유...)
@@ -51,8 +60,7 @@ Channel과 Transaction의 기반이 되는 베이스 클래스. 다음과 같은
 
 데이터 채널과 비슷한 역할을 함.
 - 메시지를 주고 받을 수 있음. `send()`로 보내고, `message` 이벤트로 받을 수 있음.
-- 메시지는 `JSON.stringify()`로 처리할 수 있는 데이터면 모두 가능
-- `emit()`와 `on()`을 이용해 socket.io처럼 이벤트를 이용한 통신도 가능 
+- 문자열, ArrayBuffer, File을 전송 가능.
 
 ```jsx
 // 보내는 측
@@ -70,7 +78,7 @@ channel.on('message', msg => console.log(msg))
 
 단방향 데이터 전송을 나타내는 객체.
 
-- 새로운 데이터채널 열고 데이터 전송
+- 새로운 데이터채널을 열고 데이터 전송
 - 파일 이름, 사이즈 등 메타데이터 자동 전송
 - 자동 청킹
 - ETA, 전송 속도, 퍼센티지 제공
@@ -97,6 +105,9 @@ let destination
 
 const transaction = await engine.readable('myFile')
 transaction.stream.pipeTo(destination)
+
+// 메타데이터 읽기도 가능
+transaction.metadata
 ```
 
 전송 일시정지/재개/중단도 가능

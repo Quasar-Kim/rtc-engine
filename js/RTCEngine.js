@@ -12,18 +12,21 @@ function debug (...args) {
   console.log('[RTCEngine]', ...args)
 }
 
-const stun = {
-  urls: ['stun:stun.l.google.com:19302']
-}
-
 export default class RTCEngine extends ObservableClass {
   static get observableProps () {
     return ['connection']
   }
 
-  // 가능한 옵션: turn, autoConnect
-  // autoConnect: constructor 호출 시 자동으로 connect도?
-  constructor (signaler, userOptions) {
+  // TODO: signaler 베이스 클래스 제공
+
+  /**
+   * RTCEngine을 생성합니다. autoConnect 옵션이 true일경우(기본값) 자동으로 연결을 시작합니다.
+   * @param {*} signaler 메시지 송수신에 사용할 시그널러.
+   * @param {object} userOptions
+   * @param {boolean} userOptions.autoConnect RTCEngine 생성시 자동 연결 여부를 결정하는 옵션.
+   * @param {RTCIceServer[]} userOptions.iceServers 연결에 사용할 ICE 서버들.
+   */
+  constructor (signaler, userOptions = {}) {
     super()
 
     this.makingOffer = false // offer collision 방지를 위해 offer을 만드는 동안이면 기록
@@ -32,19 +35,18 @@ export default class RTCEngine extends ObservableClass {
     // 데이터 채널 맵 <label, RTCDataChannel>
     this.dataChannels = new ObservableMap()
 
-    this.options = Object.assign({
-      turn: [],
-      autoConnect: true
-      // reconnectAttempt: 5,
-    }, userOptions)
-
-    const iceServers = [stun]
-    if (this.options.turn?.length > 0) {
-      iceServers.push(this.options.turn)
+    this.options = {
+      autoConnect: true,
+      iceServers: [
+        { urls: ['stun:stun.l.google.com:19302'] }
+      ],
+      ...userOptions
     }
 
     this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed
-    this.pc = new RTCPeerConnection({ iceServers })
+    this.pc = new RTCPeerConnection({
+      iceServers: this.options.iceServers
+    })
     this.signaler = signaler
 
     if (this.options.autoConnect) {
