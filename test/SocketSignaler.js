@@ -1,7 +1,7 @@
-import Mitt from '../util/Mitt.js'
+import Mitt from '../js/util/Mitt.js'
 import RPCClient from './RPCClient.js'
-import once from '../util/once.js'
-import ObservableMap from '../util/ObservableMap.js'
+import once from '../js/util/once.js'
+import ObservableMap from '../js/util/ObservableMap.js'
 
 function debug (...args) {
   if (window?.process?.env?.NODE_ENV === 'production') return
