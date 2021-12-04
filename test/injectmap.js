@@ -7,7 +7,6 @@ const map = `
     "idb-keyval": "https://ga.jspm.io/npm:idb-keyval@6.0.3/dist/index.js",
     "json-rpc-2.0": "https://ga.jspm.io/npm:json-rpc-2.0@0.2.19/dist/dev.index.js",
     "mitt": "https://ga.jspm.io/npm:mitt@3.0.0/dist/mitt.mjs",
-    "observable-class": "https://ga.jspm.io/npm:observable-class@0.1.1/dist/ObservableClass.js",
     "pretty-bytes": "https://ga.jspm.io/npm:pretty-bytes@5.6.0/index.js",
     "simple-eta": "https://ga.jspm.io/npm:simple-eta@3.0.2/index.js",
     "socket.io-client": "https://ga.jspm.io/npm:socket.io-client@4.1.2/wrapper.mjs"

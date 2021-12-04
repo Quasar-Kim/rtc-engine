@@ -1,7 +1,6 @@
 import Transaction from './Transaction.js'
-import RTCSocket from './RTCSocket.js'
 import ChunkProducer from './ChunkProducer.js'
-import { wait } from 'observable-class'
+import { wait } from './util/ObservableClass.js'
 import once from './util/once.js'
 
 function debug (...args) {
@@ -95,6 +94,7 @@ export default class TransactionWriter extends Transaction {
     // 이렇게 하면 pipeTo(transactionWriter.stream)처럼 사용 가능
     // 뒤의 catch()문은 abort시 에러가 두군데에서 발생하는데(여기와 this.stream에 pipeTo 한 부분)
     // 여기서 에러가 발생하지 않게 하기 위한 것임
+    // eslint-disable-next-line no-undef
     const chunkingStream = new TransformStream(new ChunkProducer(CHUNK_SIZE))
     chunkingStream.readable.pipeTo(writable, { signal: this.abortController.signal }).catch(() => {})
     this.stream = chunkingStream.writable

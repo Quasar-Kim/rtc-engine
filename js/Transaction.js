@@ -1,7 +1,8 @@
-import ObservableClass, { wait, observe } from 'observable-class'
+import ObservableClass, { wait } from './util/ObservableClass.js'
 import progressTracker from 'simple-eta'
 import prettyBytes from 'pretty-bytes'
 
+// eslint-disable-next-line no-unused-vars
 function debug (...args) {
   if (window?.process?.env?.NODE_ENV === 'production') return
   console.log('[Transaction]', ...args)

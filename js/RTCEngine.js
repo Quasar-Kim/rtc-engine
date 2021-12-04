@@ -1,6 +1,6 @@
 // RTC 연결 형성 및 관리
 import ObservableMap from './util/ObservableMap.js'
-import ObservableClass, { wait, observe } from 'observable-class'
+import ObservableClass, { wait, observe } from './util/ObservableClass.js'
 import RTCSocket from './RTCSocket.js'
 import once from './util/once.js'
 import Channel from './Channel.js'

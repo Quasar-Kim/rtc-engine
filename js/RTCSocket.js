@@ -1,6 +1,5 @@
-import Mitt from './util/Mitt.js'
+import ObservableClass from './util/ObservableClass.js'
 import once from './util/once.js'
-import { wait } from 'observable-class'
 
 function debug (...args) {
   if (window?.process?.env?.NODE_ENV === 'production') return
@@ -12,7 +11,7 @@ function debug (...args) {
 // 또 writable 스트림의 버퍼 사이즈로도 사용
 const DATA_CHANNEL_BUFFER_SIZE = 10 * 1024 * 1024 // 10MB
 
-export default class RTCSocket extends Mitt {
+export default class RTCSocket extends ObservableClass {
   static get observableProps () {
     return ['ready']
   }
@@ -49,6 +48,7 @@ export default class RTCSocket extends Mitt {
       data = msg
     } else {
       data = JSON.parse(msg)
+      debug('메시지 받음', data)
     }
 
     // 커스텀 이벤트 처리

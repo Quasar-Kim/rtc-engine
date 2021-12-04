@@ -23,7 +23,10 @@ export default class TransactionReader extends Transaction {
           this.processed = this.processed.get() + data.byteLength
         })
         socket.on('done', async () => {
-          await once(socket.dataChannel, 'close')
+          if (socket.dataChannel.readyState !== 'closed') {
+            await once(socket.dataChannel, 'close')
+          }
+
           controller.close()
           this.done = true
         })

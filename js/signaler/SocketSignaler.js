@@ -17,9 +17,8 @@ export default class SocketSignaler extends Mitt {
       debug('저장되어 있는 세션 ID 사용', restoredSessionID)
     }
 
-    this.state = new ObservableMap([
-      ['turn', undefined]
-    ])
+    this.state = new ObservableMap()
+    this.state.set('turn', undefined)
 
     this.rpcClient = new RPCClient(serverURL, { sessionID: sessionStorage.getItem('sessionID') })
 
@@ -89,14 +88,13 @@ export default class SocketSignaler extends Mitt {
   }
 
   get ready () {
-    return new Promise(async resolve => {
+    return new Promise(resolve => {
       if (this.rpcClient.socket.connected) {
         resolve()
         return
       }
 
-      await once(this.rpcClient.socket, 'connect')
-      resolve()
+      once(this.rpcClient.socket, 'connect').then(resolve)
     })
   }
 
