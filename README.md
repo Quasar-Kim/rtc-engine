@@ -1,5 +1,7 @@
 # RTCEngine v0.1
 
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
+
 WebRTC 라이브러리. socket.io처럼 내부 로직을 최대한 숨기는걸 목표로 함.
 
 # 설치

@@ -2,9 +2,9 @@ import Mitt from './util/Mitt.js'
 import once from './util/once.js'
 import { wait } from 'observable-class'
 
-function debug(...args) {
-    if (window?.process?.env?.NODE_ENV === 'production') return
-    console.log('[RTCSocket]', ...args)
+function debug (...args) {
+  if (window?.process?.env?.NODE_ENV === 'production') return
+  console.log('[RTCSocket]', ...args)
 }
 
 // RTCDataChannel은 실제 버퍼 사이즈를 보여주지 않으나 사이즈를 넘게 데이터가 들어가면 채널이 터져버림
@@ -13,86 +13,88 @@ function debug(...args) {
 const DATA_CHANNEL_BUFFER_SIZE = 10 * 1024 * 1024 // 10MB
 
 export default class RTCSocket extends Mitt {
-    static observableProps = ['ready']
+  static get observableProps () {
+    return ['ready']
+  }
 
-    // options - received boolean
-    constructor(dataChannel, options = {}) {
-        super()
+  // options - received boolean
+  constructor (dataChannel, options = {}) {
+    super()
 
-        /** @type {RTCDataChannel} */
-        this.dataChannel = dataChannel
-        this.dataChannel.binaryType = 'arraybuffer'
-        this.dataChannel.addEventListener('message', ({ data }) => this.recvData(data))
+    /** @type {RTCDataChannel} */
+    this.dataChannel = dataChannel
+    this.dataChannel.binaryType = 'arraybuffer'
+    this.dataChannel.addEventListener('message', ({ data }) => this.recvData(data))
 
-        // 앞의 메시지가 버퍼 사이즈 문제로 인해 대기 중이라면 이게 true로 설정됨
-        // 뒤의 메시지는 이 속성이 false가 되면 처리됨
-        this.ready = true
+    // 앞의 메시지가 버퍼 사이즈 문제로 인해 대기 중이라면 이게 true로 설정됨
+    // 뒤의 메시지는 이 속성이 false가 되면 처리됨
+    this.ready = true
 
-        if (options.received) {
-            this.writeEvent('__received')
-        }
+    if (options.received) {
+      this.writeEvent('__received')
+    }
+  }
+
+  async writeEvent (eventName, payload) {
+    return this.write({
+      _channelEngineCustomEvent: true,
+      event: eventName,
+      payload
+    })
+  }
+
+  recvData (msg) {
+    let data
+    if (msg instanceof ArrayBuffer) {
+      data = msg
+    } else {
+      data = JSON.parse(msg)
     }
 
-    async writeEvent(eventName, payload) {
-        return this.write({
-            _channelEngineCustomEvent: true,
-            event: eventName,
-            payload
-        })
+    // 커스텀 이벤트 처리
+    if (data?._channelEngineCustomEvent) {
+      this.emit(data.event, data.payload)
     }
 
-    recvData(msg) {
-        let data
-        if (msg instanceof ArrayBuffer) {
-            data = msg
-        } else {
-            data = JSON.parse(msg)
-        }
+    this.emit('data', data)
+  }
 
-        // 커스텀 이벤트 처리
-        if (data?._channelEngineCustomEvent) {
-            this.emit(data.event, data.payload)
-        }
-
-        this.emit('data', data)
-    }
-
-    /**
-     * 
-     * @param {object|string|number|ArrayBuffer} data 
+  /**
+     *
+     * @param {object|string|number|ArrayBuffer} data
      */
-    async write(data) {
-        let msg
-        if (data instanceof ArrayBuffer) {
-            // 데이터채널 버퍼 관리
-            if (data.byteLength > DATA_CHANNEL_BUFFER_SIZE) {
-                throw new Error('data size exceeds datachannel buffer size')
-            }
-            
-            if (data.byteLength + this.dataChannel.bufferedAmount > DATA_CHANNEL_BUFFER_SIZE) {
-                this.ready = false
-                this.dataChannel.bufferedAmountLowThreshold = DATA_CHANNEL_BUFFER_SIZE - data.byteLength
-                await once(this.dataChannel, 'bufferedamountlow')
-                this.dataChannel.bufferedAmountLowThreshold = 0
-            }
+  async write (data) {
+    let msg
+    if (data instanceof ArrayBuffer) {
+      // 데이터채널 버퍼 관리
+      if (data.byteLength > DATA_CHANNEL_BUFFER_SIZE) {
+        throw new Error('data size exceeds datachannel buffer size')
+      }
 
-            msg = data
-            debug('바이너리 데이터 전송함')
-        } else {
-            msg = JSON.stringify(data)
-            debug('메시지 전송함', data)
-        }
+      if (data.byteLength + this.dataChannel.bufferedAmount > DATA_CHANNEL_BUFFER_SIZE) {
+        this.ready = false
+        this.dataChannel.bufferedAmountLowThreshold = DATA_CHANNEL_BUFFER_SIZE - data.byteLength
+        await once(this.dataChannel, 'bufferedamountlow')
+        this.dataChannel.bufferedAmountLowThreshold = 0
+      }
 
-        if (this.dataChannel.readyState !== 'open') {
-            await once(this.dataChannel, 'open')
-        }
-
-        this.dataChannel.send(msg)
-        this.ready = true
+      msg = data
+      debug('바이너리 데이터 전송함')
+    } else {
+      msg = JSON.stringify(data)
+      debug('메시지 전송함', data)
     }
 
-    close() {
-        this.dataChannel.close()
-        debug('소켓 닫음')
+    if (this.dataChannel.readyState !== 'open') {
+      await once(this.dataChannel, 'open')
     }
+
+    this.dataChannel.send(msg)
+    this.ready = true
+  }
+
+  close () {
+    this.dataChannel.close()
+    debug('소켓 닫음')
+  }
 }

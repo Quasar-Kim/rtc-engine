@@ -7,7 +7,7 @@ import Channel from './Channel.js'
 import TransactionWriter from './TransactionWriter.js'
 import TransactionReader from './TransactionReader.js'
 
-function debug(...args) {
+function debug (...args) {
   if (window?.process?.env?.NODE_ENV === 'production') return
   console.log('[RTCEngine]', ...args)
 }
@@ -17,22 +17,24 @@ const stun = {
 }
 
 export default class RTCEngine extends ObservableClass {
-  makingOffer = false // offer collision 방지를 위해 offer을 만드는 동안이면 기록
-  polite = false // perfect negotiation pattern에서 사용하는 role
-  ignoreOffer = false // offer collision 방지를 위해 role이나 signalingState등에 기반해 받은 offer을 받을지 결정
-  // 데이터 채널 맵 <label, RTCDataChannel>
-  dataChannels = new ObservableMap()
-
-  static observableProps = ['connection']
+  static get observableProps () {
+    return ['connection']
+  }
 
   // 가능한 옵션: turn, autoConnect
   // autoConnect: constructor 호출 시 자동으로 connect도?
-  constructor(signaler, userOptions) {
+  constructor (signaler, userOptions) {
     super()
+
+    this.makingOffer = false // offer collision 방지를 위해 offer을 만드는 동안이면 기록
+    this.polite = false // perfect negotiation pattern에서 사용하는 role
+    this.ignoreOffer = false // offer collision 방지를 위해 role이나 signalingState등에 기반해 받은 offer을 받을지 결정
+    // 데이터 채널 맵 <label, RTCDataChannel>
+    this.dataChannels = new ObservableMap()
 
     this.options = Object.assign({
       turn: [],
-      autoConnect: true,
+      autoConnect: true
       // reconnectAttempt: 5,
     }, userOptions)
 
@@ -41,7 +43,7 @@ export default class RTCEngine extends ObservableClass {
       iceServers.push(this.options.turn)
     }
 
-    this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed 
+    this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed
     this.pc = new RTCPeerConnection({ iceServers })
     this.signaler = signaler
 
@@ -50,7 +52,7 @@ export default class RTCEngine extends ObservableClass {
     }
   }
 
-  assignRole() {
+  assignRole () {
     return new Promise(resolve => {
       const seed = Math.random()
 
@@ -73,7 +75,7 @@ export default class RTCEngine extends ObservableClass {
     })
   }
 
-  async start() {
+  async start () {
     // 아래 내부 함수들은 모두 this로 RTCEngine 인스턴스에 접근할 수 있게 하기 위해
     // 모두 화살표 함수임
     const sendLocalDescription = async () => {
@@ -178,7 +180,6 @@ export default class RTCEngine extends ObservableClass {
 
     // 재연결 로직
     // connection이 failed이고, 인터넷에 연결되어 있고, 시그널러가 준비되어 있을 때 ice restart를 시도함
-    let reconnectAttempt = 0
     observe(this.connection).onChange(() => {
       if (this.connection.get() !== 'failed') return
 
@@ -198,7 +199,7 @@ export default class RTCEngine extends ObservableClass {
   }
 
   // socket.io의 connect()와 비슷하게 연결 시작과 재연결 수동 시작의 기능을 동시에 함
-  async connect() {
+  async connect () {
     if (this.connection.get() === 'failed') {
       this.restartIce()
     } else if (this.connection.get() === 'inactive') {
@@ -210,7 +211,7 @@ export default class RTCEngine extends ObservableClass {
     return wait(this.connection).toBe('connected')
   }
 
-  async socket(label) {
+  async socket (label) {
     // polite가 채널을 만드는 이유는 없음. 그냥 정한거.
     if (this.polite) {
       const dataChannel = this.pc.createDataChannel(label)
@@ -230,34 +231,34 @@ export default class RTCEngine extends ObservableClass {
     }
   }
 
-  async readable(label) {
+  async readable (label) {
     const socket = await this.socket(label)
     const metadata = await once(socket, 'metadata')
     return new TransactionReader(socket, metadata)
   }
 
-  async writable(label, metadata) {
+  async writable (label, metadata) {
     const socket = await this.socket(label)
     socket.writeEvent('metadata', metadata)
     return new TransactionWriter(socket, metadata)
   }
 
-  async channel(label) {
+  async channel (label) {
     const socket = await this.socket(label)
     return new Channel(socket, this)
   }
 
-  restartIce() {
+  restartIce () {
     this.pc.restartIce()
     debug('ICE 재시작됨')
   }
 
-  close() {
+  close () {
     this.pc.close()
     debug('RTC 연결 해제됨')
   }
 
-  async getReport(socket) {
+  async getReport (socket) {
     for (const [, report] of await this.pc.getStats()) {
       if (report.type === 'data-channel' && report.dataChannelIdentifier === socket.dataChannel.id) {
         return report
@@ -265,7 +266,7 @@ export default class RTCEngine extends ObservableClass {
     }
   }
 
-  static plugin(plugin) {
+  static plugin (plugin) {
     if (typeof plugin !== 'function') {
       throw new Error('only function-style plugin is supported')
     }

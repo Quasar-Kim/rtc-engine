@@ -2,7 +2,7 @@ import Queue from './Queue.js'
 import Mitt from './Mitt.js'
 
 export default class ObservableMap {
-  constructor(iterable = []) {
+  constructor (iterable = []) {
     this.data = new Map(iterable)
     // Map<key, Set<function>>
     this.conditionsMap = new Map()
@@ -10,11 +10,11 @@ export default class ObservableMap {
     this.callbacksMap = new Map()
   }
 
-  get(key) {
+  get (key) {
     return this.data.get(key)
   }
 
-  set(key, val) {
+  set (key, val) {
     const oldVal = this.data.get(key)
     this.data.set(key, val)
     if (oldVal !== val) {
@@ -23,23 +23,23 @@ export default class ObservableMap {
     return this
   }
 
-  delete(key) {
+  delete (key) {
     return this.data.delete(key)
   }
 
-  has(key) {
+  has (key) {
     return this.data.has(key)
   }
 
-  wait(key) {
+  wait (key) {
     return new Observer({ key, origin: this, once: true })
   }
 
-  observe(key) {
+  observe (key) {
     return new Observer({ key, origin: this })
   }
 
-  testConditions(key, updatedVal) {
+  testConditions (key, updatedVal) {
     const conditions = this.conditionsMap.get(key) ?? new Set()
     for (const conditionFn of conditions) {
       const [matchedCallbackFn, notMatchedCallbackFn] = this.callbacksMap.get(
@@ -53,7 +53,7 @@ export default class ObservableMap {
     }
   }
 
-  registerCondition(key, conditionFn, matchedCallbackFn, notMatchedCallbackFn) {
+  registerCondition (key, conditionFn, matchedCallbackFn, notMatchedCallbackFn) {
     // TODO: set() required?
     let conditions = this.conditionsMap.get(key)
     if (!conditions) {
@@ -68,14 +68,14 @@ export default class ObservableMap {
     ])
   }
 
-  removeCondition(key, conditionFn) {
+  removeCondition (key, conditionFn) {
     this.conditionsMap.get(key).delete(conditionFn)
     this.callbacksMap.delete(conditionFn)
   }
 }
 
 export class Observer extends Mitt {
-  constructor({ key, origin, once = false }) {
+  constructor ({ key, origin, once = false }) {
     super()
     this.selectedKey = key
     this.keys = [key]
@@ -89,12 +89,12 @@ export class Observer extends Mitt {
     this.fulfilledConditionsCount = 0
   }
 
-  then(fulfilledCallback) {
+  then (fulfilledCallback) {
     this.callbackQueue.push(fulfilledCallback)
     if (this.resolved) this.resolve()
   }
 
-  retrievedChangedValues() {
+  retrievedChangedValues () {
     const values = []
     for (const key of this.keys) {
       values.push(this.origin.get(key))
@@ -102,7 +102,7 @@ export class Observer extends Mitt {
     return values
   }
 
-  resolve() {
+  resolve () {
     let values = this.retrievedChangedValues()
     if (values.length === 1) {
       values = values[0]
@@ -116,7 +116,7 @@ export class Observer extends Mitt {
     this.emit('fulfill', values)
   }
 
-  toFulfill(conditionFn) {
+  toFulfill (conditionFn) {
     this.origin.registerCondition(
       this.selectedKey,
       conditionFn,
@@ -139,7 +139,7 @@ export class Observer extends Mitt {
     return this
   }
 
-  updateConditionState(conditionFn, matched) {
+  updateConditionState (conditionFn, matched) {
     const { matched: matchedPreviously } = this.conditions.get(conditionFn)
     // if (matched === matchedPreviously) return
 
@@ -163,32 +163,32 @@ export class Observer extends Mitt {
     }
   }
 
-  and(key) {
+  and (key) {
     this.keys.push(key)
     this.selectedKey = key
     return this
   }
 
-  toBe(expectedVal) {
+  toBe (expectedVal) {
     return this.toFulfill(val => val === expectedVal)
   }
 
-  toBeDefined() {
+  toBeDefined () {
     return this.toFulfill(val => val !== undefined)
   }
 
-  toBeChanged() {
+  toBeChanged () {
     return this.toFulfill(() => true)
   }
 
-  removeConditions() {
+  removeConditions () {
     for (const [conditionFn, { key }] of this.conditions.entries()) {
       this.origin.removeCondition(key, conditionFn)
     }
     this.conditions.clear()
   }
 
-  cancel() {
+  cancel () {
     this.removeConditions()
     this.all.clear()
   }
