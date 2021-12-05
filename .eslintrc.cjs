@@ -9,7 +9,8 @@ module.exports = {
   ],
   globals: {
     sinon: 'readonly',
-    expect: 'readonly'
+    expect: 'readonly',
+    chai: 'readonly'
   },
   parserOptions: {
     ecmaVersion: 12,

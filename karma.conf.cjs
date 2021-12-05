@@ -13,7 +13,7 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      { pattern: 'test/*.test.js', type: 'module' }
+      { pattern: 'test/**/*.test.js', type: 'module' }
     ],
 
     // list of files / patterns to exclude
@@ -28,7 +28,7 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
-    reporters: ['progress'],
+    reporters: ['mocha'],
 
     // web server port
     port: 9876,
@@ -61,7 +61,12 @@ module.exports = function (config) {
     ],
 
     esm: {
-      nodeResolve: true
+      nodeResolve: true,
+      babel: true
+    },
+
+    client: {
+      captureConsole: false
     }
   })
 }

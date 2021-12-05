@@ -1,7 +1,7 @@
-import Mitt from '../js/util/Mitt.js'
+import Mitt from '../../js/util/Mitt.js'
 import RPCClient from './RPCClient.js'
-import once from '../js/util/once.js'
-import ObservableMap from '../js/util/ObservableMap.js'
+import once from '../../js/util/once.js'
+import ObservableMap from '../../js/util/ObservableMap.js'
 
 function debug (...args) {
   if (window?.process?.env?.NODE_ENV === 'production') return
@@ -81,11 +81,11 @@ export default class SocketSignaler extends Mitt {
     debug('릴레이 메시지 전송됨', msg)
   }
 
-  async * messages () {
-    while (true) {
-      yield await once(this.rpcClient, 'relay')
-    }
-  }
+  // async * messages () {
+  //   while (true) {
+  //     yield await once(this.rpcClient, 'relay')
+  //   }
+  // }
 
   get ready () {
     return new Promise(resolve => {

@@ -1,5 +1,5 @@
 import { JSONRPCClient } from 'json-rpc-2.0'
-import Mitt from '../js/util/Mitt.js'
+import Mitt from '../../js/util/Mitt.js'
 import io from 'socket.io-client'
 
 function debug (...args) {

@@ -35,15 +35,31 @@ export function waitAll (waitEntriesFn) {
   })
 
   // 각 waitEntry 별 resolve 여부 나타냄
-  let fulfilledWaitEntries = 0
+  /**
+   * @type {Map<WaitEntry, boolean>}
+   */
   const waitEntries = new Set()
+  let fulfilledWaitEntries = 0
 
   // waitEntry 받고...
   waitEntriesFn(observableEntry => {
-    const waitEntry = new WaitEntry({ observableEntry, once: false, unmatchedCallback: () => fulfilledWaitEntries-- })
+    let resolved = false
+    const waitEntry = new WaitEntry({
+      observableEntry,
+      once: false,
+      unmatchedCallback: () => {
+        if (!resolved) return
+
+        resolved = false
+        fulfilledWaitEntries--
+      }
+    })
 
     // 맞으면 fulfilledWaitEntry 추가
     waitEntry.then(() => {
+      if (resolved) return
+
+      resolved = true
       fulfilledWaitEntries++
       if (fulfilledWaitEntries === waitEntries.size) {
         // 정리

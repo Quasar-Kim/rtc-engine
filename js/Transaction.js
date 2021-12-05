@@ -1,6 +1,6 @@
 import ObservableClass, { wait } from './util/ObservableClass.js'
-import progressTracker from 'simple-eta'
-import prettyBytes from 'pretty-bytes'
+import progressTracker from './util/eta.js'
+import prettyBytes from './util/prettyBytes.js'
 
 // eslint-disable-next-line no-unused-vars
 function debug (...args) {
@@ -24,7 +24,7 @@ export default class Transaction extends ObservableClass {
   /**
    * 주의: 이 생성자는 RTCEngine 내부에서만 호출되어야 합니다.
    * @param {RTCSocket} socket 데이터 전송에 사용할 RTCSocket
-   * @param {*} [metadata] 상대에게 전송할 메타데이터. 트렌젝션이 만들어진 후 `metadata` 속성으로 읽을 수 있습니다. 
+   * @param {*} [metadata] 상대에게 전송할 메타데이터. 트렌젝션이 만들어진 후 `metadata` 속성으로 읽을 수 있습니다.
    */
   constructor (socket, metadata = { size: 0 }) {
     super()

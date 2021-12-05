@@ -1,6 +1,7 @@
 /**
- * This is a slightly modified version of Mitt package by developit.
- * Mitt: Tiny (~200b) functional event emitter / pubsub.
+ * developit의 Mitt 패키지에서 가져온 Mitt 클래스입니다.
+ * Mitt: https://github.com/developit/Mitt
+ * 
  */
 
 export default class Mitt {
