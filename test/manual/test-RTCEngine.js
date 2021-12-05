@@ -4,17 +4,17 @@ import FileSaver from '../util/FileSaver.js'
 import once from '../../js/util/once.js'
 import { wait } from '../../js/util/ObservableClass.js'
 
-// const signaler = new SocketSignaler('http://localhost:3000')
-const signaler = new SocketSignaler('https://192.168.0.17:3000')
-const engine = new RTCEngine(signaler, { autoConnect: false })
+const signaler = new SocketSignaler('http://localhost:3000')
+// const signaler = new SocketSignaler('https://192.168.0.17:3000')
 
 document.querySelector('#createTransactionBtn').addEventListener('click', async () => {
   // 시그널러 셋업
   await signaler.createSessionCode()
   await signaler.waitForConnection()
+  await signaler.ready
 
   // 연결
-  await engine.connect()
+  const engine = new RTCEngine(signaler)
 
   // 파일 입력 받기
   const fileInputElem = document.querySelector('#fileInput')
@@ -59,7 +59,7 @@ document.querySelector('#submitSessionCodeBtn').addEventListener('click', async 
   const sessionCode = document.querySelector('#sessionCodeInput').value
   await signaler.connect(sessionCode)
 
-  await engine.connect()
+  const engine = new RTCEngine(signaler)
 
   // 파일 받기
   // const transaction = await engine.readable('test')

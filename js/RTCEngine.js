@@ -35,13 +35,17 @@ export default class RTCEngine extends ObservableClass {
     // 데이터 채널 맵 <label, RTCDataChannel>
     this.dataChannels = new ObservableMap()
 
+    const signalerOptions = signaler.options ?? {}
     this.options = {
       autoConnect: true,
       iceServers: [
         { urls: ['stun:stun.l.google.com:19302'] }
       ],
+      ...signalerOptions,
       ...userOptions
     }
+
+    debug('사용할 옵션:', this.options)
 
     this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed
     this.pc = new RTCPeerConnection({

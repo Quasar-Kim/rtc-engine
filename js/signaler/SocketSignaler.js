@@ -32,9 +32,16 @@ export default class SocketSignaler extends Mitt {
       sessionStorage.setItem('sessionID', sessionID)
     })
 
+    this.options = {
+      iceServers: [{
+        urls: ['stun:stun.l.google.com:19302']
+      }]
+    }
+
     // TURN 서버 설정 업데이트
     this.rpcClient.on('turn', turnConfig => {
       this.state.set('turn', turnConfig)
+      this.options.iceServers.push(turnConfig)
     })
 
     // 새로 서버와 연결시 새로운 TURN 서버 설정을 받기 위해
@@ -81,20 +88,17 @@ export default class SocketSignaler extends Mitt {
     debug('릴레이 메시지 전송됨', msg)
   }
 
-  // async * messages () {
-  //   while (true) {
-  //     yield await once(this.rpcClient, 'relay')
-  //   }
-  // }
-
   get ready () {
-    return new Promise(resolve => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async resolve => {
       if (this.rpcClient.socket.connected) {
         resolve()
         return
       }
 
-      once(this.rpcClient.socket, 'connect').then(resolve)
+      await once(this.rpcClient.socket, 'connect')
+      await this.state.wait('turn').toBeDefined()
+      resolve()
     })
   }
 
