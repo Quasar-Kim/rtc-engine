@@ -80,6 +80,7 @@ export default class RTCEngine extends ObservableClass {
             type: 'role',
             seed
           })
+          return
         }
 
         off()

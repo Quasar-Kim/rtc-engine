@@ -1,5 +1,5 @@
 import RTCEngine from '../../js/RTCEngine.js'
-import SocketSignaler from '../util/SocketSignaler.js'
+import SocketSignaler from '../../js/signaler/SocketSignaler.js'
 import FileSaver from '../util/FileSaver.js'
 import once from '../../js/util/once.js'
 import { wait } from '../../js/util/ObservableClass.js'
