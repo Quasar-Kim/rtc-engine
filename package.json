@@ -11,7 +11,8 @@
   "jsdelivr": "dist/RTCEngine.prod.js",
   "unpkg": "dist/RTCEngine.prod.js",
   "scripts": {
-    "build": "rollup --config rollup.config.js"
+    "build": "rollup --config rollup.config.js",
+    "test": "karma start karma.conf.cjs"
   },
   "author": "Quasar-Kim",
   "license": "MIT",
@@ -24,15 +25,18 @@
     "socket.io-client": "^4.4.0"
   },
   "devDependencies": {
+    "@open-wc/karma-esm": "^4.0.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
+    "chai": "^4.3.4",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
     "karma": "^6.3.9",
+    "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-mocha": "^2.0.1",
     "lerna": "^4.0.0",
