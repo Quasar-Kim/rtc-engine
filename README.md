@@ -8,14 +8,21 @@ WebRTC를 이용한 __데이터 전송__ 을 위한 라이브러리입니다.
 
 # 기능
 - 마음대로 구현할 수 있는 시그널러
-- 자동으로 연결과 재연결
-- 한줄로 끝나는 채널 열기
+- 자동으로 연결하고 재연결함
+- 한줄로 끝나는 새 채널 열기
 - 데이터 채널의 버퍼 자동 관리
 - WHATWG Stream을 이용해 대용량 파일 전송도 가능
 
 # 설치
+npm을 사용한다면: 
 ```
 npm install rtc-engine
+```
+
+브라우저에서 바로 사용하고 싶다면:
+```javascript
+// 파일이 로드될때 type="module"이어야 합니다
+import RTCEngine from 'https://jspm.dev/rtc-engine'
 ```
 
 # 예시: 채널 사용하기
@@ -37,6 +44,28 @@ const channel = await engine.channel('messaging')
 // 3. 메시지 보내기
 channel.send('hello RTCEngine!')
 ```
+
+# 예시: 파일 보내기
+```javascript
+// 전송하는 쪽
+const file = /* 어떻게 파일 받기 */
+const transaction = await engine.writable('whateverIdentifierYouWant')
+file.stream().pipeTo(transaction.stream)
+
+// 받는 쪽
+const destination = /* 파일의 데이터를 스트림할 WritableStream. StreamSaver.js같은거 사용 가능 */
+const transaction = await engine.readable('whatEverIdentifierYouWant')
+transaction.stream.pipeTo(destination)
+```
+
+# exports
+
+```javascript
+import RTCEngine, { wait, waitAll, observe, SignalerBase } from 'rtc-engine'
+```
+ - `default`: RTCEngine 객체
+ - `wait`, `waitAll`, `observe`: ObservableClass 함수들
+ - `SignalerBase`: 시그널러가 확장해야 하는 클래스
 
 # API
 
