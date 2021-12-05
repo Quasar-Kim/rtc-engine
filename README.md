@@ -29,6 +29,7 @@ import RTCEngine from 'https://jspm.dev/rtc-engine'
 
 ```javascript
 // 아무 시그널러나 생성(구현은 자유...)
+// 또는 SocketSignaler를 사용할수도 있습니다(언젠가 내용 작성 예정)
 const signaler = new Signaler()
 
 // 시그널러 설정...
@@ -61,11 +62,12 @@ transaction.stream.pipeTo(destination)
 # exports
 
 ```javascript
-import RTCEngine, { wait, waitAll, observe, SignalerBase } from 'rtc-engine'
+import RTCEngine, { wait, waitAll, observe, SignalerBase, SocketSignaler } from 'rtc-engine'
 ```
  - `default`: RTCEngine 객체
  - `wait`, `waitAll`, `observe`: ObservableClass 함수들
  - `SignalerBase`: 시그널러가 확장해야 하는 클래스
+ - `SocketSignaler`: 커스텀 시그널링 서버를 이용한 시그널러
 
 # API
 
