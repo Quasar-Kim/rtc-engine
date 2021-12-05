@@ -11,7 +11,8 @@
   "unpkg": "dist/RTCEngine.prod.js",
   "scripts": {
     "build": "rollup --config rollup.config.js",
-    "test": "karma start karma.conf.cjs"
+    "test": "karma start karma.conf.cjs",
+    "prepare": "eslint js/**/*.js && karma start karma.conf.cjs --single-run"
   },
   "author": "Quasar-Kim",
   "license": "MIT",
