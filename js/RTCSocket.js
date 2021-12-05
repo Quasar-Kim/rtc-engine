@@ -54,6 +54,7 @@ export default class RTCSocket extends ObservableClass {
     // 커스텀 이벤트 처리
     if (data?._channelEngineCustomEvent) {
       this.emit(data.event, data.payload)
+      return
     }
 
     this.emit('data', data)

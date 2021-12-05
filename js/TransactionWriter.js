@@ -46,9 +46,9 @@ export default class TransactionWriter extends Transaction {
         socket.on('resume', () => this.resume())
       },
       /**
-             *
-             * @param {Uint8Array} data
-             */
+       *
+       * @param {Uint8Array} data
+       */
       write: async data => {
         // 일시정지 기능
         if (this.paused.get()) {
@@ -70,11 +70,15 @@ export default class TransactionWriter extends Transaction {
         }
 
         // 전송 완료 이벤트 전달
+        // ready-to-close 이벤트를 받는 이유: 그냥 닫으면 done 이벤트가 아에 전송이 안되는 경우가 발생
         socket.writeEvent('done')
+        await once(socket, 'ready-to-close')
+
+        // 받는 쪽에서 닫지 않고 여기서 닫는 이유:
+        // 문자열 메시지와 바이너리 메시지의 순서는 지켜지지 않는걸로 보임(적어도 크롬에서는)
         socket.close()
         this.paused = true
         this.done = true
-        debug('소켓 닫음')
       },
       // abort되면 abort 이벤트 전달
       abort: async reason => {

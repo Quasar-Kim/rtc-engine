@@ -23,18 +23,14 @@ export default class RTCEngine extends ObservableClass {
    * RTCEngine을 생성합니다. autoConnect 옵션이 true일경우(기본값) 자동으로 연결을 시작합니다.
    * @param {*} signaler 메시지 송수신에 사용할 시그널러.
    * @param {object} userOptions
-   * @param {boolean} userOptions.autoConnect RTCEngine 생성시 자동 연결 여부를 결정하는 옵션.
-   * @param {RTCIceServer[]} userOptions.iceServers 연결에 사용할 ICE 서버들.
+   * @param {boolean} [userOptions.autoConnect] RTCEngine 생성시 자동 연결 여부를 결정하는 옵션.
+   * @param {RTCIceServer[]} [userOptions.iceServers] 연결에 사용할 ICE 서버들.
+   * @param {'polite'|'impolite'} [userOptions.role] 연결에서 이 피어의 역할을 수동으로 설정함.
    */
   constructor (signaler, userOptions = {}) {
     super()
 
-    this.makingOffer = false // offer collision 방지를 위해 offer을 만드는 동안이면 기록
-    this.polite = false // perfect negotiation pattern에서 사용하는 role
-    this.ignoreOffer = false // offer collision 방지를 위해 role이나 signalingState등에 기반해 받은 offer을 받을지 결정
-    // 데이터 채널 맵 <label, RTCDataChannel>
-    this.dataChannels = new ObservableMap()
-
+    // 옵션 합치기
     const signalerOptions = signaler.options ?? {}
     this.options = {
       autoConnect: true,
@@ -47,12 +43,26 @@ export default class RTCEngine extends ObservableClass {
 
     debug('사용할 옵션:', this.options)
 
-    this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed
+    // role 설정
+    // 만약 options.role이 설정되어 있지 않다면 assignRole()을 이용해 자동으로 role을 설정함
+    if (this.options.role) {
+      if (!['polite', 'impolite'].includes(this.options.role)) {
+        throw new Error(`config.role이 잘못 설정되었습니다. 현재 설정은 '${this.options.role}'입니다. 올바른 값은 'polite' 또는 'impolite'입니다.`)
+      }
+      this.polite = this.options.role === 'polite'
+    }
+
+    // 내부 property 설정
     this.pc = new RTCPeerConnection({
       iceServers: this.options.iceServers
     })
+    this.dataChannels = new ObservableMap()
+    this.makingOffer = false // offer collision 방지를 위해 offer을 만드는 동안이면 기록
+    this.ignoreOffer = false // offer collision 방지를 위해 role이나 signalingState등에 기반해 받은 offer을 받을지 결정
+    this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed
     this.signaler = signaler
 
+    // 자동 연결
     if (this.options.autoConnect) {
       this.connect()
     }
@@ -229,8 +239,11 @@ export default class RTCEngine extends ObservableClass {
     if (this.connection.get() === 'failed') {
       this.restartIce()
     } else if (this.connection.get() === 'inactive') {
-      await this.assignRole()
-      debug('polite', this.polite)
+      if (this.polite === undefined) {
+        await this.assignRole()
+        debug('polite', this.polite)
+      }
+
       this.start()
     }
 
@@ -270,7 +283,9 @@ export default class RTCEngine extends ObservableClass {
   async readable (label) {
     const socket = await this.socket(label)
     const metadata = await once(socket, 'metadata')
-    return new TransactionReader(socket, metadata)
+    const transaction = new TransactionReader(socket, metadata)
+    socket.writeEvent('__transaction-ready')
+    return transaction
   }
 
   /**
@@ -281,6 +296,7 @@ export default class RTCEngine extends ObservableClass {
   async writable (label, metadata) {
     const socket = await this.socket(label)
     socket.writeEvent('metadata', metadata)
+    await once(socket, '__transaction-ready')
     return new TransactionWriter(socket, metadata)
   }
 

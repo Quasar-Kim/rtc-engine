@@ -14,7 +14,7 @@ document.querySelector('#createTransactionBtn').addEventListener('click', async 
   await signaler.ready
 
   // 연결
-  const engine = new RTCEngine(signaler)
+  const engine = new RTCEngine(signaler, { role: 'polite' })
 
   // 파일 입력 받기
   const fileInputElem = document.querySelector('#fileInput')
@@ -59,7 +59,7 @@ document.querySelector('#submitSessionCodeBtn').addEventListener('click', async 
   const sessionCode = document.querySelector('#sessionCodeInput').value
   await signaler.connect(sessionCode)
 
-  const engine = new RTCEngine(signaler)
+  const engine = new RTCEngine(signaler, { role: 'impolite' })
 
   // 파일 받기
   // const transaction = await engine.readable('test')
