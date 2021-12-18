@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #qrOutput {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h3>select role</h3>
+    <input type="radio" id="roleController" name="role" value="controller">
+    <label for="roleController">controller</label>
+    <input type="radio" id="roleControlled" name="role" value="controlled">
+    <label for="roleControlled">controlled</label>
+  </div>
+
+  <video id="cameraVideo" width="400" height="300"></video>
+  <p>
+    <canvas id="qrOutput"></canvas>
+  </p>
+
+  <p>
+    <button id="pushMessage">send a hello</button>
+  </p>
+
+  <script src="../util/injectmap.js"></script>
+  <script type="module">
+    import QRSignaler from '../../js/signaler/QRSignaler.js'
+
+    const cameraVideoElem = document.querySelector('#cameraVideo')
+    const qrOutputElem = document.querySelector('#qrOutput')
+
+    // 예상 시나리오
+    // 1. controller의 콘솔에 hello there 출력
+    // 2. null received 출력
+    // 3. transferring control 출력
+    // 4. controlled가 controller가 됨
+    // 5. 이제 controlled인 피어에게서 1~2
+    // 6. controlled인 피어도 메시지가 없으므로 여기서 더이상의 일이 일어나지 않음
+
+    // 7-1. controlled인쪽에 새 메시지를 넣으면 next가 resolve되고, 2 -> 6
+    // 7-2. controlling인쪽에 새 메시지를 넣으면 3~6
+    async function main (role) {
+      const signaler = new QRSignaler({ role, videoElem: cameraVideoElem, canvasElem: qrOutputElem })
+      signaler.on('message', msg => {
+        console.log('signaler received:', msg)
+      })
+      signaler.send('hello there!')
+
+      document.querySelector('#pushMessage').addEventListener('click', () => {
+        signaler.send('hello again')
+      })
+    }
+
+    document.querySelector('#roleController').addEventListener('click', () => main('controller'), { once: true })
+    document.querySelector('#roleControlled').addEventListener('click', () => main('controlled'), { once: true })
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #qrOutput {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h3>select role</h3>
+    <input type="radio" id="roleController" name="role" value="controller">
+    <label for="roleController">controller</label>
+    <input type="radio" id="roleControlled" name="role" value="controlled">
+    <label for="roleControlled">controlled</label>
+  </div>
+
+  <video id="cameraVideo" width="400" height="300"></video>
+  <p>
+    <canvas id="qrOutput"></canvas>
+  </p>
+
+  <script src="../util/injectmap.js"></script>
+  <script type="module">
+    import QRSignaler from '../../js/signaler/QRSignaler.js'
+    import RTCEngine from '../../js/RTCEngine.js'
+
+    const cameraVideoElem = document.querySelector('#cameraVideo')
+    const qrOutputElem = document.querySelector('#qrOutput')
+
+    async function main (role) {
+      const signaler = new QRSignaler({ role, videoElem: cameraVideoElem, canvasElem: qrOutputElem })
+      const engine = new RTCEngine(signaler)
+      const channel = await engine.channel('myChannel')
+    }
+
+    document.querySelector('#roleController').addEventListener('click', () => main('controller'), { once: true })
+    document.querySelector('#roleControlled').addEventListener('click', () => main('controlled'), { once: true })
+  </script>
+</body>
+</html>

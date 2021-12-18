@@ -1,14 +1,16 @@
-// https://generator.jspm.io/#HY2xDsIwDEQ9MPAzttqkRWLLr6TBgEmaVolVKVMn/puI9d69u+8F4HoWDcj5JZkx+rJ6CG8vbiJLEzwlMVZ/cHGGBppBHgtGbodP7tYDC5+6ZSx7wM7dQIbGO6yi6mzHA+yFVRsuTbm6mboDVda9r7L6f8dA3UJkJdkwJOGs/Xsk8wMvo58enQA
+// https://generator.jspm.io/#HY5LDsIwDES9YMVdYjVpi8QuV0lTAya/kliVegDODVGXM09PM98LwPUHVbyi/ORMKriaHPiXYzvhiBP4kiLncCYND46kmtupWoMDzsDrogIdu4v21osR3q1kVTevOrcDGtR3SCxix44H2CqJHGo5hJqdsTvwqb6sZDXOPTROW58gcadgoBUfSJCL8pEpSz+i0fwBaOJx7rkA
 
 const map = `
 {
   "imports": {
     "chai": "https://ga.jspm.io/npm:chai@4.3.4/index.mjs",
+    "comlink": "https://ga.jspm.io/npm:comlink@4.3.1/dist/umd/comlink.js",
     "file-saver": "https://ga.jspm.io/npm:file-saver@2.0.5/dist/FileSaver.min.js",
     "idb-keyval": "https://ga.jspm.io/npm:idb-keyval@6.0.3/dist/index.js",
     "json-rpc-2.0": "https://ga.jspm.io/npm:json-rpc-2.0@0.2.19/dist/dev.index.js",
     "mitt": "https://ga.jspm.io/npm:mitt@3.0.0/dist/mitt.mjs",
     "pretty-bytes": "https://ga.jspm.io/npm:pretty-bytes@5.6.0/index.js",
+    "qrcode": "https://ga.jspm.io/npm:qrcode@1.5.0/lib/browser.js",
     "simple-eta": "https://ga.jspm.io/npm:simple-eta@3.0.2/index.js",
     "socket.io-client": "https://ga.jspm.io/npm:socket.io-client@4.1.2/wrapper.mjs"
   },
@@ -22,6 +24,8 @@ const map = `
       "component-emitter": "https://ga.jspm.io/npm:component-emitter@1.3.0/index.js",
       "debug": "https://ga.jspm.io/npm:debug@4.3.3/src/browser.js",
       "deep-eql": "https://ga.jspm.io/npm:deep-eql@3.0.1/index.js",
+      "dijkstrajs": "https://ga.jspm.io/npm:dijkstrajs@1.0.2/dijkstra.js",
+      "encode-utf8": "https://ga.jspm.io/npm:encode-utf8@1.0.3/index.js",
       "engine.io-client": "https://ga.jspm.io/npm:engine.io-client@5.1.2/lib/index.js",
       "engine.io-client/contrib/xmlhttprequest-ssl/XMLHttpRequest.js": "https://ga.jspm.io/npm:engine.io-client@5.1.2/lib/xmlhttprequest.js",
       "engine.io-client/lib/globalThis.js": "https://ga.jspm.io/npm:engine.io-client@5.1.2/lib/globalThis.browser.js",
