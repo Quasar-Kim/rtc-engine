@@ -1,5 +1,8 @@
-export default class Queue {
+import Mitt from './Mitt.js'
+
+export default class Queue extends Mitt {
   constructor () {
+    super()
     this.head = 0
     this.tail = 0
     this.data = {}
@@ -8,6 +11,7 @@ export default class Queue {
   push (val) {
     const index = this.tail++
     this.data[index] = val
+    this.emit('push', val)
   }
 
   pop () {
