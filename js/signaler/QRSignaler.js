@@ -1,15 +1,14 @@
 import SignalerBase from './Base.js'
 import * as Comlink from 'comlink'
-// import QRCode from 'qrcode'
-import * as QRCode from './QRCode.js'
+import QRCode from 'qrcode'
+// import * as QRCode from './QRCode.js'
 import { JSONRPCServerAndClient, JSONRPCServer, JSONRPCClient } from 'json-rpc-2.0'
 import Queue from '../util/Queue.js'
 import Mitt from '../util/Mitt.js'
 import once from '../util/once.js'
 
-// test only
-import { deflate, inflate } from 'https://jspm.dev/pako'
-import { fromByteArray as encodeBase64 } from 'https://jspm.dev/base64-js'
+// TODO: 250자 단위로 잘라 보내기
+const MAX_LENGTH = 200
 
 function debug (...args) {
   if (window?.process?.env?.NODE_ENV === 'production') return
@@ -26,11 +25,17 @@ class QRReader extends Mitt {
     this.videoElem = videoElem
     this.ctx = document.createElement('canvas').getContext('2d')
     this.role = role
+    this.initiated = false
+    this.animationFrameHandle = -1
     this.start()
   }
 
   async start () {
-    await this.worker.init()
+    if (!this.initiated) {
+      await this.worker.init()
+      this.initiated = true
+    }
+
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
@@ -45,7 +50,7 @@ class QRReader extends Mitt {
     this.videoElem.addEventListener('loadedmetadata', () => {
       this.ctx.canvas.width = this.videoElem.videoWidth
       this.ctx.canvas.height = this.videoElem.videoHeight
-      requestAnimationFrame(() => this.detect())
+      this.animationFrameHandle = requestAnimationFrame(() => this.detect())
     }, { once: true })
   }
 
@@ -67,8 +72,15 @@ class QRReader extends Mitt {
         this.emit('read', parsed)
       }
     } finally {
-      requestAnimationFrame(() => this.detect())
+      this.animationFrameHandle = requestAnimationFrame(() => this.detect())
     }
+  }
+
+  // NOTE: 이 메소드를 호출해도 비디오 element에는 마지막 프레임이 표시됨
+  stop () {
+    cancelAnimationFrame(this.animationFrameHandle)
+    const track = this.videoElem.srcObject.getTracks()[0]
+    track.stop()
   }
 }
 
@@ -84,9 +96,20 @@ export default class QRSignaler extends SignalerBase {
   constructor ({ role, videoElem, canvasElem }) {
     super()
     this.role = role // controller | controlled
+    this.videoElem = videoElem
     this.canvas = canvasElem
+
+    this.start()
+  }
+
+  start () {
     this.nullReceived = false
     this.nullSent = false
+
+    // multipart 메시지 관련
+    this.multipartID = 0
+    // key: multipartID, value: chunk들의 배열
+    this.parts = new Map()
 
     // RTCEngine이 사용할 옵션
     this.options = {
@@ -110,7 +133,7 @@ export default class QRSignaler extends SignalerBase {
         return this.msgQueue.pop()
       } else if (!this.nullSent) {
         this.nullSent = true
-        return null
+        return 'QUEUE_EMPTY'
       } else {
         await once(this.msgQueue, 'push')
         this.nullSent = false
@@ -126,7 +149,6 @@ export default class QRSignaler extends SignalerBase {
       this.role = 'controller'
       this.reader.lastReadID = -1
       this.reader.role = 'controller'
-      debug('lastReadID reset to -1')
       this.emit('gotControl')
       debug('got control')
       this.startPull()
@@ -134,7 +156,7 @@ export default class QRSignaler extends SignalerBase {
     })
 
     // QR reader 관련
-    this.reader = new QRReader(videoElem, this.role)
+    this.reader = new QRReader(this.videoElem, this.role)
     this.reader.on('read', payload => {
       this.rpcSocket.receiveAndSend(payload)
     })
@@ -152,6 +174,7 @@ export default class QRSignaler extends SignalerBase {
       if (this.nullReceived) {
         if (this.msgQueue.size === 0) {
           debug('waiting...')
+          this.emit('waiting')
           await Promise.any([
             msgPromise,
             once(this.msgQueue, 'push')
@@ -175,13 +198,34 @@ export default class QRSignaler extends SignalerBase {
       // 상대가 더이상 보낼 메시지가 없는 경우
       // 한번더 next 호출하면 long polling같이 새 메시지가 들어온 뒤에 그 값이 리턴됨
       // 이사이에 controller는 giveControl을 호출할수도 있고, 이 경우 위에서 호출한 next의 response는 발생하지 않음
-      if (msg === null) {
+      if (msg === 'QUEUE_EMPTY') {
         this.nullReceived = true
         debug('null received')
+      } else if (msg.multipartID !== undefined) {
+        // 멀티파트 메시지인경우
+        // 메시지 예시:
+        // { multipartID: 0, c: <data>, l:length }
+        if (!this.parts.has(msg.multipartID)) {
+          this.parts.set(msg.multipartID, [])
+        }
+
+        const parts = this.parts.get(msg.multipartID)
+        parts.push(msg.c)
+
+        // 마지막 청크면 다 합치고 message 이벤트 발생시키기
+        if (msg.l === parts.length) {
+          const assembled = parts.reduce((acc, c) => acc + c, '')
+          this.receiveMessage(assembled)
+        }
       } else {
-        this.emit('message', msg)
+        this.receiveMessage(msg)
       }
     } while (this.role === 'controller')
+  }
+
+  receiveMessage (msg) {
+    const parsed = JSON.parse(msg)
+    this.emit('message', parsed)
   }
 
   giveControl () {
@@ -195,15 +239,36 @@ export default class QRSignaler extends SignalerBase {
   }
 
   async writeQR (payload) {
-    const serialized = JSON.stringify(payload)
-    debug('length:', serialized.length)
-    debug('compressed', encodeBase64(deflate(serialized)).length)
-    await QRCode.toCanvas(this.canvas, serialized)
+    if (typeof payload !== 'string') {
+      await QRCode.toCanvas(this.canvas, JSON.stringify(payload))
+    } else {
+      await QRCode.toCanvas(this.canvas, payload)
+    }
   }
 
   send (data) {
     debug('enqueued', data)
-    this.msgQueue.push(data)
+
+    // 200자 단위로 분리
+    // NOTE: substring의 end는 길이보다 더 길면 end를 length로 설정한것과 같이 작동함
+    const serialized = JSON.stringify(data)
+    const chunks = []
+    let start = 0
+    let end = MAX_LENGTH
+    while (start < serialized.length) {
+      chunks.push(serialized.substring(start, end))
+      start += MAX_LENGTH
+      end += MAX_LENGTH
+    }
+
+    if (chunks.length === 1) {
+      this.msgQueue.push(chunks[0])
+    } else {
+      const multipartID = this.multipartID++
+      for (const c of chunks) {
+        this.msgQueue.push({ multipartID, c, l: chunks.length })
+      }
+    }
   }
 
   get ready () {
@@ -215,5 +280,10 @@ export default class QRSignaler extends SignalerBase {
 
       resolve()
     })
+  }
+
+  stop () {
+    this.reader.stop()
+    this.msgQueue.flush()
   }
 }

@@ -26,6 +26,11 @@
     <canvas id="qrOutput"></canvas>
   </p>
 
+  
+  <h3>chat</h3>
+  <p><div id="messages"></div></p>
+  <p><input type="text" id="messageInput"><button id="send">send</button></p>
+
   <script src="../util/injectmap.js"></script>
   <script type="module">
     import QRSignaler from '../../js/signaler/QRSignaler.js'
@@ -36,8 +41,33 @@
 
     async function main (role) {
       const signaler = new QRSignaler({ role, videoElem: cameraVideoElem, canvasElem: qrOutputElem })
+      signaler.on('message', data => {
+        console.log('[QRSignaler] received', data)
+      })
+
       const engine = new RTCEngine(signaler)
       const channel = await engine.channel('myChannel')
+      signaler.stop()
+
+      // 메시징
+      const messagesElem = document.querySelector('#messages')
+      function showMsg (by, msg) {
+        const msgMarkup = `
+          <p>
+            ${by}: ${msg}
+          </p>
+        `
+        messagesElem.innerHTML += msgMarkup
+      }
+
+      // 전송하기
+      document.querySelector('#send').addEventListener('click', () => {
+        const msg = document.querySelector('#messageInput').value
+        showMsg('me', msg)
+        channel.send(msg)
+      })
+      // 받기
+      channel.on('message', msg => showMsg('remote', msg))
     }
 
     document.querySelector('#roleController').addEventListener('click', () => main('controller'), { once: true })
