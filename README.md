@@ -67,7 +67,8 @@ import RTCEngine, { wait, waitAll, observe, SignalerBase, SocketSignaler } from 
  - `default`: RTCEngine 객체
  - `wait`, `waitAll`, `observe`: ObservableClass 함수들
  - `SignalerBase`: 시그널러가 확장해야 하는 클래스
- - `SocketSignaler`: 커스텀 시그널링 서버를 이용한 시그널러
+ - `QRSignaler`: QR코드를 이용한 시그널러
+ - `SocketSignaler`
 
 # API
 
@@ -152,4 +153,21 @@ transaction.stop()
 
 ```javascript
 const transaction = await channel.send(file)
+```
+
+## QRSignaler
+QR코드를 이용한 시그널러. 카메라가 있는 두 기기를 시그널러가 시작된 후 서로 마주보게 놓으면 QR코드를 이용해 통신합니다.
+
+인터넷을 사용할 수 없을때 한 기기가 핫스팟을 실행하고 다른 기기가 그 네트워크에 연결한 후 QR 시그널러를 통해서 연결을 형성할 수 있습니다.
+
+예시 코드는 [라이브 데모](https://stackblitz.com/edit/js-uqdabg)를 참조하세요.
+
+```javascript
+import RTCEngine, { QRSignaler } from 'rtc-engine'
+
+const signaler = new QRSignaler(/* 적절한 옵션 */)
+const engine = new RTCEngine(signaler)
+
+const channel = await engine.channel('chat')
+console.log('채널 만들어짐')
 ```
