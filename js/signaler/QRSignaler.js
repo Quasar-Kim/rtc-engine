@@ -16,6 +16,9 @@ function debug (...args) {
   console.log('[QRSignaler]', ...args)
 }
 
+/**
+ * QR코드에 담긴 메시지를 사용자의 카메라로부터 읽어오고 `read` 이벤트로 알리는 클래스
+ */
 class QRReader extends SignalerBase {
   constructor (videoElem, role) {
     super()
@@ -30,6 +33,9 @@ class QRReader extends SignalerBase {
     this.start()
   }
 
+  /**
+   * QR코드 읽기를 시작합니다.
+   */
   async start () {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
@@ -48,6 +54,10 @@ class QRReader extends SignalerBase {
     }, { once: true })
   }
 
+  /**
+   * 카메라에서 읽어들인 프레임으로부터 QR코드를 읽고 새로운 메시지이면 `read` 이벤트로 알립니다.
+   * @private
+   */
   async detect () {
     try {
       this.ctx.drawImage(this.videoElem, 0, 0)
@@ -70,7 +80,9 @@ class QRReader extends SignalerBase {
     }
   }
 
-  // NOTE: 이 메소드를 호출해도 비디오 element에는 마지막 프레임이 표시됨
+  /**
+   * QR코드 읽기를 중단합니다.
+   */
   stop () {
     cancelAnimationFrame(this.animationFrameHandle)
     const track = this.videoElem.srcObject.getTracks()[0]
@@ -78,26 +90,36 @@ class QRReader extends SignalerBase {
   }
 }
 
-// 두 피어는 rpc 클라이언트인 controller와 rpc 서버인 controlled의 역할을 나눠가짐
-// controller는 rpc 메소드 next()를 호출해 controlled의 메시지를 가져옴
-// next() rpc 메소드는 msgQueue에 보낼 게 있으면 그걸 리턴하고 없으면 null을 리턴함
-// 그리고 null이 리턴된 이후 한번 더 호출되면 HTTP long polling같이 새 메시지가 들어올때까지 대기했다가 리턴함
-// controller는 이 사이에 자신이 보내고 싶은 메시지가 있는 경우 giveControl() rpc 메소드를 호출하고 next의 리턴값은 무시할 수 있음
-
-// controller가 보낼 메시지가 있는 경우 rpc 메소드 giveControl로 상대에게 컨트롤을 넘기고 아래와 같은 작업 수행
-// controlled가 보낼 메시지가 있는 경우 QR 코드로 rpc response 전송
+/**
+ * QR코드를 이용한 양방향 통신으로 메시지를 전송하는 시그널러. 오프라인 사용을 전제로 만들어졌습니다.
+ * 두 기기가 모두 카메라를 가지고 있어야 합니다.
+ */
 export default class QRSignaler extends SignalerBase {
-  constructor ({ role, videoElem, canvasElem }) {
+  /**
+   * @param {object} options
+   * @param {HTMLVideoElement} options.videoElem 카메라에 보여지는 프레임들을 표시할 비디오 element
+   * @param {HTMLCanvasElement} options.canvasElem QR코드를 그릴 캔버스 element
+   * @param {'controller' | 'controlled'} options.role 피어의 역할에 대한 초깃값. 두 피어의 역할은 반드시 달라야 합니다.
+   * controller는 rpc client로, controlled는 rpc server로 작동합니다.
+   * controller는 rpc 메소드 `next()`로 controlled의 큐에 있는 메시지를 가져옵니다. 메시지가 더이상 없으면 controlled는 `QUEUE_EMPTY` 메시지를 보냅니다.
+   * 이 메시지를 받은 controller는 `next()`를 한번 더 호출하고 보내거나 받을 메시지가 추가로 생길때가지 대기합니다. controller가 보낼 메시지가 생기면 서로의 role을 바꾼뒤 메시지를 보내고,
+   * controlled가 생기면 controlled는 위에서 한번 더 호출한 `next()`의 결과를 리턴합니다.(HTTP Long polling과 비슷합니다.)
+   */
+  constructor (options) {
     super()
-    this.role = role // controller | controlled
-    this.videoElem = videoElem
-    this.canvas = canvasElem
+    this.role = options.role // controller | controlled
+    this.videoElem = options.videoElem
+    this.canvas = options.canvasElem
     this.msgQueue = new Queue()
     this.active = false
 
     this.start()
   }
 
+  /**
+   * 시그널러를 시작합니다.
+   * QR코드 읽기를 시작하고, role이 controller인경우 pulling을 시작합니다.
+   */
   start () {
     this.active = true
     this.emit('active')
@@ -163,8 +185,12 @@ export default class QRSignaler extends SignalerBase {
     }
   }
 
+  /**
+   * next()` rpc 메소드를 controlled의 큐가 빌때까지 실행하고, 큐가 비면 대기하거나 역할을 바꿉니다.(`constructor`의 `options.role` 파라미터의 설명 참조)
+   * @private
+   */
   async startPull () {
-    if (this.role !== 'controller') throw new Error('startReceiving() 메소드는 controller만 호출 가능합니다')
+    if (this.role !== 'controller') throw new Error('startPull() 메소드는 controller만 호출 가능합니다')
 
     do {
       const msgPromise = this.rpcSocket.request('next')
@@ -220,11 +246,20 @@ export default class QRSignaler extends SignalerBase {
     } while (this.role === 'controller')
   }
 
+  /**
+   * QR코드로부터 읽은 메시지를 json으로 파싱하고 `message` 이벤트로 전달합니다.
+   * @param {*} msg QR코드로부터 읽은 메시지
+   * @private
+   */
   receiveMessage (msg) {
     const parsed = JSON.parse(msg)
     this.emit('message', parsed)
   }
 
+  /**
+   * 상대를 controller로, 자신을 controlled로 만듭니다.
+   * @private
+   */
   giveControl () {
     if (this.role !== 'controller') throw new Error('giveControl() 메소드는 controller만 호출 가능합니다')
     this.rpcSocket.request('getControl')
@@ -235,6 +270,11 @@ export default class QRSignaler extends SignalerBase {
     this.reader.lastReadID = -1
   }
 
+  /**
+   * QR코드를 캔버스에 그립니다.
+   * @param {*} payload QR코드에 작성할 메시지. 메시지는 `JSON.stringify()`로 변환된 후 QR코드에 작성됩니다.
+   * @private
+   */
   async writeQR (payload) {
     if (typeof payload !== 'string') {
       await QRCode.toCanvas(this.canvas, JSON.stringify(payload))
@@ -243,6 +283,10 @@ export default class QRSignaler extends SignalerBase {
     }
   }
 
+  /**
+   * 메시지를 전송합니다.
+   * @param {*} data 보낼 메시지
+   */
   send (data) {
     debug('enqueued', data)
 
@@ -278,6 +322,9 @@ export default class QRSignaler extends SignalerBase {
     })
   }
 
+  /**
+   * 시그널러를 정지합니다.
+   */
   stop () {
     this.active = false
     this.reader.stop()
