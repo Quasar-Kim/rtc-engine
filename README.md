@@ -6,6 +6,8 @@ WebRTC를 이용한 __데이터 전송__ 을 위한 라이브러리입니다.
 
 비디오와 오디오 전송을 주요 기능으로 하는 다른 라이브러리와 다르게 텍스트와 파일을 쉽게 전송하고 받을 수 있도록 하는걸 목표로 합니다.
 
+[라이브 데모](https://stackblitz.com/edit/vitejs-vite-xwkszw?file=main.js) - QR코드를 이용한 시그널링
+
 # 주의 사항
 최소 ES2021을 지원하는 브라우저에서만 작동합니다. 그렇지 않으면 transpiler를 사용해야 합니다.
 
@@ -163,7 +165,7 @@ QR코드를 이용한 시그널러. 카메라가 있는 두 기기를 시그널�
 
 인터넷을 사용할 수 없을때 한 기기가 핫스팟을 실행하고 다른 기기가 그 네트워크에 연결한 후 QR 시그널러를 통해서 연결을 형성할 수 있습니다.
 
-예시 코드는 [라이브 데모](https://stackblitz.com/edit/js-uqdabg)를 참조하세요.
+예시 코드는 README 가장 위에 있는 라이브 데모를 참조하세요.
 
 ```javascript
 import RTCEngine, { QRSignaler } from 'rtc-engine'
