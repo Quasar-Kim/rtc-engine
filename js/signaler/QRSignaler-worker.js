@@ -5,13 +5,12 @@ import {
   createZbar
 } from 'https://ga.jspm.io/npm:zbar-wasi@1.0.10/dist/zbar-wasi.esm.js'
 
-async function init () {
-  await createZbar({ wasmpath: './zbar.wasm' })
-}
+const initPromise = createZbar({ wasmpath: './zbar.wasm' })
 
 async function detectQR (imageData) {
+  await initPromise
   const result = await scanImage(imageData)
   return result
 }
 
-Comlink.expose({ init, detectQR }, self)
+Comlink.expose({ detectQR }, self)

@@ -5,6 +5,7 @@ export function wait (observableEntry) {
   return new WaitEntry({ observableEntry })
 }
 
+// TODO: observe에도 condition 쓸 수 있도록 - observe(prop).toBe('connected')같이
 export function observe (observableEntry) {
   return {
     onChange (callback) {

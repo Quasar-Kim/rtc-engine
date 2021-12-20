@@ -4,10 +4,11 @@ import QRCode from 'qrcode'
 // import * as QRCode from './QRCode.js'
 import { JSONRPCServerAndClient, JSONRPCServer, JSONRPCClient } from 'json-rpc-2.0'
 import Queue from '../util/Queue.js'
-import Mitt from '../util/Mitt.js'
 import once from '../util/once.js'
 
-// TODO: 250자 단위로 잘라 보내기
+// TODO: controller와 controlled의 개념 삭제, 모두 long polling으로 구현
+// TODO: autoStart 기능 구현 - 지금은 start() 호출하지 않을시 config가 RTCEngine에 반영되지 않는 오류가 있음
+
 const MAX_LENGTH = 200
 
 function debug (...args) {
@@ -15,7 +16,7 @@ function debug (...args) {
   console.log('[QRSignaler]', ...args)
 }
 
-class QRReader extends Mitt {
+class QRReader extends SignalerBase {
   constructor (videoElem, role) {
     super()
     this.worker = Comlink.wrap(
@@ -25,22 +26,15 @@ class QRReader extends Mitt {
     this.videoElem = videoElem
     this.ctx = document.createElement('canvas').getContext('2d')
     this.role = role
-    this.initiated = false
     this.animationFrameHandle = -1
     this.start()
   }
 
   async start () {
-    if (!this.initiated) {
-      await this.worker.init()
-      this.initiated = true
-    }
-
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
-        facingMode: 'user',
-        focusMode: 'continuous'
+        facingMode: 'user'
       }
     })
 
@@ -98,11 +92,15 @@ export default class QRSignaler extends SignalerBase {
     this.role = role // controller | controlled
     this.videoElem = videoElem
     this.canvas = canvasElem
+    this.msgQueue = new Queue()
+    this.active = false
 
     this.start()
   }
 
   start () {
+    this.active = true
+    this.emit('active')
     this.nullReceived = false
     this.nullSent = false
 
@@ -114,11 +112,11 @@ export default class QRSignaler extends SignalerBase {
     // RTCEngine이 사용할 옵션
     this.options = {
       iceServers: [], // turn, stun 비활성화 - 이 시그널러는 오프라인 사용이 전제
-      role: this.role === 'controller' ? 'impolite' : 'polite' // controller가 impolite인 이유는 없음(임의로 정한것)
+      role: this.role === 'controller' ? 'impolite' : 'polite', // controller가 impolite인 이유는 없음(임의로 정한것)
+      waitOnlineOnReconnection: false // 오프라인일때도 자동 재연결이 작동하도록
     }
 
     // rpc 관련
-    this.msgQueue = new Queue()
     this.rpcSocket = new JSONRPCServerAndClient(
       new JSONRPCServer(),
       new JSONRPCClient(async payload => {
@@ -149,7 +147,6 @@ export default class QRSignaler extends SignalerBase {
       this.role = 'controller'
       this.reader.lastReadID = -1
       this.reader.role = 'controller'
-      this.emit('gotControl')
       debug('got control')
       this.startPull()
       return 'DO_NOT_RESPONSE'
@@ -274,16 +271,17 @@ export default class QRSignaler extends SignalerBase {
   get ready () {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
-      if (this.role === 'controlled') {
-        await once(this, 'gotControl')
+      if (!this.active) {
+        await once(this, 'active')
       }
-
       resolve()
     })
   }
 
   stop () {
+    this.active = false
     this.reader.stop()
     this.msgQueue.flush()
+    this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height)
   }
 }

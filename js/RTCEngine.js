@@ -17,8 +17,6 @@ export default class RTCEngine extends ObservableClass {
     return ['connection']
   }
 
-  // TODO: signaler 베이스 클래스 제공
-
   /**
    * RTCEngine을 생성합니다. autoConnect 옵션이 true일경우(기본값) 자동으로 연결을 시작합니다.
    * @param {*} signaler 메시지 송수신에 사용할 시그널러.
@@ -26,6 +24,7 @@ export default class RTCEngine extends ObservableClass {
    * @param {boolean} [userOptions.autoConnect] RTCEngine 생성시 자동 연결 여부를 결정하는 옵션.
    * @param {RTCIceServer[]} [userOptions.iceServers] 연결에 사용할 ICE 서버들.
    * @param {'polite'|'impolite'} [userOptions.role] 연결에서 이 피어의 역할을 수동으로 설정함.
+   * @param {boolean} [userOptions.waitOnlineOnReconnection] 재연결시 인터넷이 연결될때까지 대기했다가 연결함.
    */
   constructor (signaler, userOptions = {}) {
     super()
@@ -37,6 +36,7 @@ export default class RTCEngine extends ObservableClass {
       iceServers: [
         { urls: ['stun:stun.l.google.com:19302'] }
       ],
+      waitOnlineOnReconnection: true,
       ...signalerOptions,
       ...userOptions
     }
@@ -216,12 +216,13 @@ export default class RTCEngine extends ObservableClass {
       if (this.connection.get() !== 'failed') return
 
       const reconnect = async () => {
+        debug('시그널러 ready 대기중')
         await this.signaler.ready
         this.restartIce()
         debug('재연결 시도하는 중...')
       }
 
-      if (navigator.onLine) {
+      if (navigator.onLine || !this.options.waitOnlineOnReconnection) {
         reconnect()
       } else {
         debug('오프라인 상태, 인터넷 연결 대기 중')
