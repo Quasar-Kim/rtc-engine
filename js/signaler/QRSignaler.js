@@ -1,7 +1,6 @@
 import SignalerBase from './Base.js'
-import * as Comlink from 'comlink'
 import QRCode from 'qrcode'
-// import * as QRCode from './QRCode.js'
+import jsQR from 'jsqr'
 import { JSONRPCServerAndClient, JSONRPCServer, JSONRPCClient } from 'json-rpc-2.0'
 import Queue from '../util/Queue.js'
 import once from '../util/once.js'
@@ -22,9 +21,6 @@ function debug (...args) {
 class QRReader extends SignalerBase {
   constructor (videoElem, role) {
     super()
-    this.worker = Comlink.wrap(
-      new Worker(new URL('./QRSignaler-worker.js', import.meta.url), { type: 'module' })
-    )
     this.lastReadID = -1
     this.videoElem = videoElem
     this.ctx = document.createElement('canvas').getContext('2d')
@@ -62,18 +58,15 @@ class QRReader extends SignalerBase {
     try {
       this.ctx.drawImage(this.videoElem, 0, 0)
       const imageData = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-      const msgs = await this.worker.detectQR(Comlink.transfer(imageData))
+      const decoded = jsQR(imageData.data, imageData.width, imageData.height)
 
-      for (const msg of msgs) {
-        const parsed = JSON.parse(msg)
+      if (decoded !== null) {
+        const parsed = JSON.parse(decoded.data)
 
-        // 동일한 메시지가 여러번 읽어지는거 방지
-        if (parsed.id <= this.lastReadID) continue
-        if (parsed.from === this.role) continue
-        if (this.lastReadID === -1 && parsed?.method === 'getControl') continue
-
-        this.lastReadID = parsed.id
-        this.emit('read', parsed)
+        if (parsed.id > this.lastReadID && parsed.from !== this.role && !(this.lastReadID === -1 && parsed?.method === 'getControl')) {
+          this.lastReadID = parsed.id
+          this.emit('read', parsed)
+        }
       }
     } finally {
       this.animationFrameHandle = requestAnimationFrame(() => this.detect())

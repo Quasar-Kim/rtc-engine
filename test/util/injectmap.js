@@ -1,4 +1,4 @@
-// https://generator.jspm.io/#HY5LDsIwDES9YMVdYjVpi8QuV0lTAya/kliVegDODVGXM09PM98LwPUHVbyi/ORMKriaHPiXYzvhiBP4kiLncCYND46kmtupWoMDzsDrogIdu4v21osR3q1kVTevOrcDGtR3SCxix44H2CqJHGo5hJqdsTvwqb6sZDXOPTROW58gcadgoBUfSJCL8pEpSz+i0fwBaOJx7rkA
+// https://generator.jspm.io/#HY6xDsIwDEQ9sPEtsdq0RWLLr6SpAZM0KYlVqRMT/43V8e7e6e53Abh+oUowlJ+cyURfVw/h5dmNOOAIoayJczxVDw9OZJrfqTqLHU7Ay2wiHbtP7qbGAO9WsqlbMJq7Di32d/U+1fU4Ygcri7hByQ62SiKHmQ+h5ibUOnxqKAspOqlovG66RuLPgoVWQiRBLiYkpiz6qUf7B4xtrzjEAA
 
 const map = `
 {
@@ -8,6 +8,7 @@ const map = `
     "file-saver": "https://ga.jspm.io/npm:file-saver@2.0.5/dist/FileSaver.min.js",
     "idb-keyval": "https://ga.jspm.io/npm:idb-keyval@6.0.3/dist/index.js",
     "json-rpc-2.0": "https://ga.jspm.io/npm:json-rpc-2.0@0.2.19/dist/dev.index.js",
+    "jsqr": "https://ga.jspm.io/npm:jsqr@1.4.0/dist/jsQR.js",
     "mitt": "https://ga.jspm.io/npm:mitt@3.0.0/dist/mitt.mjs",
     "pretty-bytes": "https://ga.jspm.io/npm:pretty-bytes@5.6.0/index.js",
     "qrcode": "https://ga.jspm.io/npm:qrcode@1.5.0/lib/browser.js",
