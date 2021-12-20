@@ -1,6 +1,6 @@
 {
   "name": "rtc-engine",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "An abstraction layer on WebRTC API for messaging and file transaction",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "test": "karma start karma.conf.cjs",
-    "prepare": "eslint js/**/*.js && karma start karma.conf.cjs --single-run"
+    "prepare": "eslint js/**/*.js && karma start karma.conf.cjs --single-run && npm run build"
   },
   "author": "Quasar-Kim",
   "license": "MIT",
