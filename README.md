@@ -31,7 +31,7 @@ import RTCEngine from 'https://jspm.dev/rtc-engine'
 
 # 예시: 채널 사용하기
 ```javascript
-import RTCEngine from 'rtc-engine'
+import RTCEngine, { wait } from 'rtc-engine'
 
 // 0. 시그널러 설정하기
 // 시그널러는 연결을 형성할 때 메시지를 주고 받는 걸 도와주는 객체입니다.
@@ -41,6 +41,9 @@ const signaler = new Signaler()
 // 1. 엔진 객체 생성
 // 생성시 자동 연결
 const engine = new RTCEngine(signaler)
+
+// 연결될때까지 대기
+await wait(engine.connection).toBe('connected')
 
 // 2. 채널 열기
 // 상대방도 아래와 똑같은 코드를 실행하면 channel이 생성됨
