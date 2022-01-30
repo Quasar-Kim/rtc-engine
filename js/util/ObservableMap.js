@@ -39,4 +39,8 @@ export default class ObservableMap {
     const observableEntry = this.observableEntries.get(key)
     return new WaitEntry({ observableEntry })
   }
+
+  clear () {
+    this.observableEntries.clear()
+  }
 }

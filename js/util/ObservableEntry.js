@@ -70,6 +70,12 @@ function waitToBeChanged () {
 }
 
 export class WaitEntry {
+  /**
+   * @param {object} param
+   * @param {ObservableEntry} param.observableEntry
+   * @param {Function} param.unmatchedCallback
+   * @param {boolean} param.once
+   */
   constructor ({ observableEntry, unmatchedCallback = () => {}, once = true }) {
     this.promiseCallbacks = new Queue()
     this.resolved = false

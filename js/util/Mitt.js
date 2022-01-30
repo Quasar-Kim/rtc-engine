@@ -76,4 +76,22 @@ export default class Mitt {
         })
     }
   }
+
+  /**
+   * `on()` 메소드의 alias
+   * @param {string|symbol} type Type of event to listen for, or `'*'` for all events
+   * @param {Function} handler Function to call in response to given event
+   */
+  addEventListener (type, handler) {
+    return this.on(type, handler)
+  }
+
+  /**
+   * `off()` 메소드의 alias
+   * @param {string|symbol} type Type of event to unregister `handler` from, or `'*'`
+   * @param {Function} [handler] Handler function to remove
+   */
+  removeEventListener (type, handler) {
+    return this.off(type, handler)
+  }
 }

@@ -14,7 +14,13 @@ document.querySelector('#createTransactionBtn').addEventListener('click', async 
   await signaler.ready
 
   // 연결
-  const engine = new RTCEngine(signaler, { role: 'polite' })
+  let engine = new RTCEngine(signaler, { role: 'polite' })
+
+  // RTCEngine 메모리 릭 테스트
+  document.querySelector('#close').addEventListener('click', () => {
+    engine.close()
+    engine = null
+  })
 
   // 파일 입력 받기
   const fileInputElem = document.querySelector('#fileInput')
