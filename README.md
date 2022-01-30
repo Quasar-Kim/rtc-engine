@@ -1,10 +1,12 @@
-# RTCEngine v0.4
+# RTCEngine v0.5
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
 WebRTC를 이용한 __데이터 전송__ 을 위한 라이브러리입니다. 
 
 비디오와 오디오 전송을 주요 기능으로 하는 다른 라이브러리와 다르게 텍스트와 파일을 쉽게 전송하고 받을 수 있도록 하는걸 목표로 합니다.
+
+[라이브 데모](https://stackblitz.com/edit/js-5nfron?file=index.js)
 
 # 주의 사항
 최소 ES2021을 지원하는 브라우저에서만 작동합니다. 그렇지 않으면 transpiler를 사용해야 합니다.
@@ -24,18 +26,17 @@ npm install rtc-engine
 
 브라우저에서 바로 사용하고 싶다면:
 ```javascript
-// 파일이 로드될때 type="module"이어야 합니다
 import RTCEngine from 'https://jspm.dev/rtc-engine'
 ```
 
 # 예시: 채널 사용하기
-
 ```javascript
-// 아무 시그널러나 생성(구현은 자유...)
-// 또는 SocketSignaler를 사용할수도 있습니다(언젠가 내용 작성 예정)
-const signaler = new Signaler()
+import RTCEngine from 'rtc-engine'
 
-// 시그널러 설정...
+// 0. 시그널러 설정하기
+// 시그널러는 연결을 형성할 때 메시지를 주고 받는 걸 도와주는 객체입니다.
+// 아래 코드는 작동하지 않습니다. 실제로 작동하는 코드를 보려면 위의 라이브 데모 링크를 따라가세요.
+const signaler = new Signaler()
 
 // 1. 엔진 객체 생성
 // 생성시 자동 연결
@@ -47,6 +48,9 @@ const channel = await engine.channel('messaging')
 
 // 3. 메시지 보내기
 channel.send('hello RTCEngine!')
+
+// 4. 메시지 받기
+channel.on('message', msg => console.log(msg))
 ```
 
 # 예시: 파일 보내기
@@ -62,18 +66,22 @@ const transaction = await engine.readable('whatEverIdentifierYouWant')
 transaction.stream.pipeTo(destination)
 ```
 
-# exports
+# 시그널러
+사용 가능한 시그널러들:
+ - [Firebase signaler](https://github.com/Quasar-Kim/rtc-engine-signaler-firebase) - (데모 전용) Firebase Firestore를 이용한 시그널러. 실제 앱에 사용하지 마세요.
+ - [QR Signaler](https://github.com/Quasar-Kim/rtc-engine-signaler-qr) - QR코드를 이용한 시그널러. 오프라인 연결이 가능하지만 카메라를 필요로 하고 속도가 느립니다.
+ - [Socket Signaler](https://github.com/Quasar-Kim/rtc-engine-signaler-socket) - node.js 시그널링 서버와 socket.io를 이용하는 시그널러. 가장 속도가 빠릅니다.
+
+
+# API
+
+## exports
 
 ```javascript
-import RTCEngine, { wait, waitAll, observe, SignalerBase, SocketSignaler } from 'rtc-engine'
+import RTCEngine, { wait, waitAll, observe } from 'rtc-engine'
 ```
  - `default`: RTCEngine 객체
  - `wait`, `waitAll`, `observe`: ObservableClass 함수들
- - `SignalerBase`: 시그널러가 확장해야 하는 클래스
- - `QRSignaler`: QR코드를 이용한 시그널러
- - `SocketSignaler`
-
-# API
 
 ## RTCSocket
 
@@ -156,21 +164,4 @@ transaction.stop()
 
 ```javascript
 const transaction = await channel.send(file)
-```
-
-## QRSignaler
-QR코드를 이용한 시그널러. 카메라가 있는 두 기기를 시그널러가 시작된 후 서로 마주보게 놓으면 QR코드를 이용해 통신합니다.
-
-인터넷을 사용할 수 없을때 한 기기가 핫스팟을 실행하고 다른 기기가 그 네트워크에 연결한 후 QR 시그널러를 통해서 연결을 형성할 수 있습니다.
-
-예시 코드는 [라이브 데모](https://stackblitz.com/edit/js-uqdabg)를 참조하세요.
-
-```javascript
-import RTCEngine, { QRSignaler } from 'rtc-engine'
-
-const signaler = new QRSignaler(/* 적절한 옵션 */)
-const engine = new RTCEngine(signaler)
-
-const channel = await engine.channel('chat')
-console.log('채널 만들어짐')
 ```

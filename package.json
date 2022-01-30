@@ -6,7 +6,8 @@
     "type": "git",
     "url": "https://github.com/Quasar-Kim/rtc-engine"
   },
-  "browser": "js/index.js",
+  "main": "js/index.js",
+  "module": "js/index.js",
   "jsdelivr": "dist/RTCEngine.prod.js",
   "unpkg": "dist/RTCEngine.prod.js",
   "scripts": {
