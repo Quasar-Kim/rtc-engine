@@ -342,7 +342,7 @@ export default class RTCEngine extends ObservableClass {
 
   /**
    * 플러그인을 사용합니다.
-   * @param {function} plugin 플러그인 함수. 첫번째 인자로 RTCEngine 클래스가 전달됩니다. 플러그인 함수는 프로토타입을 통해 원하는 메소드를 추가할 수 있습니다.
+   * @param {Function} plugin 플러그인 함수. 첫번째 인자로 RTCEngine 클래스가 전달됩니다. 플러그인 함수는 프로토타입을 통해 원하는 메소드를 추가할 수 있습니다.
    */
   static plugin (plugin) {
     if (typeof plugin !== 'function') {
