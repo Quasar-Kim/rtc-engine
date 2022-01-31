@@ -1,6 +1,6 @@
 {
   "name": "rtc-engine",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "An abstraction layer on WebRTC API for messaging and file transaction",
   "repository": {
     "type": "git",
@@ -18,11 +18,6 @@
   "author": "Quasar-Kim",
   "license": "MIT",
   "devDependencies": {
-    "idb-keyval": "^6.0.3",
-    "json-rpc-2.0": "^0.2.19",
-    "jsqr": "^1.4.0",
-    "qrcode": "^1.5.0",
-    "socket.io-client": "^4.4.0",
     "@open-wc/karma-esm": "^4.0.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
@@ -34,7 +29,6 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
-    "fuite": "^1.4.0",
     "karma": "^6.3.9",
     "karma-chai": "^0.1.0",
     "karma-chai-spies": "^0.1.4",
