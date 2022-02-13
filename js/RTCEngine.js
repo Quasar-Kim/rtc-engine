@@ -331,6 +331,7 @@ export default class RTCEngine extends ObservableClass {
    * 이 메소드를 호출한 후 엔진은 garbage collect될 수 있게 됩니다.
    */
   close () {
+    // TODO: connection 속성 업데이트 위해 closed 이벤트 대기하고 pc를 치워야 함
     this.pc.close()
     this.pc = null
     this.dataChannels.clear()
