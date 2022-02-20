@@ -66,6 +66,7 @@ export default class RTCEngine extends ObservableClass {
     this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed
     this.listenerManager = new ListenerManager() // 이벤트 리스너들을 정리하기 위해서 사용
     this.signalManager = new SignalManager(signaler)
+    this.seed = Math.random() // role 배정을 위한 난수
 
     // 자동 연결
     if (this.options.autoConnect) {
@@ -78,31 +79,42 @@ export default class RTCEngine extends ObservableClass {
    * @returns {Promise<void>} 역할 배정이 끝나면 resolve되는 promise
    */
   assignRole () {
+    // role 설정 시나리오
+    // 1. 처음 연결할때: 서로 자신의 시드를 보내고 상대의 시드를 받아 각자의 role을 설정함.
+    // 2. 재연결 시 한쪽(B)이 새로고침 된 경우: B에서 시드를 보내면 A는 자신의 role을 초기화하고 자신의 시드를 보냄.
+    // 어떤 경우이든지 서로 시드를 교환하게 됨.
     return new Promise(resolve => {
-      const seed = Math.random()
+      const sendRoleSeed = () => {
+        this.signalManager.send({
+          type: 'role',
+          seed: this.seed
+        })
+      }
 
-      this.signalManager.send({
-        type: 'role',
-        seed
-      })
-
-      this.signalManager.receive('role', (msg, off) => {
+      this.signalManager.receive('role', msg => {
         const remoteSeed = msg.seed
-        if (remoteSeed > seed) {
-          this.polite = true
-        } else if (remoteSeed < seed) {
-          this.polite = false
-        } else {
-          this.signalManager.send({
-            type: 'role',
-            seed
-          })
-          return
+
+        // role이 설정되어 있는 경우
+        if (this.polite !== undefined) {
+          this.polite = undefined
+          sendRoleSeed()
         }
 
-        off()
-        resolve()
+        // role이 설정되어 있지 않은 경우
+        if (remoteSeed === this.seed) {
+          // 시드 충돌 발생시 자신의 시드를 바꿔서 전송
+          this.seed = Math.random()
+          sendRoleSeed()
+        } else if (remoteSeed > this.seed) {
+          this.polite = true
+          resolve()
+        } else {
+          this.polite = false
+          resolve()
+        }
       })
+
+      sendRoleSeed()
     })
   }
 
@@ -111,8 +123,15 @@ export default class RTCEngine extends ObservableClass {
    * 연결이 끊어질 경우 인터넷이 다시 연결될때까지 대기했다가 ice restart를 시도합니다. 이때 메시지가 성공적으로 교환된다면 연결이 다시 형성됩니다.
    */
   async start () {
+    // 1. 이벤트 핸들러 설치
     // 아래 내부 함수들은 모두 this로 RTCEngine 인스턴스에 접근할 수 있게 하기 위해
     // 모두 화살표 함수임
+
+    // role 메시지를 받은 경우
+    // role이 설정되어 있지 않으면: 양쪽 다 role이 설정되어 있지 않다는 걸 의미. 즉 둘다 재연결이 아닌 처음으로 연결하는 것.
+    //   이 경우 start() 호출 시 role 설정 메시지가 아래에서 보내질 것이므로 답장할 필요 없음.
+    // role이 설정되어 있는 경우: 둘 중 한쪽이 새로고침 된 경우 발생할 수 있음. 이 경우에는 답장을 보내서
+    //   role을 재설정해야 함
     const sendLocalDescription = async () => {
       try {
         this.makingOffer = true
@@ -201,15 +220,22 @@ export default class RTCEngine extends ObservableClass {
     this.pc.addEventListener('iceconnectionstatechange', logIceConnectionStateChange)
     this.pc.addEventListener('datachannel', saveDataChannelsToMap)
 
+    this.signalManager.receive('description', msg => setDescription(msg.description))
+    this.signalManager.receive('icecandidate', msg => setIceCandidate(msg.candidate))
+
+    // 2. 연결 시작
+    // 먼저 role 설정하기
+    if (this.polite === undefined) {
+      await this.assignRole()
+      debug('polite', this.polite)
+    }
+
     // 데이터 채널 만들면 연결 시작
     if (this.polite) {
       this.pc.createDataChannel('RTCEngine_initiator')
     }
 
-    this.signalManager.receive('description', msg => setDescription(msg.description))
-    this.signalManager.receive('icecandidate', msg => setIceCandidate(msg.candidate))
-
-    // 재연결 로직
+    // 3. 재연결
     // connection이 failed이고, 인터넷에 연결되어 있고, 시그널러가 준비되어 있을 때 ice restart를 시도함
     observe(this.connection).onChange(() => {
       if (this.connection.get() !== 'failed') return
@@ -239,11 +265,6 @@ export default class RTCEngine extends ObservableClass {
     if (this.connection.get() === 'failed') {
       this.restartIce()
     } else if (this.connection.get() === 'inactive') {
-      if (this.polite === undefined) {
-        await this.assignRole()
-        debug('polite', this.polite)
-      }
-
       this.start()
     }
 
