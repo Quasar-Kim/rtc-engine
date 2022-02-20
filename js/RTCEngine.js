@@ -13,7 +13,7 @@ import SignalManager from './SignalManager.js'
  */
 export default class RTCEngine extends ObservableClass {
   static get observableProps () {
-    return ['connection']
+    return ['connection', 'polite']
   }
 
   /**
@@ -91,7 +91,7 @@ export default class RTCEngine extends ObservableClass {
         const remoteSeed = msg.seed
 
         // role이 설정되어 있는 경우
-        if (this.polite !== undefined) {
+        if (this.polite.get() !== undefined) {
           this.polite = undefined
           sendRoleSeed()
         }
@@ -156,7 +156,7 @@ export default class RTCEngine extends ObservableClass {
       console.log('[RTCEngine]', 'description 받음', description)
       const makingOffer = this.makingOffer
       const offerCollision = description.type === 'offer' && (makingOffer || this.pc.signalingState !== 'stable')
-      this.ignoreOffer = !this.polite && offerCollision
+      this.ignoreOffer = !this.polite.get() && offerCollision
 
       if (offerCollision) {
         console.groupCollapsed('offer collision 발생함')
@@ -220,9 +220,9 @@ export default class RTCEngine extends ObservableClass {
 
     // 2. 연결 시작
     // 먼저 role 설정하기
-    if (this.polite === undefined) {
+    if (this.polite.get() === undefined) {
       await this.assignRole()
-      console.log('[RTCEngine]', 'polite', this.polite)
+      console.log('[RTCEngine]', 'polite', this.polite.get())
     }
 
     // 소켓 만들면 연결 시작
@@ -276,8 +276,10 @@ export default class RTCEngine extends ObservableClass {
    * @returns {Promise<RTCSocket>} RTCSocket이 만들어지면 그걸 resolve하는 promise
    */
   async socket (label) {
+    await wait(this.polite).toBeDefined()
+
     // polite가 채널을 만드는 이유는 없음. 그냥 정한거.
-    if (this.polite) {
+    if (this.polite.get()) {
       const dataChannel = this.pc.createDataChannel(label)
       const socket = new RTCSocket(dataChannel)
       await once(socket, '__received')

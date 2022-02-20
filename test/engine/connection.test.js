@@ -44,7 +44,7 @@ describe('connection', () => {
 
       engine.close()
 
-      expect(engine.polite).to.equal(true)
+      expect(engine.polite.get()).to.equal(true)
     })
 
     it('connect() 호출 시 role이 수동으로 설정되어 있다면 그걸 사용해야 함', function () {
@@ -54,7 +54,7 @@ describe('connection', () => {
       engine.close()
       spy.restore()
 
-      expect(engine.polite).to.equal(true)
+      expect(engine.polite.get()).to.equal(true)
       expect(spy.called).to.equal(false)
     })
     it('start() 호출 시 description과 ice candidate를 전송해야 함', function (done) {
