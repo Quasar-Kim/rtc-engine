@@ -6,6 +6,7 @@ import Channel from './Channel.js'
 import TransactionWriter from './TransactionWriter.js'
 import TransactionReader from './TransactionReader.js'
 import ListenerManager from './util/ListenerManager.js'
+import SignalManager from './SignalManager.js'
 
 function debug (...args) {
   if (window?.process?.env?.NODE_ENV === 'production') return
@@ -63,8 +64,8 @@ export default class RTCEngine extends ObservableClass {
     this.makingOffer = false // offer collision 방지를 위해 offer을 만드는 동안이면 기록
     this.ignoreOffer = false // offer collision 방지를 위해 role이나 signalingState등에 기반해 받은 offer을 받을지 결정
     this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed
-    this.signaler = signaler
     this.listenerManager = new ListenerManager() // 이벤트 리스너들을 정리하기 위해서 사용
+    this.signalManager = new SignalManager(signaler)
 
     // 자동 연결
     if (this.options.autoConnect) {
@@ -80,21 +81,19 @@ export default class RTCEngine extends ObservableClass {
     return new Promise(resolve => {
       const seed = Math.random()
 
-      this.signaler.send({
+      this.signalManager.send({
         type: 'role',
         seed
       })
 
-      this.signaler.on('message', (msg, off) => {
-        if (msg.type !== 'role') return
-
+      this.signalManager.receive('role', (msg, off) => {
         const remoteSeed = msg.seed
         if (remoteSeed > seed) {
           this.polite = true
         } else if (remoteSeed < seed) {
           this.polite = false
         } else {
-          this.signaler.send({
+          this.signalManager.send({
             type: 'role',
             seed
           })
@@ -119,7 +118,7 @@ export default class RTCEngine extends ObservableClass {
         this.makingOffer = true
         await this.pc.setLocalDescription()
         console.groupCollapsed('creating offer')
-        this.signaler.send({
+        this.signalManager.send({
           type: 'description',
           description: this.pc.localDescription
         })
@@ -131,7 +130,7 @@ export default class RTCEngine extends ObservableClass {
 
     const sendIceCandidate = rtcIceCandidate => {
       console.groupCollapsed('sending ice candidate')
-      this.signaler.send({
+      this.signalManager.send({
         type: 'icecandidate',
         candidate: rtcIceCandidate.candidate
       })
@@ -163,7 +162,7 @@ export default class RTCEngine extends ObservableClass {
       if (description.type === 'offer') {
         await this.pc.setLocalDescription()
         console.groupCollapsed('making answer')
-        this.signaler.send({
+        this.signalManager.send({
           type: 'description',
           description: this.pc.localDescription
         })
@@ -207,15 +206,8 @@ export default class RTCEngine extends ObservableClass {
       this.pc.createDataChannel('RTCEngine_initiator')
     }
 
-    // 메시지 라우팅
-    const routeMsg = msg => {
-      if (msg.type === 'description') {
-        setDescription(msg.description)
-      } else if (msg.type === 'icecandidate') {
-        setIceCandidate(msg.candidate)
-      }
-    }
-    this.listenerManager.add(this.signaler, 'message', routeMsg)
+    this.signalManager.receive('description', msg => setDescription(msg.description))
+    this.signalManager.receive('icecandidate', msg => setIceCandidate(msg.candidate))
 
     // 재연결 로직
     // connection이 failed이고, 인터넷에 연결되어 있고, 시그널러가 준비되어 있을 때 ice restart를 시도함
@@ -224,7 +216,7 @@ export default class RTCEngine extends ObservableClass {
 
       const reconnect = async () => {
         debug('시그널러 ready 대기중')
-        await this.signaler.ready
+        await this.signalManager.ready
         this.restartIce()
         debug('재연결 시도하는 중...')
       }
