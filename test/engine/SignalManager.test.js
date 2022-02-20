@@ -6,20 +6,20 @@ describe('SignalManager', function () {
     this.signaler = new MockSignaler()
   })
 
-  it('send(msg) 호출 시 시그널러를 통해 메시지를 보내야 함', function () {
+  it('send(msg) 호출 시 시그널러를 통해 메시지를 보내야 함', async function () {
     const signalManager = new SignalManager(this.signaler)
     const msg = {
       type: 'role',
       seed: 0.5
     }
-    signalManager.send(msg)
+    await signalManager.send(msg)
 
     expect(this.signaler.send.getCall(0).args[0]).to.deep.equal(msg)
   })
 
-  it('send(msg) 호출 시 메시지에 type 필드가 없으면 에러내야 함', function () {
+  it('send(msg) 호출 시 메시지에 type 필드가 없으면 에러내야 함', function (done) {
     const signalManager = new SignalManager(this.signaler)
-    expect(() => signalManager.send({ seed: 0.5 })).to.throw()
+    signalManager.send({ seed: 0.5 }).catch(() => done())
   })
 
   it('receive(type, callback) 호출 시 해당하는 타입의 메시지가 수신되었을 때 콜백을 호출해야 함', function (done) {

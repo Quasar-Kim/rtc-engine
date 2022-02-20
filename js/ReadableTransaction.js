@@ -1,12 +1,7 @@
 import Transaction from './Transaction.js'
 import once from './util/once.js'
 
-function debug (...args) {
-  if (window?.process?.env?.NODE_ENV === 'production') return
-  console.log('[TransactionReader]', ...args)
-}
-
-export default class TransactionReader extends Transaction {
+export default class ReadableTransaction extends Transaction {
   constructor (socket, metadata = { size: 0 }) {
     super(socket, metadata)
 
@@ -44,7 +39,7 @@ export default class TransactionReader extends Transaction {
 
   stop (reason = 'User canceled transaction') {
     this.socket.writeEvent('cancel', reason)
-    debug('cancel 요청함')
+    console.log('[ReadableTransaction] cancel 요청함')
   }
 
   pause () {

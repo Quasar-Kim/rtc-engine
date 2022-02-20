@@ -1,10 +1,5 @@
 import Mitt from './util/Mitt.js'
 
-function debug (...args) {
-  if (window?.process?.env?.NODE_ENV === 'production') return
-  console.log('[Channel]', ...args)
-}
-
 /**
  * 양방향 데이터 전송을 위한 인터페이스. RTCSocket을 이용해 데이터를 전송합니다.
  */
@@ -23,7 +18,7 @@ export default class Channel extends Mitt {
     this.label = this.socket.dataChannel.label
     this.filesSent = 0
 
-    debug(this.label, '생성됨')
+    console.log(`[Channel:${this.label}] 생성됨`)
 
     this.socket.on('__file-transaction', label => this.receiveTransaction(label))
   }

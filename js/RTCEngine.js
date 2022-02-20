@@ -3,15 +3,10 @@ import ObservableClass, { wait, observe } from './util/ObservableClass.js'
 import RTCSocket from './RTCSocket.js'
 import once from './util/once.js'
 import Channel from './Channel.js'
-import TransactionWriter from './TransactionWriter.js'
-import TransactionReader from './TransactionReader.js'
+import TransactionWriter from './WritableTransaction.js'
+import TransactionReader from './ReadableTransaction.js'
 import ListenerManager from './util/ListenerManager.js'
 import SignalManager from './SignalManager.js'
-
-function debug (...args) {
-  if (window?.process?.env?.NODE_ENV === 'production') return
-  console.log('[RTCEngine]', ...args)
-}
 
 /**
  * RTC 연결을 관리하는 엔진.
@@ -45,7 +40,7 @@ export default class RTCEngine extends ObservableClass {
       ...userOptions
     }
 
-    debug('사용할 옵션:', this.options)
+    console.log('[RTCEngine]', '사용할 옵션:', this.options)
 
     // role 설정
     // 만약 options.role이 설정되어 있지 않다면 assignRole()을 이용해 자동으로 role을 설정함
@@ -67,6 +62,7 @@ export default class RTCEngine extends ObservableClass {
     this.listenerManager = new ListenerManager() // 이벤트 리스너들을 정리하기 위해서 사용
     this.signalManager = new SignalManager(signaler)
     this.seed = Math.random() // role 배정을 위한 난수
+    this.closed = false
 
     // 자동 연결
     if (this.options.autoConnect) {
@@ -157,24 +153,24 @@ export default class RTCEngine extends ObservableClass {
     }
 
     const setDescription = async description => {
-      debug('receiving description', description)
+      console.log('[RTCEngine]', 'description 받음', description)
       const makingOffer = this.makingOffer
       const offerCollision = description.type === 'offer' && (makingOffer || this.pc.signalingState !== 'stable')
       this.ignoreOffer = !this.polite && offerCollision
 
       if (offerCollision) {
-        console.groupCollapsed('offer collision')
-        debug('was making offer', makingOffer)
-        debug('signaling state', this.pc.signalingState)
+        console.groupCollapsed('offer collision 발생함')
+        console.log('[RTCEngine]', 'makingOffer:', makingOffer)
+        console.log('[RTCEngine]', 'signaling state:', this.pc.signalingState)
       }
 
       if (this.ignoreOffer) {
-        debug('ignoring offer')
+        console.log('[RTCEngine]', '상대의 offer를 무시함')
         console.groupEnd()
         return
       }
 
-      debug('accepting description')
+      console.log('[RTCEngine]', '상대의 offer를 받음')
       console.groupEnd()
 
       await this.pc.setRemoteDescription(description)
@@ -191,18 +187,17 @@ export default class RTCEngine extends ObservableClass {
 
     const setIceCandidate = async candidate => {
       try {
-        debug('receiving candidate', candidate)
+        console.log('[RTCEngine]', 'ice candidate 받음', candidate)
         await this.pc.addIceCandidate(candidate)
       } catch (err) {
         if (!this.ignoreOffer) {
           throw err
         }
-        debug('ignoring candidate because ignoreOffer is set to true')
       }
     }
 
     const updateConnectionState = () => {
-      debug('connection state', this.pc.connectionState)
+      console.log('[RTCEngine]', 'connection state:', this.pc.connectionState)
       this.connection = this.pc.connectionState
     }
 
@@ -211,7 +206,7 @@ export default class RTCEngine extends ObservableClass {
     }
 
     const logIceConnectionStateChange = () => {
-      debug('ice connection state', this.pc.iceConnectionState)
+      console.log('[RTCEngine]', 'ice connection state:', this.pc.iceConnectionState)
     }
 
     this.listenerManager.add(this.pc, 'negotiationneeded', sendLocalDescription)
@@ -220,12 +215,6 @@ export default class RTCEngine extends ObservableClass {
     this.listenerManager.add(this.pc, 'iceconnectionstatechange', logIceConnectionStateChange)
     this.listenerManager.add(this.pc, 'datachannel', saveDataChannelsToMap)
 
-    // this.pc.addEventListener('negotiationneeded', sendLocalDescription)
-    // this.pc.addEventListener('icecandidate', sendIceCandidate)
-    // this.pc.addEventListener('connectionstatechange', updateConnectionState)
-    // this.pc.addEventListener('iceconnectionstatechange', logIceConnectionStateChange)
-    // this.pc.addEventListener('datachannel', saveDataChannelsToMap)
-
     this.signalManager.receive('description', msg => setDescription(msg.description))
     this.signalManager.receive('icecandidate', msg => setIceCandidate(msg.candidate))
 
@@ -233,13 +222,17 @@ export default class RTCEngine extends ObservableClass {
     // 먼저 role 설정하기
     if (this.polite === undefined) {
       await this.assignRole()
-      debug('polite', this.polite)
+      console.log('[RTCEngine]', 'polite', this.polite)
     }
 
-    // 데이터 채널 만들면 연결 시작
-    if (this.polite) {
-      this.pc.createDataChannel('RTCEngine_initiator')
-    }
+    // 소켓 만들면 연결 시작
+    this.socket('RTCEngine-internal').then(socket => {
+      // 연결이 닫히면 여기서 리소스 정리
+      socket.dataChannel.addEventListener('close', () => {
+        if (this.closed) return
+        this.close()
+      }, { once: true })
+    })
 
     // 3. 재연결
     // connection이 failed이고, 인터넷에 연결되어 있고, 시그널러가 준비되어 있을 때 ice restart를 시도함
@@ -247,16 +240,16 @@ export default class RTCEngine extends ObservableClass {
       if (this.connection.get() !== 'failed') return
 
       const reconnect = async () => {
-        debug('시그널러 ready 대기중')
+        console.log('[RTCEngine]', '시그널러 ready 대기중')
         await this.signalManager.ready
         this.restartIce()
-        debug('재연결 시도하는 중...')
+        console.log('[RTCEngine]', '재연결 시도하는 중...')
       }
 
       if (navigator.onLine || !this.options.waitOnlineOnReconnection) {
         reconnect()
       } else {
-        debug('오프라인 상태, 인터넷 연결 대기 중')
+        console.log('[RTCEngine]', '오프라인 상태, 인터넷 연결 대기 중')
         this.listenerManager.add(window, 'online', reconnect, { once: true })
       }
     })
@@ -342,7 +335,7 @@ export default class RTCEngine extends ObservableClass {
    */
   restartIce () {
     this.pc.restartIce()
-    debug('ICE 재시작됨')
+    console.log('[RTCEngine]', 'ICE 재시작됨')
   }
 
   /**
@@ -350,13 +343,13 @@ export default class RTCEngine extends ObservableClass {
    * 이 메소드를 호출한 후 엔진은 garbage collect될 수 있게 됩니다.
    */
   close () {
-    // TODO: connection 속성 업데이트 위해 closed 이벤트 대기하고 pc를 치워야 함
     this.pc.close()
     this.pc = null
-    this.dataChannels.clear()
     this.listenerManager.clear()
     this.signalManager.clear()
-    debug('RTC 연결 닫음')
+    this.dataChannels.clear()
+    this.closed = true
+    console.log('[RTCEngine]', '연결 닫힘')
   }
 
   /**

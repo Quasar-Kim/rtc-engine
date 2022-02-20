@@ -125,7 +125,8 @@ describe('connection', () => {
         seed: 1
       })
 
-      // 테스트 환경에서는 모든 작업이 synchronous하기 때문에 대기할 필요 없음
+      // 한 task 대기
+      await new Promise(resolve => setTimeout(resolve))
 
       peer1.close()
       peer2.close()

@@ -62,4 +62,29 @@ describe('RTCEngine', function () {
     })
     this.instanceA.eventChannel.sendEvent('send-message', 'hello from instance A')
   })
+
+  it('닫기', function (done) {
+    let aClosed = false
+    let bClosed = false
+
+    this.instanceA.page.on('console', msg => {
+      if (!msg.text().includes('연결 닫힘')) return
+      aClosed = true
+
+      if (aClosed && bClosed) {
+        done()
+      }
+    })
+
+    this.instanceB.page.on('console', msg => {
+      if (!msg.text().includes('연결 닫힘')) return
+      bClosed = true
+
+      if (aClosed && bClosed) {
+        done()
+      }
+    })
+
+    this.instanceA.eventChannel.sendEvent('close')
+  })
 })

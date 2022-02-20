@@ -8,13 +8,17 @@
   },
   "main": "js/index.js",
   "module": "js/index.js",
-  "jsdelivr": "dist/RTCEngine.prod.js",
-  "unpkg": "dist/RTCEngine.prod.js",
+  "exports": {
+    ".": "./js/RTCEngine.js",
+    "./util": "./js/util/index.js"
+  },
+  "jsdelivr": "dist/RTCEngine.min.js",
+  "unpkg": "dist/RTCEngine.min.js",
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "test:unit": "karma start karma.conf.cjs",
     "test:e2e": "mocha test/e2e/backend/*.test.mjs",
-    "prepare": "eslint js/**/*.js && karma start karma.conf.cjs --single-run && npm run build"
+    "prepare": "eslint js/**/*.js && karma start karma.conf.cjs --single-run && mocha test/e2e/backend/*.test.mjs --exit && npm run build"
   },
   "author": "Quasar-Kim",
   "license": "MIT",
@@ -32,6 +36,7 @@
     "eslint-plugin-promise": "^5.2.0",
     "karma": "^6.3.9",
     "karma-chai": "^0.1.0",
+    "karma-chai-as-promised": "^0.1.2",
     "karma-chai-spies": "^0.1.4",
     "karma-chrome-launcher": "^3.1.0",
     "karma-mocha": "^2.0.1",

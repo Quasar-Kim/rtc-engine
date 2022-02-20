@@ -23,6 +23,10 @@ async function main () {
   // 채널 제어
   channel.on('message', msg => window.eventChannel.sendEvent('channel-message', msg))
   window.eventChannel.on('send-message', msg => channel.send(msg))
+
+  // close -> 닫기
+  await once(window.eventChannel, 'close')
+  engine.close()
 }
 
 main()

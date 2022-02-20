@@ -3,11 +3,6 @@ import ChunkProducer from './ChunkProducer.js'
 import { wait } from './util/ObservableClass.js'
 import once from './util/once.js'
 
-function debug (...args) {
-  if (window?.process?.env?.NODE_ENV === 'production') return
-  console.log('[TransactionWriter]', ...args)
-}
-
 // 한번에 큰 arraybuffer를 전송시에도 채널이 터질 수 있음
 // 따라서 데이터를 청크로 끊어서 보내야 함
 const CHUNK_SIZE = 200 * 1024 // 200KB
@@ -25,7 +20,7 @@ source -> chunkingStream -> writable --- socket --- readable -> destination
  - 일시정지(readable): readable에서 'pause', 'resume' 이벤트 발생 -> writable에서 받아서 흐름 조절
 */
 
-export default class TransactionWriter extends Transaction {
+export default class WritableTransaction extends Transaction {
   /**
      *
      * @param {RTCSocket} socket
@@ -64,7 +59,7 @@ export default class TransactionWriter extends Transaction {
         // 여기는 위 write가 완료되어야 호출되므로 일단 모든 메시지가 데이터 채널의 버퍼로 들어간 상태
         // 데이터 채널의 버퍼가 비면 닫기(close() 시 버퍼에 있는 메시지는 전송될지 확신할 수 없음)
         if (socket.dataChannel.bufferedAmount > 0) {
-          debug('소켓 닫기 대기중')
+          console.log(`[Transaction:${this.label}] 소켓이 닫히기를 기다리는 중`)
           socket.dataChannel.bufferedAmountLowThreshold = 0
           await once(socket.dataChannel, 'bufferedamountlow')
         }
@@ -89,7 +84,7 @@ export default class TransactionWriter extends Transaction {
         }
 
         this.paused = true
-        debug('abort됨')
+        console.log(`[Transaction:${this.label}] Abort 됨`)
       }
     })
 

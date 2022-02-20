@@ -1,4 +1,4 @@
-import ReadableTransaction from '../../js/TransactionReader.js'
+import ReadableTransaction from '../../js/ReadableTransaction.js'
 import MockRTCSocket from '../test-util/MockRTCSocket.js'
 import { wait } from '../../js/util/ObservableClass.js'
 

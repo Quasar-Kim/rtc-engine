@@ -1,4 +1,4 @@
-import WritableTransaction from '../../js/TransactionWriter.js'
+import WritableTransaction from '../../js/WritableTransaction.js'
 import MockRTCSocket from '../test-util/MockRTCSocket.js'
 import { wait } from '../../js/util/ObservableClass.js'
 

@@ -27,11 +27,12 @@ export default class SignalManager extends Mitt {
     this.signaler.on('message', this.messageHandler)
   }
 
-  send (msg) {
+  async send (msg) {
     if (!('type' in msg)) {
       throw new Error('전송할 메시지가 "type" 필드를 포함하지 않습니다.')
     }
 
+    await this.signaler.ready
     this.signaler.send(msg)
   }
 
