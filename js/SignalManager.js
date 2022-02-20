@@ -6,8 +6,7 @@ export default class SignalManager extends Mitt {
     super()
     this.signaler = signaler
     this.unhandledMsgs = new Map()
-
-    this.signaler.on('message', msg => {
+    this.messageHandler = msg => {
       // TODO: 에러 던지기
 
       // 이벤트 헨들러가 없다면 메시지 unhandledMsgs에 추가하기
@@ -24,7 +23,8 @@ export default class SignalManager extends Mitt {
         const msgQueue = this.unhandledMsgs.get(msg.type)
         msgQueue.push(msg)
       }
-    })
+    }
+    this.signaler.on('message', this.messageHandler)
   }
 
   send (msg) {
@@ -51,5 +51,10 @@ export default class SignalManager extends Mitt {
 
   get ready () {
     return this.signaler.ready
+  }
+
+  clear () {
+    this.all.clear()
+    this.signaler.off('message', this.messageHandler)
   }
 }

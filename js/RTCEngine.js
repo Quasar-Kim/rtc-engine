@@ -214,11 +214,17 @@ export default class RTCEngine extends ObservableClass {
       debug('ice connection state', this.pc.iceConnectionState)
     }
 
-    this.pc.addEventListener('negotiationneeded', sendLocalDescription)
-    this.pc.addEventListener('icecandidate', sendIceCandidate)
-    this.pc.addEventListener('connectionstatechange', updateConnectionState)
-    this.pc.addEventListener('iceconnectionstatechange', logIceConnectionStateChange)
-    this.pc.addEventListener('datachannel', saveDataChannelsToMap)
+    this.listenerManager.add(this.pc, 'negotiationneeded', sendLocalDescription)
+    this.listenerManager.add(this.pc, 'icecandidate', sendIceCandidate)
+    this.listenerManager.add(this.pc, 'connectionstatechange', updateConnectionState)
+    this.listenerManager.add(this.pc, 'iceconnectionstatechange', logIceConnectionStateChange)
+    this.listenerManager.add(this.pc, 'datachannel', saveDataChannelsToMap)
+
+    // this.pc.addEventListener('negotiationneeded', sendLocalDescription)
+    // this.pc.addEventListener('icecandidate', sendIceCandidate)
+    // this.pc.addEventListener('connectionstatechange', updateConnectionState)
+    // this.pc.addEventListener('iceconnectionstatechange', logIceConnectionStateChange)
+    // this.pc.addEventListener('datachannel', saveDataChannelsToMap)
 
     this.signalManager.receive('description', msg => setDescription(msg.description))
     this.signalManager.receive('icecandidate', msg => setIceCandidate(msg.candidate))
@@ -349,6 +355,7 @@ export default class RTCEngine extends ObservableClass {
     this.pc = null
     this.dataChannels.clear()
     this.listenerManager.clear()
+    this.signalManager.clear()
     debug('RTC 연결 닫음')
   }
 

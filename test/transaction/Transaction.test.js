@@ -12,7 +12,7 @@ async function fakeSending () {
   }
 }
 
-describe('Transaction', function () {
+xdescribe('Transaction', function () {
   this.timeout(5000)
 
   beforeEach(function () {

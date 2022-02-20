@@ -113,6 +113,29 @@ describe('connection', () => {
       peer2.close()
     })
 
+    it('role 메시지 수신 시 자신의 role이 정해졌는지와 상관없이 role을 재설정해야 함', async function () {
+      const peer1 = new RTCEngine(this.signaler1)
+      const peer2 = new RTCEngine(this.signaler2)
+      await wait(peer1.connection).toBe('connected')
+
+      // peer1에 role 재설정 요구
+      peer2.polite = undefined
+      this.signaler1.emit('message', {
+        type: 'role',
+        seed: 1
+      })
+
+      // 테스트 환경에서는 모든 작업이 synchronous하기 때문에 대기할 필요 없음
+
+      peer1.close()
+      peer2.close()
+
+      // eslint-disable-next-line no-unused-expressions
+      expect(peer1.polite).not.to.be.undefined
+      // eslint-disable-next-line no-unused-expressions
+      expect(peer2.polite).not.to.be.undefined
+    })
+
     describe('connectionState가 failed가 되면', () => {
       it('waitOnlineOnReconnection === false면 바로 재연결을 시도함', async function () {
         const peer1 = new RTCEngine(this.signaler1, { waitOnlineOnReconnection: false })

@@ -17,7 +17,9 @@ module.exports = function (config) {
     ],
 
     // list of files / patterns to exclude
-    exclude: [],
+    exclude: [
+      'test/e2e/**/*.test.js' // 서버가 켜져 있어야 정상 작동하므로 테스트 대상에서 제외
+    ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor

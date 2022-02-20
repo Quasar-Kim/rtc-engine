@@ -12,7 +12,8 @@
   "unpkg": "dist/RTCEngine.prod.js",
   "scripts": {
     "build": "rollup --config rollup.config.js",
-    "test": "karma start karma.conf.cjs",
+    "test:unit": "karma start karma.conf.cjs",
+    "test:e2e": "mocha test/e2e/backend/*.test.mjs",
     "prepare": "eslint js/**/*.js && karma start karma.conf.cjs --single-run && npm run build"
   },
   "author": "Quasar-Kim",
@@ -22,7 +23,7 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
-    "chai": "^4.3.4",
+    "chai": "^4.3.6",
     "chai-spies": "^1.0.0",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
@@ -36,8 +37,11 @@
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "mocha": "^9.1.3",
+    "puppeteer": "^13.3.1",
     "rollup": "^2.60.1",
     "rollup-plugin-terser": "^7.0.2",
+    "serve": "^13.0.2",
+    "serve-handler": "^6.1.3",
     "sinon": "^12.0.1",
     "terser": "^5.10.0"
   }
