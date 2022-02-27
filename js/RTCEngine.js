@@ -7,6 +7,9 @@ import TransactionWriter from './WritableTransaction.js'
 import TransactionReader from './ReadableTransaction.js'
 import ListenerManager from './util/ListenerManager.js'
 import SignalManager from './SignalManager.js'
+import ObservableQueue from './util/ObservableQueue.js'
+
+const UNNEGOTIATED_SOCKET_LABEL = 'RTCEngine-unnegotiated-socket'
 
 /**
  * RTC 연결을 관리하는 엔진.
@@ -43,25 +46,73 @@ export default class RTCEngine extends ObservableClass {
     console.log('[RTCEngine]', '사용할 옵션:', this.options)
 
     // role 설정
-    // 만약 options.role이 설정되어 있지 않다면 assignRole()을 이용해 자동으로 role을 설정함
+    // 만약 options.role이 설정되어 있지 않다면 나중에 start() 호출 시 assignRole()을 이용해 자동으로 role을 설정함
     if (this.options.role) {
       if (!['polite', 'impolite'].includes(this.options.role)) {
         throw new Error(`config.role이 잘못 설정되었습니다. 현재 설정은 '${this.options.role}'입니다. 올바른 값은 'polite' 또는 'impolite'입니다.`)
       }
-      this.polite = this.options.role === 'polite'
     }
 
     // 내부 property 설정
+
+    /**
+     * perfect negotiation pattern에서 사용하는 role
+     */
+    this.polite = this.options.role ? this.options.role === 'polite' : undefined
+
+    /**
+     * 피어 커넥션 객체
+     */
     this.pc = new RTCPeerConnection({
       iceServers: this.options.iceServers
     })
-    this.dataChannels = new ObservableMap()
-    this.makingOffer = false // offer collision 방지를 위해 offer을 만드는 동안이면 기록
-    this.ignoreOffer = false // offer collision 방지를 위해 role이나 signalingState등에 기반해 받은 offer을 받을지 결정
-    this.connection = 'inactive' // 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함. inactive / connecting / connected / disconnected / failed
-    this.listenerManager = new ListenerManager() // 이벤트 리스너들을 정리하기 위해서 사용
+
+    /**
+     * 상대방이 socket()을 레이블과 함께 호출한 결과 이쪽에서 받은 데이터 채널들.
+     * 키: 레이블
+     * 값: 소켓이 사용할 데이터 채널(RTCDataChannel)
+     */
+    this.negotiatedDataChannels = new ObservableMap()
+
+    /**
+     * 상대방이 socket()을 레이블 없이 호출한 결과 이쪽에서 받은 데이터 채널들.
+     */
+    this.unnegotiatedDataChannels = new ObservableQueue()
+
+    /**
+     * offer collision 방지를 위해 offer을 만드는 동안이면 기록
+     */
+    this.makingOffer = false
+
+    /**
+     * offer collision 방지를 위해 role이나 signalingState등에 기반해 받은 offer을 받을지 결정
+     */
+    this.ignoreOffer = false
+
+    /**
+     * 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함.
+     * (inactive / connecting / connected / disconnected / failed)
+     */
+    this.connection = 'inactive'
+
+    /**
+     * 외부 API에 건 이벤트 리스너들을 관리하는 객체
+     */
+    this.listenerManager = new ListenerManager()
+
+    /**
+     * 시그널러와 상호작용하는데 사용하는 객체
+     */
     this.signalManager = new SignalManager(signaler)
-    this.seed = Math.random() // role 배정을 위한 난수
+
+    /**
+     * role 배정을 위한 난수
+     */
+    this.seed = Math.random()
+
+    /**
+     * 연결이 닫혔는지 나타내는 속성
+     */
     this.closed = false
 
     // 자동 연결
@@ -72,6 +123,7 @@ export default class RTCEngine extends ObservableClass {
 
   /**
    * 무작위로 두 피어의 역할을 정합니다. 여기서 역할은 Perfect Negotiation Pattern에서 사옹되는 polite/impolite 피어를 의미합니다.
+   * @private
    * @returns {Promise<void>} 역할 배정이 끝나면 resolve되는 promise
    */
   assignRole () {
@@ -201,8 +253,12 @@ export default class RTCEngine extends ObservableClass {
       this.connection = this.pc.connectionState
     }
 
-    const saveDataChannelsToMap = ({ channel }) => {
-      this.dataChannels.set(channel.label, channel)
+    const saveDataChannels = ({ channel: dataChannel }) => {
+      if (dataChannel.label === UNNEGOTIATED_SOCKET_LABEL) {
+        this.unnegotiatedDataChannels.push(dataChannel)
+      } else {
+        this.negotiatedDataChannels.set(dataChannel.label, dataChannel)
+      }
     }
 
     const logIceConnectionStateChange = () => {
@@ -213,7 +269,7 @@ export default class RTCEngine extends ObservableClass {
     this.listenerManager.add(this.pc, 'icecandidate', sendIceCandidate)
     this.listenerManager.add(this.pc, 'connectionstatechange', updateConnectionState)
     this.listenerManager.add(this.pc, 'iceconnectionstatechange', logIceConnectionStateChange)
-    this.listenerManager.add(this.pc, 'datachannel', saveDataChannelsToMap)
+    this.listenerManager.add(this.pc, 'datachannel', saveDataChannels)
 
     this.signalManager.receive('description', msg => setDescription(msg.description))
     this.signalManager.receive('icecandidate', msg => setIceCandidate(msg.candidate))
@@ -284,12 +340,51 @@ export default class RTCEngine extends ObservableClass {
 
   /**
    * 양쪽 피어에서 사용 가능한 RTCSocket을 엽니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 RTCSocket이 만들어집니다.
-   * @param {string} label 소켓을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
+   * @param {string|undefined} [label] 소켓을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
    * @returns {Promise<RTCSocket>} RTCSocket이 만들어지면 그걸 resolve하는 promise
    */
-  async socket (label) {
+  async socket (label = undefined) {
     await wait(this.polite).toBeDefined()
 
+    // 레이블이 있으면 negotiated socket 생성
+    if (typeof label === 'string') {
+      return this.createNegotiatedSocket(label)
+    }
+
+    // label이 없으면 unnegotiated socket 생성
+    return this.createUnnegotiatedSocket()
+  }
+
+  /**
+   * 레이블 없이 동적으로 소켓을 생성합니다.
+   * @private
+   * @returns {Promise<RTCSocket>}
+   */
+  async createUnnegotiatedSocket () {
+    const dataChannel = this.pc.createDataChannel(UNNEGOTIATED_SOCKET_LABEL)
+    const socket = new RTCSocket(dataChannel)
+    await once(socket, '__received')
+    return socket
+  }
+
+  /**
+   * 상대가 레이블 없이 생성한 소켓(unnegotiated socket)을 받아서 내보내는 async generator
+   * @yields {Promise<RTCSocket>}
+   */
+  async * sockets () {
+    for await (const dataChannel of this.unnegotiatedDataChannels.pushes()) {
+      const socket = new RTCSocket(dataChannel, { received: true })
+      yield socket
+    }
+  }
+
+  /**
+   * 레이블로 식별되는 소켓을 생성합니다.
+   * @private
+   * @param {string} label 소켓을 식별하기 위한 식별자
+   * @returns {Promise<RTCSocket>}
+   */
+  async createNegotiatedSocket (label) {
     // polite가 채널을 만드는 이유는 없음. 그냥 정한거.
     if (this.polite.get()) {
       const dataChannel = this.pc.createDataChannel(label)
@@ -298,11 +393,12 @@ export default class RTCEngine extends ObservableClass {
       return socket
     } else {
       let dataChannel
-      if (this.dataChannels.has(label)) {
-        dataChannel = this.dataChannels.get(label)
+      if (this.negotiatedDataChannels.has(label)) {
+        dataChannel = this.negotiatedDataChannels.get(label)
       } else {
-        // start() 안에서 pc의 'datachannel' 이벤트 발생시 this.dataChannels에 레이블을 키로 RTCDataChannel을 넣음
-        dataChannel = await this.dataChannels.wait(label).toBeDefined()
+        // start() 안에서 pc의 'datachannel' 이벤트 발생시 this.dataChannels에 레이블을 키로 RTCDataChannel을 넣어줌
+        // 그러면 아래 promise가 resolve됨
+        dataChannel = await this.negotiatedDataChannels.wait(label).toBeDefined()
       }
 
       return new RTCSocket(dataChannel, { received: true })
@@ -360,7 +456,7 @@ export default class RTCEngine extends ObservableClass {
     this.pc.close()
     this.pc = null
     this.listenerManager.clear()
-    this.dataChannels.clear()
+    this.negotiatedDataChannels.clear()
     this.closed = true
     console.log('[RTCEngine]', '연결 닫힘')
 

@@ -80,6 +80,41 @@ describe('connection', () => {
     })
   })
 
+  describe('소켓 생성', function () {
+    beforeEach(async function () {
+      this.engine = createEngine(this.signaler1)
+      this.engine2 = createEngine(this.signaler2)
+
+      await wait(this.engine.connection).toBe('connected')
+    })
+
+    it('같은 레이블로 socket() 호출 시 소켓 생성', function (done) {
+      let callCount = 0
+      const callback = () => {
+        callCount++
+        if (callCount === 2) {
+          done()
+        }
+      }
+
+      this.engine.socket('my-socket').then(callback)
+      this.engine2.socket('my-socket').then(callback)
+    })
+
+    it('레이블 없이 socket() 호출 시 sockets() 제네레이터로 소켓을 받으면 소켓 생성', function (done) {
+      let callCount = 0
+      const callback = () => {
+        callCount++
+        if (callCount === 2) {
+          done()
+        }
+      }
+
+      this.engine2.socket().then(callback)
+      this.engine.sockets().next().then(callback)
+    })
+  })
+
   describe('재연결 할 때', () => {
     it('connect() 호출 시 ice restart를 시작해야 함', async function () {
       const peer1 = createEngine(this.signaler1)
