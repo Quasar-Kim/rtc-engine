@@ -10,7 +10,8 @@
   "module": "js/index.js",
   "exports": {
     ".": "./js/RTCEngine.js",
-    "./util": "./js/util/index.js"
+    "./util": "./js/util/index.js",
+    "./signaler-base": "./js/signaler/Base.js"
   },
   "jsdelivr": "dist/RTCEngine.min.js",
   "unpkg": "dist/RTCEngine.min.js",
