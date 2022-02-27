@@ -21,6 +21,7 @@ async function createInstance (browser) {
 
 describe('RTCEngine', function () {
   before(async function () {
+    this.timeout(10000)
     // 서버 시작
     const server = http.createServer((req, res) => handler(req, res))
     await new Promise(resolve => server.listen(8000, resolve))
