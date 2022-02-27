@@ -53,11 +53,6 @@ describe('SignalManager', function () {
   })
 
   it('ready 속성에 접근 시 시그널러의 ready 속성을 돌려줘야 함', function () {
-    // 덮어쓰기 전에는 promise가 ready에 접근할때마다 매번 새로 생성됨
-    Object.defineProperty(this.signaler, 'ready', {
-      value: Promise.resolve()
-    })
-
     const signalManager = new SignalManager(this.signaler)
     expect(signalManager.ready).to.equal(this.signaler.ready)
   })

@@ -1,8 +1,8 @@
 import Queue from './Queue.js'
 
 export class ObservableEntry {
-  constructor () {
-    this.val = undefined
+  constructor (val) {
+    this.val = val
     this.conditions = new Set()
     this.callbacks = new Map()
   }
@@ -101,7 +101,7 @@ export class WaitEntry {
     //   callback(newVal);
     // }
     for (const callback of this.promiseCallbacks) {
-      callback(newVal)
+      callback(newVal, this.cancel)
     }
 
     if (this.once) {
@@ -144,5 +144,12 @@ export class WaitEntry {
 
   toBeChanged () {
     return this.toFulfill(waitToBeChanged, false)
+  }
+
+  /**
+   * @deprecated
+   */
+  onChange (callback) {
+    this.toBeChanged().then(callback)
   }
 }

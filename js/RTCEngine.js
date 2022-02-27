@@ -219,6 +219,14 @@ export default class RTCEngine extends ObservableClass {
     this.signalManager.receive('icecandidate', msg => setIceCandidate(msg.candidate))
 
     // 2. 연결 시작
+    // 시그널러 start() 훅 호출
+    await this.signalManager.callHook('start')
+
+    // 시그널러 훅 예약
+    observe(this.connection).toBe('connected').then(() => this.signalManager.callHook('connected'))
+    observe(this.connection).toBe('disconnected').then(() => this.signalManager.callHook('disconnected'))
+    observe(this.connection).toBe('failed').then(() => this.signalManager.callHook('failed'))
+
     // 먼저 role 설정하기
     if (this.polite.get() === undefined) {
       await this.assignRole()
@@ -241,7 +249,11 @@ export default class RTCEngine extends ObservableClass {
 
       const reconnect = async () => {
         console.log('[RTCEngine]', '시그널러 ready 대기중')
-        await this.signalManager.ready
+        await wait(this.signalManager.ready).toBe(true)
+
+        // wait하는 중 close()가 호출되었을수도 있음
+        if (this.closed) return
+
         this.restartIce()
         console.log('[RTCEngine]', '재연결 시도하는 중...')
       }
@@ -348,10 +360,15 @@ export default class RTCEngine extends ObservableClass {
     this.pc.close()
     this.pc = null
     this.listenerManager.clear()
-    this.signalManager.clear()
     this.dataChannels.clear()
     this.closed = true
     console.log('[RTCEngine]', '연결 닫힘')
+
+    try {
+      this.signalManager.callHook('close')
+    } finally {
+      this.signalManager.clear()
+    }
   }
 
   /**

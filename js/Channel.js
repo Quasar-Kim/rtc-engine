@@ -25,6 +25,7 @@ export default class Channel extends Mitt {
 
   /**
    * 상대가 파일을 보내기 위해 트렌젝션을 만들었을때 파일을 받기 위한 트렌젝션을 생성하고 `transaction` 이벤트로 알립니다.
+   * @deprecated
    * @param {string} label 트렌젝션의 식별자
    */
   async receiveTransaction (label) {
@@ -35,6 +36,7 @@ export default class Channel extends Mitt {
   /**
    * 채널을 통해서 데이터를 전송합니다. `File` 데이터를 받으면 새로운 트렌젝션을 만들고 그걸 통해 파일의 데이터를 전송합니다.
    * 받는쪽에서는 `transaction` 이벤트를 통해 파일을 받을 수 있습니다.
+   * @deprecated
    * @param {*} data 전송할 데이터. `JSON.stringify()`로 JSON 문자열로 바꿀 수 있거나 `ArrayBuffer`의 타입은 그냥 전송하고, `File`인 경우 새로운 트렌젝션을 만듭니다.
    * @returns {Promise<Transaction|void>} 파일 전송을 위한 트렌젝션 또는 데이터가 성공적으로 전송되면 resolve하는 promise
    */

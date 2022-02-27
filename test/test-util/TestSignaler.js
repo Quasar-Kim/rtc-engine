@@ -1,17 +1,14 @@
-import Mitt from '../../js/util/Mitt.js'
 import Queue from '../../js/util/Queue.js'
+import SignalerBase from '../../js/signaler/Base.js'
 
-export default class TestSignaler extends Mitt {
+export default class TestSignaler extends SignalerBase {
   constructor () {
     super()
 
     this.queue = new Queue()
     this.listening = false
     this.sendTo = undefined
-  }
-
-  get ready () {
-    return Promise.resolve()
+    this.ready.set(true)
   }
 
   on (evt, callback) {

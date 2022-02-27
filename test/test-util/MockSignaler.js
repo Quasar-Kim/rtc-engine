@@ -5,5 +5,6 @@ export default class MockSignaler extends SignalerBase {
   constructor () {
     super()
     this.send = sinon.spy()
+    this.ready.set(true)
   }
 }

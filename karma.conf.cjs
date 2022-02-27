@@ -13,6 +13,7 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
+      { pattern: 'test/test-util/hooks.js', type: 'module' }, // 글로벌 훅
       { pattern: 'test/**/*.test.js', type: 'module' }
     ],
 

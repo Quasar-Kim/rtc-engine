@@ -5,28 +5,8 @@ export function wait (observableEntry) {
   return new WaitEntry({ observableEntry })
 }
 
-// TODO: observe에도 condition 쓸 수 있도록 - observe(prop).toBe('connected')같이
 export function observe (observableEntry) {
-  return {
-    onChange (callback) {
-      let canceled = false
-      const waitEntry = new WaitEntry({ observableEntry, once: false })
-
-      const cancel = () => {
-        canceled = true
-      }
-
-      const callCallback = newVal => {
-        callback(newVal, cancel)
-
-        if (canceled) {
-          waitEntry.cancel()
-        }
-      }
-
-      waitEntry.toBeChanged().then(callCallback)
-    }
-  }
+  return new WaitEntry({ observableEntry, once: false })
 }
 
 export function waitAll (waitEntriesFn) {

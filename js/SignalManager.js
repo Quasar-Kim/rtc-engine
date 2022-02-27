@@ -1,5 +1,6 @@
 import Mitt from './util/Mitt.js'
 import Queue from './util/Queue.js'
+import { wait } from './util/ObservableClass.js'
 
 export default class SignalManager extends Mitt {
   constructor (signaler) {
@@ -32,7 +33,7 @@ export default class SignalManager extends Mitt {
       throw new Error('전송할 메시지가 "type" 필드를 포함하지 않습니다.')
     }
 
-    await this.signaler.ready
+    await wait(this.signaler.ready).toBe(true)
     this.signaler.send(msg)
   }
 
@@ -48,6 +49,15 @@ export default class SignalManager extends Mitt {
         this.emit(type, msg)
       }
     }
+  }
+
+  callHook (hookName) {
+    const hookFn = this.signaler[hookName]
+
+    // 훅이 정의되지 않았을수도 있으므로 확인
+    if (typeof hookFn !== 'function') return
+
+    hookFn.apply(hookFn, [this])
   }
 
   get ready () {
