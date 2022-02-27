@@ -57,7 +57,7 @@ export default class SignalManager extends Mitt {
     // 훅이 정의되지 않았을수도 있으므로 확인
     if (typeof hookFn !== 'function') return
 
-    await hookFn.apply(hookFn, [this])
+    await hookFn.apply(this.signaler, [this])
   }
 
   get ready () {
