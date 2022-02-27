@@ -10,6 +10,8 @@ class PuppeteerSignaler extends SignalerBase {
       console.log('[signaler] received:', payload)
       this.emit('message', payload)
     })
+
+    this.ready.set(true)
   }
 
   send (data) {
