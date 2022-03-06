@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTCEngine demo - connection</title>
+  <link rel="stylesheet" href="./demo.css">
+  <style>
+    section#iceServers input {
+      margin: 0 0 10px;
+      width: 260px;
+    }
+
+    section#iceServers label {
+      display: inline-block;
+      width: 150px;
+    }
+
+    section#configs label {
+      display: inline-block;
+      width: 200px;
+    }
+
+    select {
+      font-size: 1em;
+      padding: 5px;
+      width: 420px;
+    }
+
+    section#connection span {
+      display: block;
+      width: 200px;
+    }
+
+    .log, pre#configText {
+      width: 100%;
+      height: 200px;
+      overflow: auto;
+      background: lightgray;
+    }
+
+    .log pre {
+      white-space: pre-wrap;
+      padding: 0.5em;
+      margin-bottom: 0;
+      border-bottom: 0.5px solid gray;
+    }
+
+    .log .outgoing-msg {
+      background: lightgreen;
+    }
+
+    .log .incoming-msg {
+      background: lightpink;
+    }
+
+    .log details {
+      cursor: pointer;
+    }
+
+    .log details > summary::marker {
+      font-size: 0; /* summary 마커 숨기기 */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+
+    <!-- page info -->
+    <h1>RTCEngine Connectivity Demo</h1>
+    <p>
+      version: development(unstable)
+    </p>
+
+    <section>
+      <p>
+        여기서 RTCEngine의 연결 기능을 테스트해볼 수 있습니다.
+        이 페이지를 두개의 탭에서 열면 서로 연결할 수 있습니다.
+        연결하려면 config 섹션에 설정을 입력하고 양쪽에서 connect 버튼을 누르세요.
+        추가적인 정보를 보려면 브라우저 로그를 열어보세요.
+      </p>
+
+      <p>
+        role은 연결 과정에서 내부적으로 사용하는 값으로, 반드시 양쪽이 달라야 합니다.
+        auto로 설정되면 메시지 교환을 통해서 자동으로 role을 설정합니다.
+      </p>
+
+      <p>
+        이 페이지의 코드는 <a href="https://github.com/webrtc/samples">WebRTC samples</a> 프로젝트의 일부를 포함하고 있습니다.
+        해당 코드들에 대한 라이선스는 아래 오픈소스 라이선스를 참조하세요.
+      <details>
+        <summary>오픈소스 라이선스</summary>
+        <pre>
+          Copyright (c) 2014, The WebRTC project authors. All rights reserved.
+
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are
+        met:
+
+        * Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+        * Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in
+        the documentation and/or other materials provided with the
+        distribution.
+
+        * Neither the name of Google nor the names of its contributors may
+        be used to endorse or promote products derived from this software
+        without specific prior written permission.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+        "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+        LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+        A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+        HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+        LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+        DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+        THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+        (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        </pre>
+      </details>
+      </p>
+    </section>
+
+    <section id="iceServers">
+      <h2>ICE servers</h2>
+      <div>
+        <select id="servers" size="4">
+          <option value="{&quot;urls&quot;:[&quot;stun:stun.l.google.com:19302&quot;]}">stun:stun.l.google.com:19302
+          </option>
+        </select>
+
+        <div>
+          <label for="url">STUN or TURN URI:</label>
+          <input id="url">
+        </div>
+
+        <div>
+          <label for="username">TURN username:</label>
+          <input id="username">
+        </div>
+
+        <div>
+          <label for="password">TURN password:</label>
+          <input id="password">
+        </div>
+
+        <div>
+          <button id="add">Add Server</button>
+          <button id="remove">Remove Server</button>
+          <button id="reset">Reset to defaults</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="configs">
+      <h2>Additional Configs</h2>
+      <div id="role">
+        <label for="transports"><span>role:</span></label>
+        <input type="radio" name="role" value="impolite" id="impolite">
+        <span>impolite</span>
+        <input type="radio" name="role" value="polite" id="polite">
+        <span>polite</span>
+        <input type="radio" name="role" value="auto" id="auto" checked>
+        <span>auto</span>
+      </div>
+      <div>
+        <label for="waitOnlineOnReconnection"><span>waitOnlineOnReconnection:</span></label>
+        <input type="checkbox" name="waitOnlineOnReconnection" id="waitOnlineOnReconnection" checked>
+      </div>
+    </section>
+
+    <section id="connection">
+      <button id="connect">connect</button>
+      <button id="close" disabled>close</button>
+
+      <span id="state">connection state: inactive</span>
+
+      <h2>generated config</h2>
+      <pre id="configText"></pre>
+
+      <h2>engine log</h2>
+      <div id="engineLog" class="log">
+      </div>
+      <h2>signaler log</h2>
+      <div id="signalerLog" class="log"></div>
+    </section>
+
+    <script src="./connection.js" type="module"></script>
+  </div>
+</body>
+
+</html>
