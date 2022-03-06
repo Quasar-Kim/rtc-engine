@@ -60,6 +60,8 @@ export default class WritableTransaction extends Transaction {
         this.processed = this.processed.get() + data.length
       },
       close: async () => {
+        await wait(socket.ready).toBe(true)
+
         // 여기는 위 write가 완료되어야 호출되므로 일단 모든 메시지가 데이터 채널의 버퍼로 들어간 상태
         // 데이터 채널의 버퍼가 비면 닫기(close() 시 버퍼에 있는 메시지는 전송될지 확신할 수 없음)
         if (socket.dataChannel.bufferedAmount > 0) {
@@ -70,8 +72,8 @@ export default class WritableTransaction extends Transaction {
 
         // 전송 완료 이벤트 전달
         // ready-to-close 이벤트를 받는 이유: 그냥 닫으면 done 이벤트가 아에 전송이 안되는 경우가 발생
-        socket.writeEvent('done')
-        await once(socket, 'ready-to-close')
+        // socket.writeEvent('done')
+        // await once(socket, 'ready-to-close')
 
         // 받는 쪽에서 닫지 않고 여기서 닫는 이유:
         // 문자열 메시지와 바이너리 메시지의 순서는 지켜지지 않는걸로 보임(적어도 크롬에서는)
@@ -80,12 +82,12 @@ export default class WritableTransaction extends Transaction {
         this.done = true
       },
       // abort되면 abort 이벤트 전달
-      abort: async reason => {
-        if (reason instanceof Error) {
-          socket.writeEvent('abort', { name: reason.name, message: reason.message })
-        } else {
-          socket.writeEvent('abort', reason)
-        }
+
+      /**
+       * @param {Error} err
+       */
+      abort: async err => {
+        socket.writeEvent('abort', err.toString())
 
         this.paused = true
         console.log(`[Transaction:${this.label}] Abort 됨`)

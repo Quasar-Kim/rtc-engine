@@ -20,11 +20,13 @@ export default class RTCSocket extends ObservableClass {
     this.dataChannel.binaryType = 'arraybuffer'
     this.dataChannel.addEventListener('message', ({ data }) => this.recvData(data))
     this.dataChannel.addEventListener('close', () => {
+      this.emit('close')
+
       if (this.closed) return
 
       // close() 호출 이외의 이유로 닫힌 경우
       this.ready = false
-      console.log(`[RTCSocket:${this.label}] close() 메소드 호출 없이 닫힘`)
+      console.log(`[RTCSocket:${this.label}] 상대에 의해서 소켓 닫힘`)
     })
     this.label = this.dataChannel.label
 

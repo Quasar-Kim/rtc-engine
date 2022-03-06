@@ -1,5 +1,6 @@
 import Mitt from '../util/Mitt.js'
 import { ObservableEntry } from '../util/ObservableEntry.js'
+import SignalManager from '../SignalManager.js'
 
 // 시그널러가 구현해야 할 기능:
 //  - send(data)로 메시지 보내기
@@ -10,6 +11,8 @@ export default class SignalerBase extends Mitt {
   constructor () {
     super()
     this.ready = new ObservableEntry(false)
+    this.signalManager = new SignalManager(this)
+    this.options = {}
   }
 
   send (data) {}

@@ -16,7 +16,7 @@ const UNNEGOTIATED_SOCKET_LABEL = 'RTCEngine-unnegotiated-socket'
  */
 export default class RTCEngine extends ObservableClass {
   static get observableProps () {
-    return ['connection', 'polite']
+    return ['connection', 'polite', 'closed']
   }
 
   /**
@@ -103,7 +103,8 @@ export default class RTCEngine extends ObservableClass {
     /**
      * 시그널러와 상호작용하는데 사용하는 객체
      */
-    this.signalManager = new SignalManager(signaler)
+    // this.signalManager = new SignalManager(signaler)
+    this.signalManager = signaler.signalManager
 
     /**
      * role 배정을 위한 난수
@@ -293,7 +294,7 @@ export default class RTCEngine extends ObservableClass {
     this.socket('RTCEngine-internal').then(socket => {
       // 연결이 닫히면 여기서 리소스 정리
       socket.dataChannel.addEventListener('close', () => {
-        if (this.closed) return
+        if (this.closed.get()) return
         this.close()
       }, { once: true })
     })
@@ -308,7 +309,7 @@ export default class RTCEngine extends ObservableClass {
         await wait(this.signalManager.ready).toBe(true)
 
         // wait하는 중 close()가 호출되었을수도 있음
-        if (this.closed) return
+        if (this.closed.get()) return
 
         this.restartIce()
         console.log('[RTCEngine]', '재연결 시도하는 중...')
