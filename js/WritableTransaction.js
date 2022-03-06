@@ -10,8 +10,6 @@ const CHUNK_SIZE = 200 * 1024 // 200KB
 /*
 전체 파이프 구조:
 source -> chunkingStream -> writable --- socket --- readable -> destination
-                         |
-                 AbortController
 
  - 전송 완료: writable close 불림 -> socket에서 done 이벤트 발생 -> readable에서 데이터 채널 close 이벤트 기다림 -> 스트림 닫기
                                   -> 데이터 채널 닫음(done 이벤트와 바이너리 데이터의 전송 순서는 지켜지지 않으므로 readable에서 닫을 수 없음)
@@ -20,28 +18,34 @@ source -> chunkingStream -> writable --- socket --- readable -> destination
  - 일시정지(readable): readable에서 'pause', 'resume' 이벤트 발생 -> writable에서 받아서 흐름 조절
 */
 
+/**
+ * @typedef {import('./RTCSocket.js').default} RTCSocket
+ */
+
 export default class WritableTransaction extends Transaction {
   /**
-     *
-     * @param {RTCSocket} socket
-     */
-  constructor (socket, metadata = { size: 0 }) {
+   * 트렌젝션을 만듭니다.
+   * @param {RTCSocket} socket 데이터 전송에 사용할 RTCSocket
+   * @param {object} metadata 상대에게 전송할 메타데이터. 트렌젝션이 만들어진 후 `metadata` 속성으로 읽을 수 있습니다. `size` 속성은 필수이며 그 이외의 속성은 임의로 추가할 수 있습니다.
+   * @param {number} metadata.size 바이트로 나타낸 트렌젝션의 크기.
+   */
+  constructor (socket, metadata) {
     super(socket, metadata)
 
     const writable = new WritableStream({
-      start: () => {
+      start: controller => {
         // cancel 이벤트 오면 에러 발생시켜서 스트림을 멈춤
         socket.on('cancel', reason => {
           this.paused = true
           socket.close()
-          throw new Error('Canceled from receiver: ' + reason)
+          controller.error(new Error('Canceled from receiver: ' + reason))
         })
+
         // readable측에서 요청하는 pause / resume 이벤트 받기
         socket.on('pause', () => this.pause())
         socket.on('resume', () => this.resume())
       },
       /**
-       *
        * @param {Uint8Array} data
        */
       write: async data => {
@@ -88,19 +92,19 @@ export default class WritableTransaction extends Transaction {
       }
     })
 
-    this.abortController = new AbortController()
-
     // 이렇게 하면 pipeTo(transactionWriter.stream)처럼 사용 가능
     // 뒤의 catch()문은 abort시 에러가 두군데에서 발생하는데(여기와 this.stream에 pipeTo 한 부분)
     // 여기서 에러가 발생하지 않게 하기 위한 것임
     // eslint-disable-next-line no-undef
     const chunkingStream = new TransformStream(new ChunkProducer(CHUNK_SIZE))
-    chunkingStream.readable.pipeTo(writable, { signal: this.abortController.signal }).catch(() => {})
+    chunkingStream.readable.pipeTo(writable).catch(() => {})
     this.stream = chunkingStream.writable
   }
 
-  stop () {
-    this.abortController.abort()
+  async stop () {
+    this.paused = true
+    this.socket.close()
+    await this.stream.abort()
   }
 
   pause () {

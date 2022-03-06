@@ -22,7 +22,7 @@ export default class Transaction extends ObservableClass {
   }
 
   /**
-   * 주의: 이 생성자는 RTCEngine 내부에서만 호출되어야 합니다.
+   * 트렌젝션을 만듭니다.
    * @param {RTCSocket} socket 데이터 전송에 사용할 RTCSocket
    * @param {object} metadata 상대에게 전송할 메타데이터. 트렌젝션이 만들어진 후 `metadata` 속성으로 읽을 수 있습니다. `size` 속성은 필수이며 그 이외의 속성은 임의로 추가할 수 있습니다.
    * @param {number} metadata.size 바이트로 나타낸 트렌젝션의 크기.

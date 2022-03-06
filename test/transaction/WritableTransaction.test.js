@@ -22,9 +22,18 @@ describe('WritableTransaction', () => {
     expect(queuedData.byteLength).to.equal(204800)
   })
 
-  it('상대측의 스트림이 cancel되면 에러를 발생시키고 소켓을 닫아야 함', function () {
-    expect(() => this.socket.emit('cancel', 'no reason')).to.throw('Canceled from receiver: no reason')
-    expect(this.socket.close.called).to.equal(true)
+  it('상대측의 스트림이 cancel되면 에러를 발생시키고 소켓을 닫아야 함', function (done) {
+    this.socket.emit('cancel', 'no reason')
+
+    // writer.write()를 직접 불러서 스트림이 errored 상태인지 확인하기
+    const writer = this.transaction.stream.getWriter()
+    writer.write()
+      .then(() => done('error not thrown'))
+      .catch(err => {
+        expect(err.message).to.equal('Canceled from receiver: no reason')
+        expect(this.socket.close.called).to.equal(true)
+        done()
+      })
   })
 
   it('stop() 호출 시 상대방에게 abort 이벤트로 알려야 함', async function () {
