@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTCEngine demo - RTCSocket</title>
+  <link rel="stylesheet" href="./demo.css">
+  <style>
+    select {
+      font-size: 1em;
+      padding: 5px;
+      width: 420px;
+    }
+
+    section#socketList input {
+      margin: 0 0 10px;
+      width: 260px;
+    }
+
+    section#socketList label {
+      display: inline-block;
+      width: 150px;
+    }
+
+    section#connection span {
+      display: block;
+      width: 200px;
+    }
+
+    .log {
+      width: 100%;
+      height: 200px;
+      overflow: auto;
+      background: lightgray;
+    }
+
+    .log pre {
+      white-space: pre-wrap;
+      padding: 0.5em;
+      margin-bottom: 0;
+      border-bottom: 0.5px solid gray;
+    }
+
+    .log .outgoing-msg {
+      background: lightgreen;
+    }
+
+    .log .incoming-msg {
+      background: lightpink;
+    }
+
+    .log details {
+      cursor: pointer;
+    }
+
+    .log details>summary::marker {
+      font-size: 0;
+      /* summary 마커 숨기기 */
+    }
+
+    section#chat .msg-input-div {
+      padding: 1em 0;
+      height: 40px
+    }
+
+    section#chat input {
+      margin-right: 1em;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+
+    <!-- page info -->
+    <h1>RTCEngine RTCSocket Demo</h1>
+    <p>
+      version: development(unstable)
+    </p>
+
+    <section>
+      <p>
+        RTCSocket의 기능을 테스트할 수 있는 페이지입니다.
+        먼저 이 페이지를 두개의 탭에서 열고 connect 버튼을 눌러(양쪽 모두) 연결하세요.
+        그 다음 RTCSocket의 기능을 테스트할 수 있습니다.
+      </p>
+
+      <p>
+        연결이 된 후 Socket List 섹션에서 소켓을 생성할 수 있습니다. 
+        Socket ID를 비워놓으면 unnegotiated socket을 생성합니다.
+        상대의 동의 없이 소켓이 생성됩니다.
+        Socket ID를 입력하면 negotiated socket을 생성합니다.
+        상대방도 동일한 ID를 입력하고 소켓 생성을 요청해야지 소켓이 생성됩니다.
+      </p>
+
+      <p>
+        생성된 소켓은 리스트에 나타납니다. 눌러서 대화창을 열고 대화해보세요.
+      </p>
+
+      <p>
+        이 페이지의 코드는 <a href="https://github.com/webrtc/samples">WebRTC samples</a> 프로젝트의 일부를 포함하고 있습니다.
+        해당 코드들에 대한 라이선스는 아래 오픈소스 라이선스를 참조하세요.
+      <details>
+        <summary>오픈소스 라이선스</summary>
+        <pre>
+          Copyright (c) 2014, The WebRTC project authors. All rights reserved.
+
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are
+        met:
+
+        * Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+        * Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in
+        the documentation and/or other materials provided with the
+        distribution.
+
+        * Neither the name of Google nor the names of its contributors may
+        be used to endorse or promote products derived from this software
+        without specific prior written permission.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+        "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+        LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+        A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+        HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+        LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+        DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+        THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+        (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        </pre>
+      </details>
+      </p>
+    </section>
+
+    <section id="connection">
+      <button id="connect">connect</button>
+      <button id="close" disabled>close</button>
+
+      <span id="state">connection state: inactive</span>
+
+      <h2>engine log</h2>
+      <div id="engineLog" class="log">
+      </div>
+    </section>
+
+    <section id="socketList">
+      <h2>Socket List</h2>
+
+      <select id="sockets" size="4"></select>
+
+      <div>
+        <label for="socketID">Socket ID:</label>
+        <input type="text" id="socketID">
+      </div>
+
+      <div>
+        <button id="add">Add Socket</button>
+        <button id="closeSocket">Close Socket</button>
+      </div>
+    </section>
+
+    <section id="chat">
+      소켓을 선택하세요.
+    </section>
+
+    <script src="./rtc-socket.js" type="module"></script>
+  </div>
+</body>
+
+</html>

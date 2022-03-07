@@ -103,6 +103,7 @@ export default class RTCSocket extends ObservableClass {
   close () {
     this.dataChannel.close()
     this.ready = false
+    this.closed = true
     console.log(`[RTCSocket:${this.label}] 소켓 닫음`)
   }
 }
