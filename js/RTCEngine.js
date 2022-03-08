@@ -6,7 +6,6 @@ import Channel from './Channel.js'
 import TransactionWriter from './WritableTransaction.js'
 import TransactionReader from './ReadableTransaction.js'
 import ListenerManager from './util/ListenerManager.js'
-import SignalManager from './SignalManager.js'
 import ObservableQueue from './util/ObservableQueue.js'
 
 const UNNEGOTIATED_SOCKET_LABEL = 'RTCEngine-unnegotiated-socket'
@@ -90,8 +89,8 @@ export default class RTCEngine extends ObservableClass {
     this.ignoreOffer = false
 
     /**
-     * 연결의 상태를 나타냄. inactive를 제외하고는 RTCPeerConnection의 connectionState와 동일함.
-     * (inactive / connecting / connected / disconnected / failed)
+     * 연결의 상태를 나타냄. inactive, closed를 제외하고는 RTCPeerConnection의 connectionState와 동일함.
+     * @type {'inactive'|'connecting'|'connected'|'disconnected'|'failed'|'closed'}
      */
     this.connection = 'inactive'
 
@@ -101,10 +100,9 @@ export default class RTCEngine extends ObservableClass {
     this.listenerManager = new ListenerManager()
 
     /**
-     * 시그널러와 상호작용하는데 사용하는 객체
+     * 메시지를 전달하는데 사용되는 시그널러
      */
-    // this.signalManager = new SignalManager(signaler)
-    this.signalManager = signaler.signalManager
+    this.signaler = signaler
 
     /**
      * role 배정을 위한 난수
@@ -134,13 +132,13 @@ export default class RTCEngine extends ObservableClass {
     // 어떤 경우이든지 서로 시드를 교환하게 됨.
     return new Promise(resolve => {
       const sendRoleSeed = () => {
-        this.signalManager.send({
+        this.signaler.send({
           type: 'role',
           seed: this.seed
         })
       }
 
-      this.signalManager.receive('role', msg => {
+      this.signaler.on('role', msg => {
         const remoteSeed = msg.seed
 
         // role이 설정되어 있는 경우
@@ -186,7 +184,7 @@ export default class RTCEngine extends ObservableClass {
         this.makingOffer = true
         await this.pc.setLocalDescription()
         console.groupCollapsed('creating offer')
-        this.signalManager.send({
+        this.signaler.send({
           type: 'description',
           description: this.pc.localDescription
         })
@@ -198,7 +196,7 @@ export default class RTCEngine extends ObservableClass {
 
     const sendIceCandidate = rtcIceCandidate => {
       console.groupCollapsed('sending ice candidate')
-      this.signalManager.send({
+      this.signaler.send({
         type: 'icecandidate',
         candidate: rtcIceCandidate.candidate
       })
@@ -230,7 +228,7 @@ export default class RTCEngine extends ObservableClass {
       if (description.type === 'offer') {
         await this.pc.setLocalDescription()
         console.groupCollapsed('making answer')
-        this.signalManager.send({
+        this.signaler.send({
           type: 'description',
           description: this.pc.localDescription
         })
@@ -272,17 +270,17 @@ export default class RTCEngine extends ObservableClass {
     this.listenerManager.add(this.pc, 'iceconnectionstatechange', logIceConnectionStateChange)
     this.listenerManager.add(this.pc, 'datachannel', saveDataChannels)
 
-    this.signalManager.receive('description', msg => setDescription(msg.description))
-    this.signalManager.receive('icecandidate', msg => setIceCandidate(msg.candidate))
+    this.signaler.on('description', msg => setDescription(msg.description))
+    this.signaler.on('icecandidate', msg => setIceCandidate(msg.candidate))
 
     // 2. 연결 시작
     // 시그널러 start() 훅 호출
-    await this.signalManager.callHook('start')
+    await this.signaler.start()
 
     // 시그널러 훅 예약
-    observe(this.connection).toBe('connected').then(() => this.signalManager.callHook('connected'))
-    observe(this.connection).toBe('disconnected').then(() => this.signalManager.callHook('disconnected'))
-    observe(this.connection).toBe('failed').then(() => this.signalManager.callHook('failed'))
+    observe(this.connection).toBe('connected').then(() => this.signaler.connected())
+    observe(this.connection).toBe('disconnected').then(() => this.signaler.disconnected())
+    observe(this.connection).toBe('failed').then(() => this.signaler.failed())
 
     // 먼저 role 설정하기
     if (this.polite.get() === undefined) {
@@ -306,7 +304,7 @@ export default class RTCEngine extends ObservableClass {
 
       const reconnect = async () => {
         console.log('[RTCEngine]', '시그널러 ready 대기중')
-        await wait(this.signalManager.ready).toBe(true)
+        await wait(this.signaler.ready).toBe(true)
 
         // wait하는 중 close()가 호출되었을수도 있음
         if (this.closed.get()) return
@@ -459,13 +457,10 @@ export default class RTCEngine extends ObservableClass {
     this.listenerManager.clear()
     this.negotiatedDataChannels.clear()
     this.closed = true
+    this.connection = 'closed'
     console.log('[RTCEngine]', '연결 닫힘')
 
-    try {
-      this.signalManager.callHook('close')
-    } finally {
-      this.signalManager.clear()
-    }
+    this.signaler.close()
   }
 
   /**

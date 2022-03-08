@@ -27,15 +27,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+/**
+ * @template T
+ * @typedef {(payload: T, cancel?: () => void)} EventHandler
+ */
+
+/**
+ * 이벤트 이미터 기능을 제공하는 클래스.
+ */
 export default class Mitt {
   constructor (all) {
+    /**
+     * 이벤트별 이벤트 핸들러들
+     * @type {Map<string|symbol, EventHandler<any>[]>}
+     */
     this.all = all || new Map()
   }
 
   /**
     * Register an event handler for the given type.
     * @param {string|symbol} type Type of event to listen for, or `'*'` for all events
-    * @param {Function} handler Function to call in response to given event
+    * @param {EventHandler<any>} handler Function to call in response to given event
     */
   on (type, handler) {
     const handlers = this.all.get(type)
@@ -51,7 +63,7 @@ export default class Mitt {
      * Remove an event handler for the given type.
      * If `handler` is omitted, all handlers of the given type are removed.
      * @param {string|symbol} type Type of event to unregister `handler` from, or `'*'`
-     * @param {Function} [handler] Handler function to remove
+     * @param {EventHandler<any>}} [handler] Handler function to remove
      */
   off (type, handler) {
     const handlers = this.all.get(type)
@@ -104,7 +116,7 @@ export default class Mitt {
   /**
    * `on()` 메소드의 alias
    * @param {string|symbol} type Type of event to listen for, or `'*'` for all events
-   * @param {Function} handler Function to call in response to given event
+   * @param {EventHandler<any>} handler Function to call in response to given event
    */
   addEventListener (type, handler) {
     return this.on(type, handler)
@@ -113,7 +125,7 @@ export default class Mitt {
   /**
    * `off()` 메소드의 alias
    * @param {string|symbol} type Type of event to unregister `handler` from, or `'*'`
-   * @param {Function} [handler] Handler function to remove
+   * @param {EventHandler<any>} [handler] Handler function to remove
    */
   removeEventListener (type, handler) {
     return this.off(type, handler)
