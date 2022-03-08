@@ -1,4 +1,5 @@
-import Queue from '../../js/util/Queue.js'
+import Queue from '../../../js/util/Queue.js'
+import { expect } from '@esm-bundle/chai'
 
 describe('Queue', () => {
   it('push() 호출 시 데이터를 가장 뒤에 저장해야 함', () => {

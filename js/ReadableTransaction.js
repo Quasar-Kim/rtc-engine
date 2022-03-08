@@ -7,9 +7,9 @@ export default class ReadableTransaction extends Transaction {
 
     this.stream = new ReadableStream({
       start: controller => {
-        socket.on('abort', reason => {
+        socket.on('abort', () => {
           socket.close()
-          controller.error(new Error(`Aborted from sender. ${reason}: `))
+          controller.error(new Error('Stream aborted'))
         })
 
         socket.on('data', data => {
@@ -45,8 +45,8 @@ export default class ReadableTransaction extends Transaction {
     })
   }
 
-  stop (reason = 'User canceled transaction') {
-    this.socket.writeEvent('cancel', reason)
+  stop () {
+    this.socket.writeEvent('cancel')
     console.log('[ReadableTransaction] cancel 요청함')
   }
 

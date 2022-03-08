@@ -1,6 +1,7 @@
 import WritableTransaction from '../../js/WritableTransaction.js'
 import MockRTCSocket from '../test-util/MockRTCSocket.js'
 import { wait } from '../../js/util/ObservableClass.js'
+import { expect } from '@esm-bundle/chai'
 
 describe('WritableTransaction', () => {
   beforeEach(function () {
@@ -37,7 +38,7 @@ describe('WritableTransaction', () => {
   })
 
   it('stop() 호출 시 상대방에게 abort 이벤트로 알려야 함', async function () {
-    this.transaction.stop()
+    await this.transaction.stop()
 
     // 한 task 대기
     await new Promise(resolve => setTimeout(resolve))

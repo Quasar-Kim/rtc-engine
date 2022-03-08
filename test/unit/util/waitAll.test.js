@@ -1,5 +1,6 @@
-import { waitAll } from '../../js/util/ObservableClass.js'
-import { ObservableEntry } from '../../js/util/ObservableEntry.js'
+import { waitAll } from '../../../js/util/ObservableClass.js'
+import { ObservableEntry } from '../../../js/util/ObservableEntry.js'
+import { expect } from '@esm-bundle/chai'
 
 describe('waitAll()', () => {
   it('should resolve when all nested wait expressions are resolved', async () => {

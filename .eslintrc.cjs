@@ -7,11 +7,6 @@ module.exports = {
   extends: [
     'standard'
   ],
-  globals: {
-    sinon: 'readonly',
-    expect: 'readonly',
-    chai: 'readonly'
-  },
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module'

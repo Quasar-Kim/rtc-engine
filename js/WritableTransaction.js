@@ -82,12 +82,8 @@ export default class WritableTransaction extends Transaction {
         this.done = true
       },
       // abort되면 abort 이벤트 전달
-
-      /**
-       * @param {Error} err
-       */
-      abort: async err => {
-        socket.writeEvent('abort', err.toString())
+      abort: async () => {
+        socket.writeEvent('abort')
 
         this.paused = true
         console.log(`[Transaction:${this.label}] Abort 됨`)
@@ -103,17 +99,21 @@ export default class WritableTransaction extends Transaction {
     this.stream = chunkingStream.writable
   }
 
+  /**
+   * 트렌젝션을 중지합니다.
+   */
   async stop () {
-    this.paused = true
-    this.socket.close()
     await this.stream.abort()
+    this.socket.close()
   }
 
+  // TODO: paused 이벤트 받기
   pause () {
     super.pause()
     this.socket.writeEvent('pause')
   }
 
+  // TODO: resume 이벤트 받기
   resume () {
     super.resume()
     this.socket.writeEvent('resume')

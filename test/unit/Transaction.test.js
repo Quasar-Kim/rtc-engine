@@ -1,5 +1,6 @@
 import Transaction from '../../js/Transaction.js'
 import MockRTCSocket from '../test-util/MockRTCSocket.js'
+import { expect } from '@esm-bundle/chai'
 
 async function fakeSending () {
   // 시작된지 1초 후 속도에 접근 가능, 따라서 1500ms 대기

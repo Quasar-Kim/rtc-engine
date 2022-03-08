@@ -1,5 +1,6 @@
 import ChunkProducer from '../../js/ChunkProducer.js'
 import sinon from 'sinon'
+import { expect } from '@esm-bundle/chai'
 
 describe('ChunkProducer', () => {
   beforeEach(function () {

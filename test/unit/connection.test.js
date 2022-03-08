@@ -3,6 +3,7 @@ import { wait } from '../../js/util/ObservableClass.js'
 import TestSignaler from '../test-util/TestSignaler.js'
 import { createEngine } from '../test-util/engineFactory.js'
 import sinon from 'sinon'
+import { expect } from '@esm-bundle/chai'
 
 describe('connection', () => {
   beforeEach(function () {
@@ -20,15 +21,17 @@ describe('connection', () => {
 
       expect(spy.called).to.equal(true)
     })
+
     it('autoConnect === false면 connect() 호출 시 연결을 시작해야 함', function () {
       const spy = sinon.spy(RTCEngine.prototype, 'connect')
       const engine = createEngine(this.signaler1, { autoConnect: false })
 
       expect(spy.called).to.equal(false)
     })
+
     it('assignRole() 호출 시 자동으로 role을 설정해야 함', async function () {
       const engine = createEngine(this.signaler1, { autoConnect: false })
-      this.signaler2.once('message', () => {
+      this.signaler2.once('role', () => {
         this.signaler2.send({
           type: 'role',
           seed: 10 // 실제 seed는 0~1사이의 난수이므로 반드시 engine이 polite가 됨
@@ -47,25 +50,16 @@ describe('connection', () => {
       expect(engine.polite.get()).to.equal(true)
       expect(spy.called).to.equal(false)
     })
-    it('start() 호출 시 description과 ice candidate를 전송해야 함', function (done) {
-      const engine = createEngine(this.signaler1, { autoConnect: false, role: 'polite' })
 
-      let receivedDescription = false
-      let receivedCandidate = false
-      this.signaler2.on('message', msg => {
-        if (msg.type === 'description') {
-          receivedDescription = true
-        } else if (msg.type === 'icecandidate') {
-          receivedCandidate = true
-        }
+    it('start() 호출 시 description과 ice candidate를 전송해야 함', async function () {
+      const engine = createEngine(this.signaler1, { role: 'polite' })
 
-        if (receivedDescription && receivedCandidate) {
-          done()
-        }
-      })
-
-      engine.start()
+      await Promise.all([
+        new Promise(resolve => this.signaler2.once('description', () => resolve())),
+        new Promise(resolve => this.signaler2.once('icecandidate', () => resolve()))
+      ])
     })
+
     it('connect() 호출 시 assignRole(), start()를 호출하고 connectionState가 connected가 되면 리턴해야 함', async function () {
       const connectSpy = sinon.spy(RTCEngine.prototype, 'connect')
       const startSpy = sinon.spy(RTCEngine.prototype, 'start')
@@ -181,6 +175,7 @@ describe('connection', () => {
 
         expect(spy.called).to.equal(true)
       })
+
       it('waitOnlineOnReconnection === true고 navigator.onLine === false면 window의 online 이벤트를 기다렸다 재연결을 시도함', async function () {
         // const peer1 = createEngine(this.signaler1, { waitOnlineOnReconnection: true })
         const peer1 = createEngine(this.signaler1, { waitOnlineOnReconnection: true })
@@ -204,30 +199,3 @@ describe('connection', () => {
     })
   })
 })
-
-// describe('RTCEngine connection', () => {
-
-//   it('아무 설정을 넘겨주지 않으면 주어진 시그널러로 자동으로 연결', async function () {
-//     // 속도 문제로 iceServer 비우기
-//     this.engine1 = createEngine(this.signaler1, { iceServers: [] })
-//     this.engine2 = createEngine(this.signaler2, { iceServers: [] })
-
-//     await waitAll(wait => {
-//       wait(this.engine1.connection).toBe('connected')
-//       wait(this.engine2.connection).toBe('connected')
-//     })
-//   })
-
-//   it('autoConnect: false 옵션을 사용하면 connect() 메소드 호출 시 연결', async function () {
-//     const spy = sinon.spy(RTCEngine.prototype, 'start')
-
-//     this.engine1 = createEngine(this.signaler1, { autoConnect: false })
-//     this.engine2 = createEngine(this.signaler2, { autoConnect: false })
-
-//     expect(spy.called).to.equal(false)
-//   })
-
-//   afterEach(function () {
-
-//   })
-// })

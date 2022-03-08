@@ -1,6 +1,12 @@
 import Queue from './Queue.js'
 
+/**
+ * @template T
+ */
 export class ObservableEntry {
+  /**
+   * @param {T} val
+   */
   constructor (val) {
     this.val = val
     this.conditions = new Set()

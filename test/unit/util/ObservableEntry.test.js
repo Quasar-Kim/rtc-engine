@@ -1,4 +1,6 @@
-import { ObservableEntry } from '../../js/util/ObservableEntry.js'
+import { ObservableEntry } from '../../../js/util/ObservableEntry.js'
+import { expect } from '@esm-bundle/chai'
+import sinon from 'sinon'
 
 describe('observableEntry', () => {
   it('should provide access to the actual value via get() and set()', () => {
@@ -46,32 +48,32 @@ describe('observableEntry', () => {
   it('should test specific condition passed to testCondition()', () => {
     const prop = new ObservableEntry()
 
-    const conditionA = chai.spy.returns(true)
-    const conditionB = chai.spy.returns(true)
-    const callbackA = chai.spy()
-    const callbackB = chai.spy()
+    const conditionA = sinon.fake.returns(true)
+    const conditionB = sinon.fake.returns(true)
+    const callbackA = sinon.spy()
+    const callbackB = sinon.spy()
     prop.registerCallback(conditionA, callbackA, () => {})
     prop.registerCallback(conditionB, callbackB, () => {})
 
     prop.testCondition(conditionA)
 
-    expect(conditionA).to.have.been.called()
-    expect(callbackA).to.have.been.called()
-    expect(conditionB).to.not.have.been.called()
-    expect(callbackB).to.not.have.been.called()
+    expect(conditionA.called).to.equal(true)
+    expect(callbackA.called).to.equal(true)
+    expect(conditionB.called).to.equal(false)
+    expect(callbackB.called).to.equal(false)
   })
 
   it('should test all registered conditions when testConditionsAll() is called', () => {
     const prop = new ObservableEntry()
-    const spy1 = chai.spy()
-    const spy2 = chai.spy()
+    const spy1 = sinon.spy()
+    const spy2 = sinon.spy()
     const condition = () => true
 
     prop.registerCallback(condition, spy1, () => {})
     prop.registerCallback(condition, spy2, () => {})
     prop.testConditionsAll()
 
-    expect(spy1).to.have.been.called()
-    expect(spy2).to.have.been.called()
+    expect(spy1.called).to.equal(true)
+    expect(spy2.called).to.equal(true)
   })
 })

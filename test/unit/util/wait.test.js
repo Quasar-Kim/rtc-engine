@@ -1,8 +1,7 @@
-import { wait } from '../../js/util/ObservableClass.js'
-import { ObservableEntry, WaitEntry } from '../../js/util/ObservableEntry.js'
-import spies from 'https://jspm.dev/chai-spies'
-
-chai.use(spies)
+import { wait } from '../../../js/util/ObservableClass.js'
+import { ObservableEntry, WaitEntry } from '../../../js/util/ObservableEntry.js'
+import { expect } from '@esm-bundle/chai'
+import sinon from 'sinon'
 
 describe('wait()', () => {
   // thenable 기능
@@ -63,7 +62,7 @@ describe('wait()', () => {
   // 체이닝 구현용 기능
   it('should not unregister ObservableProp callback if once is set to false', () => {
     const prop = new ObservableEntry()
-    const callback = chai.spy()
+    const callback = sinon.fake()
     const waitEntry = wait(prop).toFulfill(val => val === 'red' || val === 'green')
     waitEntry.then(callback)
     waitEntry.once = false
@@ -78,7 +77,7 @@ describe('wait()', () => {
     prop.set('blue')
 
     // eslint-disable-next-line no-unused-expressions
-    expect(callback).to.have.been.called.twice
+    expect(callback.callCount).to.equal(2)
   })
   it('should call passed unmatchedCallback if condition is not met', done => {
     const prop = new ObservableEntry()

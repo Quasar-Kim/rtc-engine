@@ -1,4 +1,5 @@
-import ObservableMap from '../../js/util/ObservableMap.js'
+import ObservableMap from '../../../js/util/ObservableMap.js'
+import { expect } from '@esm-bundle/chai'
 
 describe('ObservableMap', () => {
   it('get() should return set value', () => {

@@ -1,5 +1,6 @@
 import MockDataChannel from '../test-util/MockDataChannel.js'
 import RTCSocket from '../../js/RTCSocket.js'
+import { expect } from '@esm-bundle/chai'
 
 describe('RTCSocket', () => {
   beforeEach(function () {
