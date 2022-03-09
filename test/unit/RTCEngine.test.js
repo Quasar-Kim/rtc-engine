@@ -5,7 +5,7 @@ import { createEngine } from '../test-util/engineFactory.js'
 import sinon from 'sinon'
 import { expect } from '@esm-bundle/chai'
 
-describe('connection', () => {
+describe('RTCEngine', () => {
   beforeEach(function () {
     this.signaler1 = new TestSignaler()
     this.signaler2 = new TestSignaler()
@@ -195,6 +195,15 @@ describe('connection', () => {
         window.navigator.onLine = true
 
         expect(spy.getCall(0).args[0]).to.equal('online')
+      })
+    })
+  })
+
+  describe('플러그인', () => {
+    it('plugin() 호출 시 플러그인 함수를 RTCEngine 클래스를 첫번째 인자로 호출해야 함', function (done) {
+      RTCEngine.plugin(Engine => {
+        expect(Engine).to.equal(RTCEngine)
+        done()
       })
     })
   })
