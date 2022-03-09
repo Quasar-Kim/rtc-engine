@@ -12,7 +12,6 @@ export default class MockRTCSocket extends Mitt {
     this.writeEvent = sinon.fake()
     this.close = sinon.fake()
     this.recvData = sinon.fake()
-    this.ready = new ObservableEntry()
-    this.ready = true
+    this.ready = new ObservableEntry(true)
   }
 }

@@ -70,4 +70,16 @@ describe('WritableTransaction', () => {
     this.socket.emit('resume')
     expect(this.transaction.paused.get()).to.equal(false)
   })
+
+  // 데이터가 진짜 전송중인지 알 수 있는 방법?
+  // it('buffer-full 이벤트를 받을 시 데이터 전송을 중단해야 함', async function () {
+  //   this.socket.emit('buffer-full')
+  //   expect(this.transaction.readableBufferFull.get()).to.equal(true)
+  // })
+
+  // it('pull 이벤트를 받을 시 데이터 전송을 재개해야 함', async function () {
+  //   this.socket.emit('buffer-full')
+  //   this.socket.emit('pull')
+  //   expect(this.transaction.readableBufferFull.get()).to.equal(false)
+  // })
 })

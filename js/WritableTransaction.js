@@ -1,7 +1,8 @@
 import Transaction from './Transaction.js'
 import ChunkProducer from './ChunkProducer.js'
-import { wait } from './util/ObservableClass.js'
+import { wait, waitAll } from './util/ObservableClass.js'
 import once from './util/once.js'
+import { ObservableEntry } from './util/ObservableEntry.js'
 
 // 한번에 큰 arraybuffer를 전송시에도 채널이 터질 수 있음
 // 따라서 데이터를 청크로 끊어서 보내야 함
@@ -32,6 +33,8 @@ export default class WritableTransaction extends Transaction {
   constructor (socket, metadata) {
     super(socket, metadata)
 
+    this.readableBufferFull = new ObservableEntry(false)
+
     const writable = new WritableStream({
       start: controller => {
         // cancel 이벤트 오면 에러 발생시켜서 스트림을 멈춤
@@ -44,14 +47,20 @@ export default class WritableTransaction extends Transaction {
         // readable측에서 요청하는 pause / resume 이벤트 받기
         socket.on('pause', () => this.pause())
         socket.on('resume', () => this.resume())
+
+        socket.on('buffer-full', () => this.readableBufferFull.set(true))
+        socket.on('pull', () => this.readableBufferFull.set(false))
       },
       /**
        * @param {Uint8Array} data
        */
       write: async data => {
         // 일시정지 기능
-        if (this.paused.get()) {
-          await wait(this.paused).toBe(false)
+        if (this.paused.get() || this.readableBufferFull.get()) {
+          await waitAll(wait => {
+            wait(this.paused).toBe(false)
+            wait(this.readableBufferFull).toBe(false)
+          })
         }
 
         await socket.write(data.buffer)
