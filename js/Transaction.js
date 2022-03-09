@@ -2,12 +2,6 @@ import ObservableClass, { wait, observe } from './util/ObservableClass.js'
 import progressTracker from './util/eta.js'
 import prettyBytes from './util/prettyBytes.js'
 
-// eslint-disable-next-line no-unused-vars
-function debug (...args) {
-  if (window?.process?.env?.NODE_ENV === 'production') return
-  console.log('[Transaction]', ...args)
-}
-
 /** @typedef {import('./RTCSocket.js').default} RTCSocket */
 
 /**

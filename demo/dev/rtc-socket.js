@@ -1,5 +1,5 @@
-import RTCEngine from '../js/RTCEngine.js'
-import { wait, observe } from '../js/util/index.js'
+import RTCEngine from '../../js/RTCEngine.js'
+import { wait, observe } from '../../js/util/index.js'
 import BroadcastChannelSignaler from './BroadcastChannelSignaler.js'
 
 // -------------------

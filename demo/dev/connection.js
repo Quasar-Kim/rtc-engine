@@ -1,5 +1,5 @@
-import RTCEngine from '../js/RTCEngine.js'
-import { wait, observe } from '../js/util/index.js'
+import RTCEngine from '../../js/RTCEngine.js'
+import { observe } from '../../js/util/index.js'
 import BroadcastChannelSignaler from './BroadcastChannelSignaler.js'
 import beautifyJSON from 'https://jspm.dev/json-beautify'
 
@@ -157,6 +157,8 @@ async function initEngine () {
   const engine = new RTCEngine(signaler, config)
   logEngine('engine started')
 
+  closeBtn.disabled = false
+
   // connect 버튼 누르면 connect() 메소드 부르기
   connectBtn.addEventListener('click', async () => {
     connectBtn.disabled = true
@@ -178,20 +180,23 @@ async function initEngine () {
   // 연결 상태 보여주기
   observe(engine.connection).toBeChanged().then(connection => {
     logEngine(`connection state: ${connection}`)
-    stateText.textContent = `connection state: ${connection}`
 
-    if (connection !== 'connected') {
-      closeBtn.disabled = true
-    } else {
-      closeBtn.disabled = false
+    if (connection === 'closed') {
+      logEngine('connection closed')
+      stateText.textContent = '연결이 닫혔습니다. 새로운 연결을 시작하려면 페이지를 새로고침하세요.'
+      return
     }
+
+    stateText.textContent = `connection state: ${connection}`
   })
 
-  // 연결이 완전히 닫히면 페이지를 리프래쉬해달라는 메시지 표시하기
-  wait(engine.closed).toBe(true).then(() => {
-    stateText.textContent = '연결이 닫혔습니다. 새로운 연결을 시작하려면 페이지를 새로고침하세요.'
-    closeBtn.disabled = true
-    logEngine('connection closed')
+  // 연결이 끊어진 상태(disconnected, failed)인 경우 connect 버튼 활성화
+  observe(engine.connection).toBeChanged().then(c => {
+    if (c === 'disconnected' || c === 'failed') {
+      connectBtn.disabled = false
+    } else {
+      connectBtn.disabled = true
+    }
   })
 }
 

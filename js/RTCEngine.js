@@ -8,7 +8,7 @@ import TransactionReader from './ReadableTransaction.js'
 import ListenerManager from './util/ListenerManager.js'
 import ObservableQueue from './util/ObservableQueue.js'
 
-const UNNEGOTIATED_SOCKET_LABEL = 'RTCEngine-unnegotiated-socket'
+const UNNEGOTIATED_SOCKET_PREFIX = 'RTCEngine-unnegotiated-socket'
 
 /**
  * RTC 연결을 관리하는 엔진.
@@ -113,6 +113,12 @@ export default class RTCEngine extends ObservableClass {
      * 연결이 닫혔는지 나타내는 속성
      */
     this.closed = false
+
+    /**
+     * 이때까지 생성된 unnegotiated socket의 개수.
+     * unnegotiated socket 생성시 레이블을 만들 때 사용됩니다. (예시: RTCEngine-unnegotiated-socket_0)
+     */
+    this.unnegotiatedSocketCount = 0
 
     // 자동 연결
     if (this.options.autoConnect) {
@@ -253,7 +259,8 @@ export default class RTCEngine extends ObservableClass {
     }
 
     const saveDataChannels = ({ channel: dataChannel }) => {
-      if (dataChannel.label === UNNEGOTIATED_SOCKET_LABEL) {
+      if (dataChannel.label.startsWith(UNNEGOTIATED_SOCKET_PREFIX)) {
+        this.unnegotiatedSocketCount++
         this.unnegotiatedDataChannels.push(dataChannel)
       } else {
         this.negotiatedDataChannels.set(dataChannel.label, dataChannel)
@@ -360,7 +367,8 @@ export default class RTCEngine extends ObservableClass {
    * @returns {Promise<RTCSocket>}
    */
   async createUnnegotiatedSocket () {
-    const dataChannel = this.pc.createDataChannel(UNNEGOTIATED_SOCKET_LABEL)
+    const label = `${UNNEGOTIATED_SOCKET_PREFIX}_${this.unnegotiatedSocketCount++}`
+    const dataChannel = this.pc.createDataChannel(label)
     const socket = new RTCSocket(dataChannel)
     await once(socket, '__received')
     return socket

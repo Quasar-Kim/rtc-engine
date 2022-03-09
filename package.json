@@ -18,6 +18,7 @@
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "test:unit": "wtr --watch",
+    "test:coverage": "wtr --coverage",
     "test:e2e": "mocha test/e2e/backend/*.test.mjs",
     "prepare": "eslint js/**/*.js && wtr && mocha test/e2e/backend/*.test.mjs --exit && npm run build"
   },

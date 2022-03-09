@@ -1,4 +1,4 @@
-import SignalerBase from '../js/signaler/Base.js'
+import SignalerBase from '../../js/signaler/Base.js'
 
 export default class BroadcastChannelSignaler extends SignalerBase {
   constructor () {
@@ -7,7 +7,7 @@ export default class BroadcastChannelSignaler extends SignalerBase {
     this.ready.set(true)
 
     this.bc.addEventListener('message', evt => {
-      this.emit('message', JSON.parse(evt.data))
+      this.receive(JSON.parse(evt.data))
       this.emit('incoming-msg', evt.data)
     })
   }
