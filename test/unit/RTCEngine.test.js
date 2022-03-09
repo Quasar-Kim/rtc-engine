@@ -109,6 +109,34 @@ describe('RTCEngine', () => {
     })
   })
 
+  describe('트렌젝션 생성', function () {
+    beforeEach(async function () {
+      this.engine = createEngine(this.signaler1)
+      this.engine2 = createEngine(this.signaler2)
+
+      await wait(this.engine.connection).toBe('connected')
+    })
+
+    it('같은 레이블로 각각 readable(), writable() 호출 시 트렌젝션 쌍 생성', async function () {
+      const [tx1, tx2] = await Promise.all([
+        this.engine.readable('my-transaction'),
+        this.engine2.writable('my-transaction')
+      ])
+
+      expect(tx1.label).to.equal(tx2.label)
+    })
+
+    it('레이블 없이 transaction() 호출 시 readables() 제네레이터로 트렌젝션을 받으면 소켓 생성', async function () {
+      const [tx1, k] = await Promise.all([
+        this.engine.writable(),
+        this.engine2.readables().next()
+      ])
+      const tx2 = k.value
+
+      expect(tx1.label).to.equal(tx2.label)
+    })
+  })
+
   describe('재연결 할 때', () => {
     it('connect() 호출 시 ice restart를 시작해야 함', async function () {
       const peer1 = createEngine(this.signaler1)

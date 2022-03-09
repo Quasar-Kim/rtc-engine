@@ -3,12 +3,13 @@ import ObservableClass, { wait, observe } from './util/ObservableClass.js'
 import RTCSocket from './RTCSocket.js'
 import once from './util/once.js'
 import Channel from './Channel.js'
-import TransactionWriter from './WritableTransaction.js'
-import TransactionReader from './ReadableTransaction.js'
+import WritableTransaction from './WritableTransaction.js'
+import ReadableTransaction from './ReadableTransaction.js'
 import ListenerManager from './util/ListenerManager.js'
 import ObservableQueue from './util/ObservableQueue.js'
 
 const UNNEGOTIATED_SOCKET_PREFIX = 'RTCEngine-unnegotiated-socket'
+const UNNEGOTIATED_TRANSACTION_PREFIX = 'RTCEngine-unnegotiated-transaction'
 
 /**
  * RTC 연결을 관리하는 엔진.
@@ -79,6 +80,11 @@ export default class RTCEngine extends ObservableClass {
     this.unnegotiatedDataChannels = new ObservableQueue()
 
     /**
+     * 상대방이 writable()을 레이블 없이 호출한 결과 이쪽에서 받은 데이터 채널들
+     */
+    this.unnegotiatedTransactions = new ObservableQueue()
+
+    /**
      * offer collision 방지를 위해 offer을 만드는 동안이면 기록
      */
     this.makingOffer = false
@@ -119,6 +125,11 @@ export default class RTCEngine extends ObservableClass {
      * unnegotiated socket 생성시 레이블을 만들 때 사용됩니다. (예시: RTCEngine-unnegotiated-socket_0)
      */
     this.unnegotiatedSocketCount = 0
+
+    /**
+     * 이때까지 생성된 unnegotiated transaction의 개수.
+     */
+    this.unnegotiatedTransactionCount = 0
 
     // 자동 연결
     if (this.options.autoConnect) {
@@ -262,6 +273,9 @@ export default class RTCEngine extends ObservableClass {
       if (dataChannel.label.startsWith(UNNEGOTIATED_SOCKET_PREFIX)) {
         this.unnegotiatedSocketCount++
         this.unnegotiatedDataChannels.push(dataChannel)
+      } else if (dataChannel.label.startsWith(UNNEGOTIATED_TRANSACTION_PREFIX)) {
+        this.unnegotiatedTransactionCount++
+        this.unnegotiatedTransactions.push(dataChannel)
       } else {
         this.negotiatedDataChannels.set(dataChannel.label, dataChannel)
       }
@@ -346,12 +360,10 @@ export default class RTCEngine extends ObservableClass {
 
   /**
    * 양쪽 피어에서 사용 가능한 RTCSocket을 엽니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 RTCSocket이 만들어집니다.
-   * @param {string|undefined} [label] 소켓을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
+   * @param {string|undefined} [label] 소켓을 식별하기 위한 식별자. __중복이 불가능합니다.__ 비워두면 unnegotiated socket을 생성합니다.
    * @returns {Promise<RTCSocket>} RTCSocket이 만들어지면 그걸 resolve하는 promise
    */
   async socket (label = undefined) {
-    await wait(this.polite).toBeDefined()
-
     // 레이블이 있으면 negotiated socket 생성
     if (typeof label === 'string') {
       return this.createNegotiatedSocket(label)
@@ -364,10 +376,11 @@ export default class RTCEngine extends ObservableClass {
   /**
    * 레이블 없이 동적으로 소켓을 생성합니다.
    * @private
+   * @param {string|undefined} [labelOverride] 데이터 채널의 레이블. 식별자로 사용되지 않고 중복이 가능합니다. 이 파라미터가 `undefined`면 데이터 채널의 레이블은 기본값으로 설정됩니다.
    * @returns {Promise<RTCSocket>}
    */
-  async createUnnegotiatedSocket () {
-    const label = `${UNNEGOTIATED_SOCKET_PREFIX}_${this.unnegotiatedSocketCount++}`
+  async createUnnegotiatedSocket (labelOverride = undefined) {
+    const label = labelOverride || `${UNNEGOTIATED_SOCKET_PREFIX}_${this.unnegotiatedSocketCount++}`
     const dataChannel = this.pc.createDataChannel(label)
     const socket = new RTCSocket(dataChannel)
     await once(socket, '__received')
@@ -392,6 +405,8 @@ export default class RTCEngine extends ObservableClass {
    * @returns {Promise<RTCSocket>}
    */
   async createNegotiatedSocket (label) {
+    await wait(this.polite).toBeDefined()
+
     // polite가 채널을 만드는 이유는 없음. 그냥 정한거.
     if (this.polite.get()) {
       const dataChannel = this.pc.createDataChannel(label)
@@ -415,26 +430,50 @@ export default class RTCEngine extends ObservableClass {
   /**
    * 데이터를 받기 위한 트렌젝션을 만듭니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 트렌젝션이 만들어집니다.
    * @param {string} label 트렌젝션을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
-   * @returns {Promise<TransactionReader>} 트렌젝션이 만들어지면 그걸 resolve하는 promise
+   * @returns {Promise<ReadableTransaction>} 트렌젝션이 만들어지면 그걸 resolve하는 promise
    */
   async readable (label) {
     const socket = await this.socket(label)
     const metadata = await once(socket, 'metadata')
-    const transaction = new TransactionReader(socket, metadata)
+    const transaction = new ReadableTransaction(socket, metadata)
     socket.writeEvent('__transaction-ready')
     return transaction
   }
 
   /**
    * 데이터를 보내기 위한 트렌젝션을 만듭니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 트렌젝션이 만들어집니다.
-   * @param {string} label 트렌젝션을 식별하기 위한 식별자. __중복이 불가능합니다.__ (RTCDataChannel과는 다릅니다)
-   * @returns {Promise<TransactionWriter>} 트렌젝션이 만들어지면 그걸 resolve하는 promise
+   * @param {string|undefined} [label] 트렌젝션을 식별하기 위한 식별자. __중복이 불가능합니다.__ 비워두면 unnegotiated transaction을 생성합니다
+   * @param {object} [metadata] 트렌젝션의 메타데이터. 아무 정보나 넣을 수 있습니다.
+   * @returns {Promise<WritableTransaction>} 트렌젝션이 만들어지면 그걸 resolve하는 promise
    */
-  async writable (label, metadata) {
-    const socket = await this.socket(label)
-    socket.writeEvent('metadata', metadata)
-    await once(socket, '__transaction-ready')
-    return new TransactionWriter(socket, metadata)
+  async writable (label = undefined, metadata) {
+    /**
+     * @type {RTCSocket}
+     */
+    let socket
+
+    if (typeof label === 'string') {
+      socket = await this.socket(label)
+    } else {
+      const labelOverride = `${UNNEGOTIATED_TRANSACTION_PREFIX}_${this.unnegotiatedTransactionCount++}`
+      socket = await this.createUnnegotiatedSocket(labelOverride)
+    }
+
+    await Promise.all([
+      once(socket, '__transaction-ready'),
+      socket.writeEvent('metadata', metadata)
+    ])
+    return new WritableTransaction(socket, metadata)
+  }
+
+  async * readables () {
+    for await (const dataChannel of this.unnegotiatedTransactions.pushes()) {
+      const socket = new RTCSocket(dataChannel, { received: true })
+      const metadata = await once(socket, 'metadata')
+      const transaction = new ReadableTransaction(socket, metadata)
+      socket.writeEvent('__transaction-ready')
+      yield transaction
+    }
   }
 
   /**
