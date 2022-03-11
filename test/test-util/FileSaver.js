@@ -1,5 +1,4 @@
-import * as IndexedDB from 'idb-keyval'
-import BlobSaver from 'file-saver'
+import BlobSaver from 'https://jspm.dev/file-saver'
 
 async function asyncIteratorToArray (asyncIterator) {
   const arr = []
@@ -61,13 +60,10 @@ export default class FileSaver {
 
   async promptDir () {
     this.saveDirHandle = await window.showDirectoryPicker()
-    IndexedDB.set('saveDirHandle', this.saveDirHandle)
     debug(this.saveDirHandle.name, '디렉토리가 선택됨')
   }
 
   async obtainPermission () {
-    this.saveDirHandle = await IndexedDB.get('saveDirHandle')
-
     if (this.saveDirHandle) {
       const permission = await this.saveDirHandle.queryPermission()
       if (permission === 'prompt') {

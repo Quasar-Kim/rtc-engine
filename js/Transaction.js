@@ -1,4 +1,4 @@
-import ObservableClass, { wait, observe } from './util/ObservableClass.js'
+import ObservableClass, { wait } from './util/ObservableClass.js'
 import progressTracker from './util/eta.js'
 import prettyBytes from './util/prettyBytes.js'
 
@@ -36,6 +36,8 @@ export default class Transaction extends ObservableClass {
     this.pausedMilliSeconds = 0
     this.processed = 0 // byte or length
 
+    this.timeout = -1
+
     this.initProgressTracking()
   }
 
@@ -53,10 +55,19 @@ export default class Transaction extends ObservableClass {
       historyTimeConstant: 10
     })
 
-    observe(this.processed).onChange(processed => {
+    this.timeout = setInterval(() => {
+      if (this.paused.get()) return
+
       const timestamp = Date.now() - this.pausedMilliSeconds
-      this.progressTracker.report(processed, timestamp)
-    })
+      this.progressTracker.report(this.processed.get(), timestamp)
+
+      this.emit('report', {
+        processed: this.processed.get(),
+        progress: this.progress,
+        eta: this.eta,
+        speed: this.speed
+      })
+    }, 500)
   }
 
   get eta () {
@@ -68,11 +79,15 @@ export default class Transaction extends ObservableClass {
       return Math.round(this.progressTracker?.estimate(this.lastPausedTimestamp))
     }
 
+    if (this.processed.get() === this.metadata.size) {
+      return 0
+    }
+
     return Math.round(this.progressTracker?.estimate(Date.now() - this.pausedMilliSeconds)) // 결과는 초
   }
 
   get progress () {
-    return Math.round(this.processed.get() / this.metadata.size * 100)
+    return this.processed.get() / this.metadata.size
   }
 
   get speed () {
@@ -95,5 +110,10 @@ export default class Transaction extends ObservableClass {
   resume () {
     this.paused = false
     this.pausedMilliSeconds += (Date.now() - this.lastPausedTimestamp)
+  }
+
+  stopReport () {
+    if (this.timeout === -1) return
+    clearInterval(this.timeout)
   }
 }

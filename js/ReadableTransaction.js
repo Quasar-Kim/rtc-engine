@@ -1,55 +1,88 @@
 import Transaction from './Transaction.js'
-// import once from './util/once.js'
 
 export default class ReadableTransaction extends Transaction {
   constructor (socket, metadata = { size: 0 }) {
     super(socket, metadata)
 
-    this.bufferFull = false
+    this.bufferFullInformed = false
+    this.aborted = false
+    this.canceled = false
+    this.cancelReason = null
+
     this.stream = new ReadableStream({
       start: controller => {
+        const isDone = () => this.processed.get() === metadata.size
+
         socket.on('data', data => {
           if (!(data instanceof ArrayBuffer)) return
 
           controller.enqueue(data)
           this.processed = this.processed.get() + data.byteLength
 
-          if (controller.desiredSize < 0) {
-            this.bufferFull = true
+          if (controller.desiredSize < 0 && !this.bufferFullInformed) {
+            this.bufferFullInformed = true
             socket.writeEvent('buffer-full')
+          }
+
+          if (isDone()) {
+            socket.close()
+            controller.close()
+            this.done = true
           }
         })
 
-        socket.on('close', async () => {
-          controller.close()
-          this.done = true
+        socket.once('close', () => {
+          this.stopReport()
+          if (this.aborted || isDone()) return
+
+          if (this.canceled) {
+            if (this.cancelReason instanceof Error) {
+              controller.error(this.cancelReason)
+            } else {
+              controller.error('Transaction canceled: ' + this.cancelReason)
+            }
+          }
+
+          controller.error(new Error('Socket has been closed unexpectedly'))
         })
 
-        socket.on('abort', () => {
+        socket.once('abort', errMsg => {
+          this.aborted = true
           socket.close()
-          controller.error(new Error('Stream aborted'))
+          controller.error(new Error('Transaction aborted: ' + errMsg))
         })
 
         // writer측에서 일시정지/재개됬을때
         socket.on('pause', () => super.pause())
         socket.on('resume', () => super.resume())
-        socket.dataChannel.addEventListener('close', () => {
-          this.paused = true
-        })
       },
       pull: () => {
-        if (!this.bufferFull) return
+        if (!this.bufferFullInformed) return
 
         socket.writeEvent('pull')
-        this.bufferFull = false
+        this.bufferFullInformed = false
       },
-      cancel: reason => this.stop(reason)
-    }, new ByteLengthQueuingStrategy({ highWaterMark: 10 * 1024 * 1024 /* 10 MiB */ }))
+      cancel: reason => {
+        this.cancel(reason)
+      }
+    }, new ByteLengthQueuingStrategy({ highWaterMark: 10 * 1024 * 1024 /* 10 MB */ }))
+  }
+
+  cancel (reason = '') {
+    this.canceled = true
+    this.cancelReason = reason
+
+    if (reason instanceof Error) {
+      this.socket.writeEvent('cancel', reason.message)
+    } else {
+      this.socket.writeEvent('cancel', reason)
+    }
+
+    console.log(`[Transaction:${this.label}] cancel됨`)
   }
 
   stop () {
-    this.socket.writeEvent('cancel')
-    console.log('[ReadableTransaction] cancel 요청함')
+    this.cancel('stop() called by receiver')
   }
 
   pause () {
