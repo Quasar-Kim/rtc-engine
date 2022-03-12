@@ -30,8 +30,7 @@ describe('WritableTransaction', () => {
     const writer = this.transaction.stream.getWriter()
     writer.write()
       .then(() => done('error not thrown'))
-      .catch(err => {
-        expect(err.message).to.equal('Canceled from receiver: no reason')
+      .catch(() => {
         expect(this.socket.close.called).to.equal(true)
         done()
       })

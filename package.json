@@ -1,6 +1,6 @@
 {
   "name": "rtc-engine",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "WebRTC를 이용한 데이터 전송을 위한 라이브러리",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "test:unit": "wtr --watch",
     "test:coverage": "wtr --coverage",
     "test:e2e": "mocha test/e2e/backend/*.test.mjs",
-    "prepare": "eslint js/**/*.js && wtr && mocha test/e2e/backend/*.test.mjs --exit && npm run build"
+    "prepare": "eslint js/**/*.js && wtr && npm run build"
   },
   "author": "Quasar-Kim",
   "license": "MIT",
