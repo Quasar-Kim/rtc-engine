@@ -78,7 +78,7 @@ export default class Mitt {
 
   once (type, handler) {
     this.on(type, (evt, off) => {
-      // off()
+      off()
       handler(evt, off)
     })
   }
