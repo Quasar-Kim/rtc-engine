@@ -145,27 +145,27 @@ export default class RTCEngine extends Mitt {
     // 2. 재연결 시 한쪽(B)이 새로고침 된 경우: B에서 시드를 보내면 A는 자신의 role을 초기화하고 자신의 시드를 보냄.
     // 어떤 경우이든지 서로 시드를 교환하게 됨.
     return new Promise(resolve => {
-      const sendRoleSeed = () => {
-        this.signaler.send({
+      const sendRoleSeed = async () => {
+        await this.sendSignal({
           type: 'role',
           seed: this.seed
         })
       }
 
-      this.signaler.on('role', msg => {
+      this.signaler.on('role', async msg => {
         const remoteSeed = msg.seed
 
         // role이 설정되어 있는 경우
         if (this.polite.get() !== undefined) {
           this.polite.set(undefined)
-          sendRoleSeed()
+          await sendRoleSeed()
         }
 
         // role이 설정되어 있지 않은 경우
         if (remoteSeed === this.seed) {
           // 시드 충돌 발생시 자신의 시드를 바꿔서 전송
           this.seed = Math.random()
-          sendRoleSeed()
+          await sendRoleSeed()
         } else if (remoteSeed > this.seed) {
           this.polite.set(true)
           resolve()
@@ -175,6 +175,7 @@ export default class RTCEngine extends Mitt {
         }
       })
 
+      // 여긴 await할 이유가 딱히 없음
       sendRoleSeed()
     })
   }
@@ -198,7 +199,7 @@ export default class RTCEngine extends Mitt {
         this.makingOffer = true
         await this.pc.setLocalDescription()
         console.groupCollapsed('creating offer')
-        this.signaler.send({
+        await this.sendSignal({
           type: 'description',
           description: this.pc.localDescription
         })
@@ -208,9 +209,9 @@ export default class RTCEngine extends Mitt {
       }
     }
 
-    const sendIceCandidate = rtcIceCandidate => {
+    const sendIceCandidate = async rtcIceCandidate => {
       console.groupCollapsed('sending ice candidate')
-      this.signaler.send({
+      await this.sendSignal({
         type: 'icecandidate',
         candidate: rtcIceCandidate.candidate
       })
@@ -242,7 +243,7 @@ export default class RTCEngine extends Mitt {
       if (description.type === 'offer') {
         await this.pc.setLocalDescription()
         console.groupCollapsed('making answer')
-        this.signaler.send({
+        await this.sendSignal({
           type: 'description',
           description: this.pc.localDescription
         })
@@ -481,6 +482,16 @@ export default class RTCEngine extends Mitt {
   async channel (label) {
     const socket = await this.socket(label)
     return new Channel(socket, this)
+  }
+
+  /**
+   * 시그널러를 통해서 시그널 메시지를 전송합니다.
+   * @private
+   * @param {object} msg 전송할 시그널 메시지
+   */
+  async sendSignal (msg) {
+    await wait(this.signaler.ready).toBe(true)
+    this.signaler.send(msg)
   }
 
   /**
