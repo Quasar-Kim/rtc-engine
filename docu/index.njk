@@ -1,0 +1,10 @@
+---
+title: 문서 목록
+layout: base.njk
+---
+
+<ul>
+  {% for doc in collections.doc %}
+    <li><a href="{{ doc.url | url }}">{{ doc.data.title }}</a></li>
+  {% endfor %}
+</ul>
