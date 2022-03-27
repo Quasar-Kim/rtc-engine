@@ -19,7 +19,7 @@ jobs:
         run: npm run lint
 
       - name: Test
-        run: npm run test:unit
+        run: npx wtr
 
       - name: Build
         run: npm run build
@@ -46,7 +46,7 @@ jobs:
         run: node "${GITHUB_WORKSPACE}/script/createDemoForRelease.mjs"
 
       - name: Generate Documentation
-        run: eleventy
+        run: npx eleventy
 
       - name: Checkout website branch
         uses: actions/checkout@v2
