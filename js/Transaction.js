@@ -1,4 +1,5 @@
-import ObservableClass, { wait } from './util/ObservableClass.js'
+import Mitt from './util/Mitt.js'
+import { ObservableEntry, wait } from './util/ObservableEntry.js'
 import progressTracker from './util/eta.js'
 import prettyBytes from './util/prettyBytes.js'
 
@@ -10,11 +11,7 @@ import prettyBytes from './util/prettyBytes.js'
  * 또, 메타데이터 전송 / 전송 컨트롤(일시정지, 재개, 중단) / 전송 속도 및 진행률 추적등의 기능을 제공합니다.
  * 이 클래스는 보내는 쪽과 받는 쪽에서 공통적으로 사용되는 기능을 구현한 베이스로 실제 파일 전송에 관련된 코드는 ReadableTransaction.js와 WritableTransaction.js에 있습니다.
  */
-export default class Transaction extends ObservableClass {
-  static get observableProps () {
-    return ['paused', 'processed', 'done']
-  }
-
+export default class Transaction extends Mitt {
   /**
    * 트렌젝션을 만듭니다.
    * @param {RTCSocket} socket 데이터 전송에 사용할 RTCSocket
@@ -26,15 +23,15 @@ export default class Transaction extends ObservableClass {
 
     /** @type {RTCDataChannel} */
     this.socket = socket
-    this.paused = false
     this.metadata = metadata
-    this.done = false
     this.label = this.socket.label
+    this.paused = new ObservableEntry(false)
+    this.done = new ObservableEntry(false)
 
     // 전송 상태 트레킹
     this.lastPausedTimestamp = 0
     this.pausedMilliSeconds = 0
-    this.processed = 0 // byte or length
+    this.processed = new ObservableEntry(0) // byte or length
 
     this.timeout = -1
 
@@ -103,12 +100,12 @@ export default class Transaction extends ObservableClass {
   }
 
   pause () {
-    this.paused = true
+    this.paused.set(true)
     this.lastPausedTimestamp = Date.now()
   }
 
   resume () {
-    this.paused = false
+    this.paused.set(false)
     this.pausedMilliSeconds += (Date.now() - this.lastPausedTimestamp)
   }
 

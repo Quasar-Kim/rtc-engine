@@ -1,4 +1,5 @@
-import ObservableClass from './util/ObservableClass.js'
+import Mitt from './util/Mitt.js'
+import { ObservableEntry } from './util/ObservableEntry.js'
 import once from './util/once.js'
 
 // RTCDataChannel은 실제 버퍼 사이즈를 보여주지 않으나 사이즈를 넘게 데이터가 들어가면 채널이 터져버림
@@ -6,11 +7,7 @@ import once from './util/once.js'
 // 또 writable 스트림의 버퍼 사이즈로도 사용
 const DATA_CHANNEL_BUFFER_SIZE = 10 * 1024 * 1024 // 10MB
 
-export default class RTCSocket extends ObservableClass {
-  static get observableProps () {
-    return ['ready']
-  }
-
+export default class RTCSocket extends Mitt {
   // options - received boolean
   constructor (dataChannel, options = {}) {
     super()
@@ -25,14 +22,14 @@ export default class RTCSocket extends ObservableClass {
       if (this.closed) return
 
       // close() 호출 이외의 이유로 닫힌 경우
-      this.ready = false
+      this.ready.set(false)
       console.log(`[RTCSocket:${this.label}] 상대에 의해서 소켓 닫힘`)
     })
     this.label = this.dataChannel.label
 
     // 앞의 메시지가 버퍼 사이즈 문제로 인해 대기 중이라면 이게 true로 설정됨
     // 뒤의 메시지는 이 속성이 false가 되면 처리됨
-    this.ready = true
+    this.ready = new ObservableEntry(true)
     this.closed = false
 
     if (options.received) {
@@ -79,7 +76,7 @@ export default class RTCSocket extends ObservableClass {
       }
 
       if (data.byteLength + this.dataChannel.bufferedAmount > DATA_CHANNEL_BUFFER_SIZE) {
-        this.ready = false
+        this.ready.set(false)
         this.dataChannel.bufferedAmountLowThreshold = DATA_CHANNEL_BUFFER_SIZE - data.byteLength
         await once(this.dataChannel, 'bufferedamountlow')
         this.dataChannel.bufferedAmountLowThreshold = 0
@@ -97,12 +94,12 @@ export default class RTCSocket extends ObservableClass {
     }
 
     this.dataChannel.send(msg)
-    this.ready = true
+    this.ready.set(true)
   }
 
   close () {
     this.dataChannel.close()
-    this.ready = false
+    this.ready.set(false)
     this.closed = true
     console.log(`[RTCSocket:${this.label}] 소켓 닫음`)
   }

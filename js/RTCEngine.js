@@ -1,12 +1,13 @@
-import ObservableMap from './util/ObservableMap.js'
-import ObservableClass, { wait, observe } from './util/ObservableClass.js'
 import RTCSocket from './RTCSocket.js'
 import once from './util/once.js'
 import Channel from './Channel.js'
 import WritableTransaction from './WritableTransaction.js'
 import ReadableTransaction from './ReadableTransaction.js'
+import ObservableMap from './util/ObservableMap.js'
 import ListenerManager from './util/ListenerManager.js'
 import ObservableQueue from './util/ObservableQueue.js'
+import Mitt from './util/Mitt.js'
+import { ObservableEntry, wait, observe } from './util/ObservableEntry.js'
 
 const UNNEGOTIATED_SOCKET_PREFIX = 'RTCEngine-unnegotiated-socket'
 const UNNEGOTIATED_TRANSACTION_PREFIX = 'RTCEngine-unnegotiated-transaction'
@@ -14,11 +15,7 @@ const UNNEGOTIATED_TRANSACTION_PREFIX = 'RTCEngine-unnegotiated-transaction'
 /**
  * RTC 연결을 관리하는 엔진.
  */
-export default class RTCEngine extends ObservableClass {
-  static get observableProps () {
-    return ['connection', 'polite', 'closed']
-  }
-
+export default class RTCEngine extends Mitt {
   /**
    * RTCEngine을 생성합니다. autoConnect 옵션이 true일경우(기본값) 자동으로 연결을 시작합니다.
    * @param {*} signaler 메시지 송수신에 사용할 시그널러.
@@ -58,7 +55,7 @@ export default class RTCEngine extends ObservableClass {
     /**
      * perfect negotiation pattern에서 사용하는 role
      */
-    this.polite = this.options.role ? this.options.role === 'polite' : undefined
+    this.polite = new ObservableEntry(this.options.role ? this.options.role === 'polite' : undefined)
 
     /**
      * 피어 커넥션 객체
@@ -96,9 +93,9 @@ export default class RTCEngine extends ObservableClass {
 
     /**
      * 연결의 상태를 나타냄. inactive, closed를 제외하고는 RTCPeerConnection의 connectionState와 동일함.
-     * @type {'inactive'|'connecting'|'connected'|'disconnected'|'failed'|'closed'}
+     * @type {ObservableEntry<'inactive'|'connecting'|'connected'|'disconnected'|'failed'|'closed'>}
      */
-    this.connection = 'inactive'
+    this.connection = new ObservableEntry('inactive')
 
     /**
      * 외부 API에 건 이벤트 리스너들을 관리하는 객체
@@ -118,7 +115,7 @@ export default class RTCEngine extends ObservableClass {
     /**
      * 연결이 닫혔는지 나타내는 속성
      */
-    this.closed = false
+    this.closed = new ObservableEntry(false)
 
     /**
      * 이때까지 생성된 unnegotiated socket의 개수.
@@ -160,7 +157,7 @@ export default class RTCEngine extends ObservableClass {
 
         // role이 설정되어 있는 경우
         if (this.polite.get() !== undefined) {
-          this.polite = undefined
+          this.polite.set(undefined)
           sendRoleSeed()
         }
 
@@ -170,10 +167,10 @@ export default class RTCEngine extends ObservableClass {
           this.seed = Math.random()
           sendRoleSeed()
         } else if (remoteSeed > this.seed) {
-          this.polite = true
+          this.polite.set(true)
           resolve()
         } else {
-          this.polite = false
+          this.polite.set(false)
           resolve()
         }
       })
@@ -266,7 +263,7 @@ export default class RTCEngine extends ObservableClass {
 
     const updateConnectionState = () => {
       console.log('[RTCEngine]', 'connection state:', this.pc.connectionState)
-      this.connection = this.pc.connectionState
+      this.connection.set(this.pc.connectionState)
     }
 
     const saveDataChannels = ({ channel: dataChannel }) => {
@@ -503,8 +500,8 @@ export default class RTCEngine extends ObservableClass {
     this.pc = null
     this.listenerManager.clear()
     this.negotiatedDataChannels.clear()
-    this.closed = true
-    this.connection = 'closed'
+    this.closed.set(true)
+    this.connection.set('closed')
     console.log('[RTCEngine]', '연결 닫힘')
 
     this.signaler.close()

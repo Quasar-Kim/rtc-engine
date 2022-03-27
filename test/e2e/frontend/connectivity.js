@@ -1,5 +1,5 @@
 import RTCEngine from '../../../js/RTCEngine.js'
-import { observe } from '../../../js/util/ObservableClass.js'
+import { observe } from '../../../js/util/ObservableEntry.js'
 import once from '../../../js/util/once.js'
 import './PuppeteerSignaler.js'
 

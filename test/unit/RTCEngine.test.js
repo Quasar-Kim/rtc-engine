@@ -1,5 +1,5 @@
 import RTCEngine from '../../js/RTCEngine.js'
-import { wait } from '../../js/util/ObservableClass.js'
+import { wait } from '../../js/util/ObservableEntry.js'
 import TestSignaler from '../test-util/TestSignaler.js'
 import { createEngine } from '../test-util/engineFactory.js'
 import sinon from 'sinon'
@@ -143,7 +143,7 @@ describe('RTCEngine', () => {
       const peer2 = createEngine(this.signaler2)
       await wait(peer1.connection).toBe('connected')
 
-      peer1.connection = 'failed'
+      peer1.connection.set('failed')
       const spy = sinon.spy(RTCEngine.prototype, 'restartIce')
       peer1.connect()
 
@@ -156,8 +156,8 @@ describe('RTCEngine', () => {
       await wait(peer1.connection).toBe('connected')
 
       // peer1에 role 재설정 요구
-      peer2.polite = undefined
-      this.signaler1.emit('message', {
+      peer2.polite.set(undefined)
+      this.signaler1.emit('role', {
         type: 'role',
         seed: 1
       })
@@ -166,9 +166,9 @@ describe('RTCEngine', () => {
       await new Promise(resolve => setTimeout(resolve))
 
       // eslint-disable-next-line no-unused-expressions
-      expect(peer1.polite).not.to.be.undefined
+      expect(peer1.polite.val).not.to.be.undefined
       // eslint-disable-next-line no-unused-expressions
-      expect(peer2.polite).not.to.be.undefined
+      expect(peer2.polite.val).not.to.be.undefined
     })
 
     describe('connectionState가 failed가 되면', () => {
@@ -178,7 +178,7 @@ describe('RTCEngine', () => {
         await wait(peer1.connection).toBe('connected')
 
         const spy = sinon.spy(RTCEngine.prototype, 'restartIce')
-        peer1.connection = 'failed'
+        peer1.connection.set('failed')
 
         // 한 task 대기
         await new Promise(resolve => setTimeout(resolve))
@@ -196,7 +196,7 @@ describe('RTCEngine', () => {
           value: true,
           writable: true
         })
-        peer1.connection = 'failed' // 재연결 로직이 불림
+        peer1.connection.set('failed') // 재연결 로직이 불림
 
         // 한 task 대기
         await new Promise(resolve => setTimeout(resolve))
@@ -215,7 +215,7 @@ describe('RTCEngine', () => {
           value: false,
           writable: true
         })
-        peer1.connection = 'failed' // 재연결 로직이 불림
+        peer1.connection.set('failed') // 재연결 로직이 불림
 
         // 한 task 대기
         await new Promise(resolve => setTimeout(resolve))

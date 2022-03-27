@@ -44,7 +44,7 @@ describe('signaler API', function () {
     await peer1.connect()
 
     // 강제로 상태 바꿔버리기
-    peer1.connection = 'disconnected'
+    peer1.connection.set('disconnected')
 
     expect(this.signaler1.disconnected.called).to.equal(true)
   })
@@ -59,7 +59,7 @@ describe('signaler API', function () {
     await peer1.connect()
 
     // 강제로 상태 바꿔버리기
-    peer1.connection = 'failed'
+    peer1.connection.set('failed')
 
     expect(this.signaler1.failed.called).to.equal(true)
   })

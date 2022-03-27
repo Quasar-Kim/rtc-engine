@@ -15,7 +15,7 @@ describe('LocalSignaler', function () {
     })
 
     await new Promise(resolve => setTimeout(resolve, 150))
-    expect(signaler.bc.postMessage.lastCall.firstArg.type).to.equal('heartbeat')
+    expect(JSON.parse(signaler.bc.postMessage.lastCall.firstArg).type).to.equal('heartbeat')
   })
 
   it('상대에게서 heartbeat 메시지를 받으면 연결된걸로 간주해야 함', async function () {

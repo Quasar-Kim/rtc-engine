@@ -8,7 +8,7 @@ async function fakeSending () {
 
   // 약 500ms 간격으로 10씩 2회 증가 시키기
   for (let i = 0; i < 2; i++) {
-    this.transaction.processed = this.transaction.processed.get() + 10
+    this.transaction.processed.set(this.transaction.processed.get() + 10)
     await new Promise(resolve => setTimeout(resolve, 500))
   }
 }

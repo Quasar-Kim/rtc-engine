@@ -17,7 +17,7 @@ export default class ReadableTransaction extends Transaction {
           if (!(data instanceof ArrayBuffer)) return
 
           controller.enqueue(data)
-          this.processed = this.processed.get() + data.byteLength
+          this.processed.set(this.processed.get() + data.byteLength)
 
           if (controller.desiredSize < 0 && !this.bufferFullInformed) {
             this.bufferFullInformed = true
@@ -27,7 +27,7 @@ export default class ReadableTransaction extends Transaction {
           if (isDone()) {
             socket.close()
             controller.close()
-            this.done = true
+            this.done.set(true)
           }
         })
 

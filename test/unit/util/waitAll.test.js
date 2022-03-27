@@ -1,5 +1,4 @@
-import { waitAll } from '../../../js/util/ObservableClass.js'
-import { ObservableEntry } from '../../../js/util/ObservableEntry.js'
+import { ObservableEntry, waitAll } from '../../../js/util/ObservableEntry.js'
 import { expect } from '@esm-bundle/chai'
 
 describe('waitAll()', () => {

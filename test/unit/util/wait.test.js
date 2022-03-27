@@ -1,5 +1,4 @@
-import { wait } from '../../../js/util/ObservableClass.js'
-import { ObservableEntry, WaitEntry } from '../../../js/util/ObservableEntry.js'
+import { ObservableEntry, WaitEntry, wait } from '../../../js/util/ObservableEntry.js'
 import { expect } from '@esm-bundle/chai'
 import sinon from 'sinon'
 

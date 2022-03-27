@@ -1,6 +1,5 @@
 export { default as ListenerManager } from './ListenerManager.js'
 export { default as Mitt } from './Mitt.js'
-export { default as ObservableClass, wait, observe, waitAll } from './ObservableClass.js'
-export { ObservableEntry, WaitEntry } from './ObservableEntry.js'
+export { ObservableEntry, WaitEntry, wait, observe, waitAll } from './ObservableEntry.js'
 export { default as once } from './once.js'
 export { default as Queue } from './Queue.js'

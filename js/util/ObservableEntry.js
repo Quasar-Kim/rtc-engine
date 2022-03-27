@@ -159,3 +159,60 @@ export class WaitEntry {
     this.toBeChanged().then(callback)
   }
 }
+
+export function wait (observableEntry) {
+  return new WaitEntry({ observableEntry })
+}
+
+export function observe (observableEntry) {
+  return new WaitEntry({ observableEntry, once: false })
+}
+
+export function waitAll (waitEntriesFn) {
+  let resolveFn
+  const promise = new Promise(resolve => {
+    resolveFn = resolve
+  })
+
+  // 각 waitEntry 별 resolve 여부 나타냄
+  /**
+   * @type {Map<WaitEntry, boolean>}
+   */
+  const waitEntries = new Set()
+  let fulfilledWaitEntries = 0
+
+  // waitEntry 받고...
+  waitEntriesFn(observableEntry => {
+    let resolved = false
+    const waitEntry = new WaitEntry({
+      observableEntry,
+      once: false,
+      unmatchedCallback: () => {
+        if (!resolved) return
+
+        resolved = false
+        fulfilledWaitEntries--
+      }
+    })
+
+    // 맞으면 fulfilledWaitEntry 추가
+    waitEntry.then(() => {
+      if (resolved) return
+
+      resolved = true
+      fulfilledWaitEntries++
+      if (fulfilledWaitEntries === waitEntries.size) {
+        // 정리
+        for (const entry of waitEntries.values()) {
+          entry.cancel()
+        }
+        resolveFn()
+      }
+    })
+
+    waitEntries.add(waitEntry)
+    return waitEntry
+  })
+
+  return promise
+}

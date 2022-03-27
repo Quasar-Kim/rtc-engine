@@ -1,7 +1,6 @@
 import Transaction from './Transaction.js'
 import ChunkProducer from './ChunkProducer.js'
-import { wait, waitAll } from './util/ObservableClass.js'
-import { ObservableEntry } from './util/ObservableEntry.js'
+import { ObservableEntry, wait, waitAll } from './util/ObservableEntry.js'
 
 // 한번에 큰 arraybuffer를 전송시에도 채널이 터질 수 있음
 // 따라서 데이터를 청크로 끊어서 보내야 함
@@ -76,7 +75,7 @@ export default class WritableTransaction extends Transaction {
         await socket.write(data.buffer)
         await wait(socket.ready).toBe(true)
 
-        this.processed = this.processed.get() + data.length
+        this.processed.set(this.processed.get() + data.length)
       },
       close: async () => {
         // 여기는 위 write가 완료되어야 호출되므로 일단 모든 메시지가 데이터 채널의 버퍼로 들어간 상태
@@ -93,7 +92,7 @@ export default class WritableTransaction extends Transaction {
         // await once(socket, 'ready-to-close')
 
         // socket.close()
-        this.done = true
+        this.done.set(true)
       },
       // abort되면 abort 이벤트 전달
       abort: reason => {
@@ -126,7 +125,7 @@ export default class WritableTransaction extends Transaction {
   stop () {
     // stream의 write 메소드가 resolve 되어야지 abort가 정상적으로 처리됨
     // 따라서 강제로 상태 업데이트
-    this.paused = false
+    this.paused.set(false)
     this.readableBufferFull = false
     this.abortController.abort('stop() called by sender')
   }
