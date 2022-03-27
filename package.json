@@ -11,7 +11,7 @@
   "exports": {
     ".": "./js/RTCEngine.js",
     "./util": "./js/util/index.js",
-    "./signaler-base": "./js/signaler/Base.js"
+    "./signaler": "./js/signaler/index.js"
   },
   "jsdelivr": "dist/RTCEngine.min.js",
   "unpkg": "dist/RTCEngine.min.js",

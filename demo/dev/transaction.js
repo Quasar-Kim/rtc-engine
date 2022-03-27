@@ -1,6 +1,6 @@
 import RTCEngine from '../../js/RTCEngine.js'
 import { observe } from '../../js/util/index.js'
-import BroadcastChannelSignaler from './BroadcastChannelSignaler.js'
+import LocalSignaler from '../../js/signaler/LocalSignaler.js'
 import FileSaver from '../../test/test-util/FileSaver.js'
 
 // -------------------
@@ -36,7 +36,7 @@ function logEngine (msg) {
 // RTC connection
 const connectBtn = document.querySelector('#connect')
 
-const signaler = new BroadcastChannelSignaler()
+const signaler = new LocalSignaler()
 const engine = new RTCEngine(signaler, { autoConnect: false })
 
 // 연결 상태 보여주기

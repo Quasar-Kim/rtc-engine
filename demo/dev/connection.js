@@ -1,6 +1,6 @@
 import RTCEngine from '../../js/RTCEngine.js'
 import { observe } from '../../js/util/index.js'
-import BroadcastChannelSignaler from './BroadcastChannelSignaler.js'
+import LocalSignaler from '../../js/signaler/LocalSignaler.js'
 import beautifyJSON from 'https://jspm.dev/json-beautify'
 
 // -------------------
@@ -130,7 +130,7 @@ function logSignaler (msg, direction) {
 
 // -------------------
 // signaler setup
-const signaler = new BroadcastChannelSignaler()
+const signaler = new LocalSignaler()
 
 // 들어오는 시그널 로그하기
 signaler.on('incoming-msg', msg => {

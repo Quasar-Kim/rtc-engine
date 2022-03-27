@@ -1,6 +1,6 @@
 import RTCEngine from '../../js/RTCEngine.js'
 import { wait, observe } from '../../js/util/index.js'
-import BroadcastChannelSignaler from './BroadcastChannelSignaler.js'
+import LocalSignaler from '../../js/signaler/LocalSignaler.js'
 
 // -------------------
 // engine logging
@@ -37,7 +37,7 @@ const connectBtn = document.querySelector('#connect')
 const closeBtn = document.querySelector('#close')
 const stateText = document.querySelector('#state')
 
-const signaler = new BroadcastChannelSignaler()
+const signaler = new LocalSignaler()
 const engine = new RTCEngine(signaler, { autoConnect: false })
 
 // connect 버튼 누르면 connect() 메소드 부르기
