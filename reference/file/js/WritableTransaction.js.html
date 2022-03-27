@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">js/WritableTransaction.js | rtc-engine</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="WebRTC&#xB97C; &#xC774;&#xC6A9;&#xD55C; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xB77C;&#xC774;&#xBE0C;&#xB7EC;&#xB9AC;"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="rtc-engine"><meta property="twitter:description" content="WebRTC&#xB97C; &#xC774;&#xC6A9;&#xD55C; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xB77C;&#xC774;&#xBE0C;&#xB7EC;&#xB9AC;"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/Quasar-Kim/rtc-engine"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-EventListenerEntry">EventListenerEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">js/WritableTransaction.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Transaction from &apos;./Transaction.js&apos;
+import ChunkProducer from &apos;./ChunkProducer.js&apos;
+import { ObservableEntry, wait, waitAll } from &apos;./util/ObservableEntry.js&apos;
+
+// &#xD55C;&#xBC88;&#xC5D0; &#xD070; arraybuffer&#xB97C; &#xC804;&#xC1A1;&#xC2DC;&#xC5D0;&#xB3C4; &#xCC44;&#xB110;&#xC774; &#xD130;&#xC9C8; &#xC218; &#xC788;&#xC74C;
+// &#xB530;&#xB77C;&#xC11C; &#xB370;&#xC774;&#xD130;&#xB97C; &#xCCAD;&#xD06C;&#xB85C; &#xB04A;&#xC5B4;&#xC11C; &#xBCF4;&#xB0B4;&#xC57C; &#xD568;
+const CHUNK_SIZE = 200 * 1024 // 200KB
+
+/*
+&#xC804;&#xCCB4; &#xD30C;&#xC774;&#xD504; &#xAD6C;&#xC870;:
+source -&gt; chunkingStream -&gt; writable --- socket --- readable -&gt; destination
+
+ - &#xC804;&#xC1A1; &#xC644;&#xB8CC;: writable close &#xBD88;&#xB9BC; -&gt; socket&#xC5D0;&#xC11C; done &#xC774;&#xBCA4;&#xD2B8; &#xBC1C;&#xC0DD; -&gt; readable&#xC5D0;&#xC11C; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110; close &#xC774;&#xBCA4;&#xD2B8; &#xAE30;&#xB2E4;&#xB9BC; -&gt; &#xC2A4;&#xD2B8;&#xB9BC; &#xB2EB;&#xAE30;
+                                  -&gt; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110; &#xB2EB;&#xC74C;(done &#xC774;&#xBCA4;&#xD2B8;&#xC640; &#xBC14;&#xC774;&#xB108;&#xB9AC; &#xB370;&#xC774;&#xD130;&#xC758; &#xC804;&#xC1A1; &#xC21C;&#xC11C;&#xB294; &#xC9C0;&#xCF1C;&#xC9C0;&#xC9C0; &#xC54A;&#xC73C;&#xBBC0;&#xB85C; readable&#xC5D0;&#xC11C; &#xB2EB;&#xC744; &#xC218; &#xC5C6;&#xC74C;)
+ - &#xBCF4;&#xB0B4;&#xB294; &#xCABD;&#xC5D0;&#xC11C; &#xC911;&#xB2E8;&#xD560;&#xB54C;: writable abort &#xBD88;&#xB9BC; -&gt; socket&#xC5D0;&#xC11C; abort &#xC774;&#xBCA4;&#xD2B8; &#xBC1C;&#xC0DD; -&gt; readable&#xC5D0;&#xC11C; &#xC5D0;&#xB7EC; &#xBC1C;&#xC0DD;&#xC2DC;&#xD0A4;&#xACE0; &#xC18C;&#xCF13; &#xB2EB;&#xC74C;
+ - &#xBC1B;&#xB294; &#xCABD;&#xC5D0;&#xC11C; &#xC911;&#xB2E8;&#xD560;&#xB54C;:  readable cancel &#xBD88;&#xB9BC; -&gt; socket&#xC5D0;&#xC11C; cancel &#xC774;&#xBCA4;&#xD2B8; &#xBC1C;&#xC0DD; -&gt; writable&#xC5D0;&#xC11C; &#xC5D0;&#xB7EC; &#xBC1C;&#xC0DD;&#xC2DC;&#xD0A4;&#xACE0; &#xC18C;&#xCF13; &#xB2EB;&#xC74C;
+ - &#xC77C;&#xC2DC;&#xC815;&#xC9C0;(readable): readable&#xC5D0;&#xC11C; &apos;pause&apos;, &apos;resume&apos; &#xC774;&#xBCA4;&#xD2B8; &#xBC1C;&#xC0DD; -&gt; writable&#xC5D0;&#xC11C; &#xBC1B;&#xC544;&#xC11C; &#xD750;&#xB984; &#xC870;&#xC808;
+*/
+
+// /**
+//  * @typedef {import(&apos;./RTCSocket.js&apos;).default} RTCSocket
+//  */
+
+export default class WritableTransaction extends Transaction {
+  /**
+   * &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.
+   * @param {RTCSocket} socket &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC5D0; &#xC0AC;&#xC6A9;&#xD560; RTCSocket
+   * @param {object} metadata &#xC0C1;&#xB300;&#xC5D0;&#xAC8C; &#xC804;&#xC1A1;&#xD560; &#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;. &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C4; &#xD6C4; `metadata` &#xC18D;&#xC131;&#xC73C;&#xB85C; &#xC77D;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. `size` &#xC18D;&#xC131;&#xC740; &#xD544;&#xC218;&#xC774;&#xBA70; &#xADF8; &#xC774;&#xC678;&#xC758; &#xC18D;&#xC131;&#xC740; &#xC784;&#xC758;&#xB85C; &#xCD94;&#xAC00;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
+   * @param {number} metadata.size &#xBC14;&#xC774;&#xD2B8;&#xB85C; &#xB098;&#xD0C0;&#xB0B8; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xD06C;&#xAE30;.
+   */
+  constructor (socket, metadata) {
+    super(socket, metadata)
+
+    this.readableBufferFull = new ObservableEntry(false)
+    this.aborted = false
+    this.canceled = false
+
+    const writable = new WritableStream({
+      start: controller =&gt; {
+        const isDone = () =&gt; this.processed.get() === metadata.size
+
+        // cancel &#xC774;&#xBCA4;&#xD2B8; &#xC624;&#xBA74; &#xC5D0;&#xB7EC; &#xBC1C;&#xC0DD;&#xC2DC;&#xCF1C;&#xC11C; &#xC2A4;&#xD2B8;&#xB9BC;&#xC744; &#xBA48;&#xCDA4;
+        socket.once(&apos;cancel&apos;, errMsg =&gt; {
+          this.canceled = true
+          socket.close()
+          controller.error(new Error(&apos;Transaction canceled: &apos; + errMsg))
+        })
+
+        socket.once(&apos;close&apos;, () =&gt; {
+          this.stopReport()
+          if (this.aborted || this.canceled || isDone()) return
+
+          controller.error(new Error(&apos;Socket has been closed unexpectedly&apos;))
+        })
+
+        // readable&#xCE21;&#xC5D0;&#xC11C; &#xC694;&#xCCAD;&#xD558;&#xB294; pause / resume &#xC774;&#xBCA4;&#xD2B8; &#xBC1B;&#xAE30;
+        socket.on(&apos;pause&apos;, () =&gt; super.pause())
+        socket.on(&apos;resume&apos;, () =&gt; super.resume())
+
+        socket.on(&apos;buffer-full&apos;, () =&gt; this.readableBufferFull.set(true))
+        socket.on(&apos;pull&apos;, () =&gt; this.readableBufferFull.set(false))
+      },
+      /**
+       * @param {Uint8Array} data
+       */
+      write: async data =&gt; {
+        // &#xC77C;&#xC2DC;&#xC815;&#xC9C0; &#xAE30;&#xB2A5;
+        if (this.paused.get() || this.readableBufferFull.get()) {
+          await waitAll(wait =&gt; {
+            wait(this.paused).toBe(false)
+            wait(this.readableBufferFull).toBe(false)
+          })
+        }
+
+        await socket.write(data.buffer)
+        await wait(socket.ready).toBe(true)
+
+        this.processed.set(this.processed.get() + data.length)
+      },
+      close: async () =&gt; {
+        // &#xC5EC;&#xAE30;&#xB294; &#xC704; write&#xAC00; &#xC644;&#xB8CC;&#xB418;&#xC5B4;&#xC57C; &#xD638;&#xCD9C;&#xB418;&#xBBC0;&#xB85C; &#xC77C;&#xB2E8; &#xBAA8;&#xB4E0; &#xBA54;&#xC2DC;&#xC9C0;&#xAC00; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xBC84;&#xD37C;&#xB85C; &#xB4E4;&#xC5B4;&#xAC04; &#xC0C1;&#xD0DC;
+        // &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xBC84;&#xD37C;&#xAC00; &#xBE44;&#xBA74; &#xB2EB;&#xAE30;(close() &#xC2DC; &#xBC84;&#xD37C;&#xC5D0; &#xC788;&#xB294; &#xBA54;&#xC2DC;&#xC9C0;&#xB294; &#xC804;&#xC1A1;&#xB420;&#xC9C0; &#xD655;&#xC2E0;&#xD560; &#xC218; &#xC5C6;&#xC74C;)
+        // if (socket.dataChannel.bufferedAmount &gt; 0) {
+        //   console.log(`[Transaction:${this.label}] &#xC18C;&#xCF13;&#xC774; &#xB2EB;&#xD788;&#xAE30;&#xB97C; &#xAE30;&#xB2E4;&#xB9AC;&#xB294; &#xC911;`)
+        //   socket.dataChannel.bufferedAmountLowThreshold = 0
+        //   await once(socket.dataChannel, &apos;bufferedamountlow&apos;)
+        // }
+
+        // // &#xC804;&#xC1A1; &#xC644;&#xB8CC; &#xC774;&#xBCA4;&#xD2B8; &#xC804;&#xB2EC;
+        // // ready-to-close &#xC774;&#xBCA4;&#xD2B8;&#xB97C; &#xBC1B;&#xB294; &#xC774;&#xC720;: &#xADF8;&#xB0E5; &#xB2EB;&#xC73C;&#xBA74; done &#xC774;&#xBCA4;&#xD2B8;&#xAC00; &#xC544;&#xC5D0; &#xC804;&#xC1A1;&#xC774; &#xC548;&#xB418;&#xB294; &#xACBD;&#xC6B0;&#xAC00; &#xBC1C;&#xC0DD;
+        // socket.writeEvent(&apos;done&apos;)
+        // await once(socket, &apos;ready-to-close&apos;)
+
+        // socket.close()
+        this.done.set(true)
+      },
+      // abort&#xB418;&#xBA74; abort &#xC774;&#xBCA4;&#xD2B8; &#xC804;&#xB2EC;
+      abort: reason =&gt; {
+        this.aborted = true
+
+        if (reason instanceof Error) {
+          socket.writeEvent(&apos;abort&apos;, reason.message)
+        } else {
+          socket.writeEvent(&apos;abort&apos;, reason)
+        }
+
+        console.log(`[Transaction:${this.label}] Abort &#xB428;`)
+      }
+    })
+
+    this.abortController = new AbortController()
+
+    // &#xC774;&#xB807;&#xAC8C; &#xD558;&#xBA74; pipeTo(transactionWriter.stream)&#xCC98;&#xB7FC; &#xC0AC;&#xC6A9; &#xAC00;&#xB2A5;
+    // &#xB4A4;&#xC758; catch()&#xBB38;&#xC740; abort&#xC2DC; &#xC5D0;&#xB7EC;&#xAC00; &#xB450;&#xAD70;&#xB370;&#xC5D0;&#xC11C; &#xBC1C;&#xC0DD;&#xD558;&#xB294;&#xB370;(&#xC5EC;&#xAE30;&#xC640; this.stream&#xC5D0; pipeTo &#xD55C; &#xBD80;&#xBD84;)
+    // &#xC5EC;&#xAE30;&#xC11C; &#xC5D0;&#xB7EC;&#xAC00; &#xBC1C;&#xC0DD;&#xD558;&#xC9C0; &#xC54A;&#xAC8C; &#xD558;&#xAE30; &#xC704;&#xD55C; &#xAC83;&#xC784;
+    // eslint-disable-next-line no-undef
+    const chunkingStream = new TransformStream(new ChunkProducer(CHUNK_SIZE))
+    chunkingStream.readable.pipeTo(writable, { signal: this.abortController.signal }).catch(() =&gt; {})
+    this.stream = chunkingStream.writable
+  }
+
+  /**
+   * &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xC911;&#xC9C0;&#xD569;&#xB2C8;&#xB2E4;.
+   */
+  stop () {
+    // stream&#xC758; write &#xBA54;&#xC18C;&#xB4DC;&#xAC00; resolve &#xB418;&#xC5B4;&#xC57C;&#xC9C0; abort&#xAC00; &#xC815;&#xC0C1;&#xC801;&#xC73C;&#xB85C; &#xCC98;&#xB9AC;&#xB428;
+    // &#xB530;&#xB77C;&#xC11C; &#xAC15;&#xC81C;&#xB85C; &#xC0C1;&#xD0DC; &#xC5C5;&#xB370;&#xC774;&#xD2B8;
+    this.paused.set(false)
+    this.readableBufferFull = false
+    this.abortController.abort(&apos;stop() called by sender&apos;)
+  }
+
+  pause () {
+    super.pause()
+    this.socket.writeEvent(&apos;pause&apos;)
+  }
+
+  resume () {
+    super.resume()
+    this.socket.writeEvent(&apos;resume&apos;)
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

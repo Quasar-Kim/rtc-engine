@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css" integrity="sha512-KUoB3bZ1XRBYj1QcH4BHCQjurAZnCO3WdrswyLDtp7BMwCw7dPZngSLqILf68SGgvnWHTD5pPaYrXi6wiRJ65g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" integrity="sha512-c6S8OdtvoqZCbMfA1lWE0qd368pLdFvVHVILQzNizfowC+zV8rmVKdSlmL5SuidvATO0A7awDg53axd+s/9amw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      margin: 0;
+    }
+
+    article {
+      max-width: 900px;
+    }
+
+    main {
+      padding: 1em;
+    }
+
+    header ul > li {
+      display: inline-block;
+    }
+
+    ul.links > li:not(:last-child)::after {
+      content: '/';
+      padding-left: 0.5em;
+      padding-right: 0.2em;
+    }
+
+    ul.links {
+      display: inline;
+      padding-left: 0.5em;
+    }
+
+    .markdown-body code br {
+      display: initial;
+    }
+
+    nav.toc {
+      border: 1px solid gray;
+      padding-top: 1.5em;
+      padding-right: 1.5em;
+      padding-bottom: 1em;
+      padding-left: 1em;
+      width: fit-content;
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    span.title {
+      font-size: 30px;
+    }
+
+    span.creator {
+      display: block;
+    }
+
+    .docs-navigation {
+      padding-top: 1em;
+    }
+
+    .docs-navigation span.next-post {
+      float: right;
+    }
+
+    .article-title {
+      border: none !important;
+    }
+
+    footer {
+      height: 100px;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+  <title>설치하기</title>
+</head>
+<body>
+  <div class="wrapper markdown-body">
+    <main>
+      <header>
+        <span class="title">RTCEngine 1.0.0-beta.1</span>
+        <ul class="links">
+          <li><a href="/rtc-engine/docs">사용법</a></li>
+          <li><a href="/rtc-engine/demo">데모</a></li>
+          <li><a href="/rtc-engine/reference">API 레퍼런스</a></li>
+          <li><a href="https://github.com/Quasar-Kim/rtc-engine">Github</a></li>
+        </ul>
+        <span class="creator">Made with ❤ by Quasar-Kim</span>
+      </header>
+
+      
+      
+
+      <div class="docs-navigation">
+        
+        <span>
+          ⬅<a href="/1-about/">about</a>
+        </span>
+        
+        
+        <span class="next-post">
+          <a href="/3-RTC-Engine/">RTCEngine 객체</a>➡
+        </span>
+        
+      </div>
+
+      <article>
+        <h1 class="article-title">설치하기</h1>
+        
+        <p>RTCEngine 라이브러리를 설치하고 불러오는 방법을 알아봅시다.</p>
+        
+
+        <nav class="toc" >
+        <ol><li><a href="#%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0">불러오기</a><ol><li><a href="#npm-%2B-%EB%B2%88%EB%93%A4%EB%9F%AC">npm + 번들러</a></li><li><a href="#%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%97%90%EC%84%9C-%EB%B0%94%EB%A1%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0">브라우저에서 바로 사용하기</a></li><li><a href="#cdn-%2B-import-map">cdn + import map</a></li></ol></li><li><a href="#%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0">생성하기</a></li><li><a href="#%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0">연결하기</a><ol><li><a href="#0.-%EC%8B%9C%EA%B7%B8%EB%84%90%EB%9F%AC-%EC%84%A4%EC%A0%95">0. 시그널러 설정</a></li><li><a href="#1.-role-%EC%A0%95%ED%95%98%EA%B8%B0">1. role 정하기</a></li><li><a href="#2.-offer%2Fanswer%EA%B3%BC-ice-candidate-%EA%B5%90%ED%99%98">2. offer/answer과 ice candidate 교환</a></li><li><a href="#3.-ice-restart">3. ice restart</a></li></ol></li><li><a href="#%EC%86%8C%EC%BC%93-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0">소켓 생성하기</a></li></ol>
+      </nav>
+        
+<h2 id="%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0" tabindex="-1">불러오기</h2>
+<p>먼저 라이브러리에서 RTCEngine 객체를 불러와야 합니다.</p>
+<h3 id="npm-%2B-%EB%B2%88%EB%93%A4%EB%9F%AC" tabindex="-1">npm + 번들러</h3>
+<p>parcel같은 번들러를 사용할 경우 npm을 이용해 라이브러리를 불러 올 수 있습니다.
+먼저 아래 명령어로 <code>rtc-engine</code> 패키지를 불러오세요.</p>
+<pre><code>npm install rtc-engine
+</code></pre>
+<p>그다음 자바스크립트 파일에서 다음 코드로 <code>RTCEngine</code> 객체를 불러요세요.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> RTCEngine <span class="token keyword">from</span> <span class="token string">'rtc-engine'</span></code></pre>
+<h3 id="%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%97%90%EC%84%9C-%EB%B0%94%EB%A1%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0" tabindex="-1">브라우저에서 바로 사용하기</h3>
+<p>번들러를 사용하지 않는 환경에서는 jspm이나 esm.run 같은 cdn(contents delivery network)를 통해서 라이브러리를 불러올 수 있습니다.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> RTCEngine <span class="token keyword">from</span> <span class="token string">'https://jspm.dev/rtc-engine'</span><br><span class="token comment">// 또는</span><br><span class="token keyword">import</span> RTCEngine <span class="token keyword">from</span> <span class="token string">'https://esm.run/rtc-engine'</span></code></pre>
+<h3 id="cdn-%2B-import-map" tabindex="-1">cdn + import map</h3>
+<p><strong>주의사항</strong>: import map 기능은 Chrome 89 이상에만 구현되어 있는 실험적인 기능입니다. 테스트할때만 사용하세요.</p>
+<p>cdn을 통해서 바로 불러오는게 확실히 번들러를 이용하느것보다 편합니다. 하지만 문제가 있습니다.</p>
+<ol>
+<li>visual studio code의 intellisense 자동완성 기능을 쓸 수 없습니다.(기껏 jsdoc 다 달아놨는데...)</li>
+<li>코드가 아주 약간 살짝 길어집니다.</li>
+</ol>
+<p>이 문제를 해결하려면 import map 기능을 이용하면 됩니다.</p>
+<p><a href="generator.jspm.io">jspm generator</a>에서 왼쪽의 <code>Add Dependency</code>에 <code>rtc-engine</code>을 입력하고 엔터를 누르세요. 잠시후 우측에 왠 html 코드가 뜨는데, 거기서 <code>&lt;script type=&quot;importmap&quot;&gt;</code> 안쪽 내용만 복사해서 html 파일에 붙여넣으세요. html 파일의 내용이 아래와 같이 될겁니다.</p>
+<pre class="language-html"><code class="language-html"><br>  <span class="token comment">&lt;!-- ...대충 html 내용들 --></span><br><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>importmap<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token punctuation">{</span><br>    <span class="token string-property property">"imports"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token string-property property">"rtc-engine"</span><span class="token operator">:</span> <span class="token string">"https://ga.jspm.io/npm:rtc-engine@1.0.0-alpha.2/js/RTCEngine.js"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br>  </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><br><br>  <span class="token comment">&lt;!-- 내가 작성한 자바스크립트 불러오기 --></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my-script.js<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><br><br>  <span class="token comment">&lt;!-- ...대충 html 내용들 --></span></code></pre>
+<p>그러면 자바스크립트 파일에서 더이상 url을 사용하지 않고도 <code>rtc-engine</code> 패키지를 불러올 수 있습니다.(2번문제 해결)</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token comment">// my-script.js</span><br><span class="token keyword">import</span> RTCEngine <span class="token keyword">from</span> <span class="token string">'rtc-engine'</span></code></pre>
+<p>이렇게 하고, 작업중인 디렉토리에 npm으로 <code>rtc-engine</code> 패키지를 추가로 설치해주면...?</p>
+<pre><code>npm install rtc-engine
+</code></pre>
+<p>이제 intellisense 기능이 정상적으로 작동할겁니다. (1번문제 해결)</p>
+<h2 id="%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0" tabindex="-1">생성하기</h2>
+<p>불러온 RTCEngine의 인스턴스를 생성하면 연결이 자동으로 시작됩니다. 문제는 두 피어가 연결을 하려면 어떤 방식으로든 메시지를 주고받아야 하고, 메시지를 주고 받는 건 WebRTC API가 우리한테 알아서 하도록 하고 있다는겁니다. 이 메시징을 도와주는 객체가 바로 <strong>시그널러</strong> 입니다. 시그널러는 미리 구현된 걸 사용할수도 있고, 직접 구현하셔도 됩니다.</p>
+<p>여기서는 두 탭 간에 BroadcastChannel을 이용해서 소통하는 LocalSignaler를 사용하겠습니다.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token comment">// import 문의 내용을 아래처럼 업데이트해주세요.</span><br><span class="token keyword">import</span> RTCEngine<span class="token punctuation">,</span> <span class="token punctuation">{</span> LocalSignaler <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rtc-engine'</span><br><br><span class="token keyword">const</span> signaler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LocalSignaler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br><span class="token keyword">const</span> engine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RTCEngine</span><span class="token punctuation">(</span>signaler<span class="token punctuation">)</span></code></pre>
+<h2 id="%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0" tabindex="-1">연결하기</h2>
+<p>RTCEngine 인스턴스는 생성될 때 특별히 옵션을 넣어주지 않으면 바로 연결을 시작합니다. 위 예제 코드를 두 탭에서 열고 브라우저 코드를 확인해보세요. 자동으로 연결되어 있을 겁니다.</p>
+<p>이제 RTCEngine이 연결하기까지 어떤 과정을 거치는지 알아봅시다.</p>
+<h3 id="0.-%EC%8B%9C%EA%B7%B8%EB%84%90%EB%9F%AC-%EC%84%A4%EC%A0%95" tabindex="-1">0. 시그널러 설정</h3>
+<p>RTCEngine이 연결을 하려면 시그널러가 메시지를 보낼 준비가 되어야 합니다. 이 과정은 시그널러가 RTCEngine과 독립적으로 처리해야 합니다.
+그런데 위 예시 코드에서는 시그널러가 설정되었는지 확인도 하지 않고 바로 RTCEngine을 생성하고, 연결 과정이 시작됩니다. 이러면 시그널러 설정이 완료되지 않아서 문제가 발생하지 않을까요?</p>
+<p>당연히 그렇진 않습니다. 시그널러는 <code>signaler.ready</code> 속성을 통해서 통신할 수 있는 상태인지를 나타냅니다. RTCEngine은 시그널러를 이용하기 전에 항상 이 속성이 <code>true</code> 값을 가지는지 체크하고 <code>false</code>라면 <code>true</code>가 될때까지 대기합니다. 따라서 시그널러는 시그널러대로 코드를 실행할 수 있습니다.</p>
+<p>위 예시에서 사용한 LocalSignaler는 탭 간 통신 창구인 <code>BroadcastChannel</code>을 생성하고, 주기적으로 heartbeat 신호를 발생시킵니다. 상대에게서 온 heartbeat 신호를 수신하면 이는 연결되었다는 뜻으로 받아들이고 <code>ready</code> 속성을 <code>true</code>로 설정합니다. 그리고 heartbeat 신호가 좀 길게 수신되지 않는다면(대략 2초정도) 상대가 나간걸로 판단합니다. 따라서 <code>ready</code>속성이 <code>false</code>로 바뀝니다. 그렇기 때문에 두 창에서 위 코드를 실행시키면 LocalSignaler는 통신이 가능한 상태라고 판단하는 것입니다.</p>
+<h3 id="1.-role-%EC%A0%95%ED%95%98%EA%B8%B0" tabindex="-1">1. role 정하기</h3>
+<p>RTCEngine은 WebRTC Spec에서 제시하는 Perfect Negotiation Pattern을 이용해서 RTC 연결을 형성합니다. 이 패턴의 장점은 양 피어의 코드가 대칭적으로 짜여진다는 것입니다. 이 패턴을 활용하려면 서로의 role이 impolite 또는 polite로 배정되어야 합니다. 이 과정은 <code>Math.random()</code>으로 생성한 난수를 서로 교환함으로써 이루어집니다. 실제 RTCEngine 코드의 <code>assignRole()</code> 메소드를 보면 상대의 난수보다 내 난수가 작으면 내가 polite, 그 반대의 경우 내가 impolite역할이 됩니다.</p>
+<h3 id="2.-offer%2Fanswer%EA%B3%BC-ice-candidate-%EA%B5%90%ED%99%98" tabindex="-1">2. offer/answer과 ice candidate 교환</h3>
+<p>(좀 더 자세한 설명은 mdn의 <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Connectivity">WebRTC Connectivity</a> 문서를 읽어보세요.)
+RTC 연결이 이루어지려면 두 피어간 아래 정보가 교환되어야 합니다.</p>
+<ul>
+<li>offer과 answer: 서로의 미디어에 대한 정보를 포함하고 있는 메시지.</li>
+<li>ice candidate: 서로의 네트워크 환경에 대한 정보를 포함하고 있는 메시지.</li>
+</ul>
+<p>이 두가지 메시지는 시그널러를 통해서 서로에게 전달됩니다. RTCEngine은 받은 offer/answer, ice candidate를 perfect negotiation pattern에 따라서 처리합니다. 모든게 정상적으로 처리된다면 메시지를 주고받은 후 두 피어 사이에 연결이 형성되게 됩니다.</p>
+<h3 id="3.-ice-restart" tabindex="-1">3. ice restart</h3>
+<p>어느 한쪽의 인터넷이 잠시 끊긴다거나 하는 여러가지 이유로 RTC 연결은 언제나 끊길 수 있습니다. 연결이 끊긴 지 약 5초 후(정확히는 RTCPeerConnection의 readyState가 failed가 되었을 때)에도 연결이 정상화되지 않는다면 ice restart가 자동으로 이루어집니다. 그러면 2번 과정이 다시 이루어지게 되고 연결이 다시 형성될 수도 있습니다.</p>
+<h2 id="%EC%86%8C%EC%BC%93-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0" tabindex="-1">소켓 생성하기</h2>
+<p>RTCEngine의 <code>socket()</code> 메소드를 호출하면 소켓을 생성할 수 있습니다. 소켓은 양방향 통신을 위한 객체로 이걸 통해서 메시지를 주고받을 수 있습니다.</p>
+<p>위 예시 코드를 아래처럼 바꿔주세요.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> RTCEngine<span class="token punctuation">,</span> <span class="token punctuation">{</span> LocalSignaler <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rtc-engine'</span><br><br><span class="token keyword">const</span> signaler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LocalSignaler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br><span class="token keyword">const</span> engine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RTCEngine</span><span class="token punctuation">(</span>signaler<span class="token punctuation">)</span><br><br><span class="token comment">// hello는 소켓을 서로 구별하기 위한 ID. 양쪽에서 모두 동일한 ID로 소켓 생성을 요청하면 소켓이 만들어집니다.</span><br>engine<span class="token punctuation">.</span><span class="token function">socket</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">socket</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// 소켓에서 뭔가 받으면 콘솔에 찍기</span><br>  socket<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token parameter">data</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Received: '</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">)</span><br><br>  <span class="token comment">// 인사 메시지 보내보기</span><br>  socket<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'hello RTCEngine'</span><span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>위 코드에서 가장 큰 특징은 RTC 연결이 형성되었는지 기다리지 않고 바로 소켓을 생성한다는 겁니다. RTCEngine은 socket.io의 영향을 받아 대부분의 작업이 연결 상태에 영향을 받지 않습니다. 위 코드에서 socket()이 호출되면 내부적으로는 연결이 형성될때까지 기다렸다가 데이터 채널이 만들어지고, 이 데이터 채널을 기반으로 소켓이 만들어집니다. 이렇게 만들어진 소켓은 promise 형태로 resolve되어서 코드에서 사용될 수 있게 됩니다.</p>
+
+      </article>
+
+      <div class="docs-navigation">
+        
+        <span>
+          ⬅<a href="/1-about/">about</a>
+        </span>
+        
+        
+        <span class="next-post">
+          <a href="/3-RTC-Engine/">RTCEngine 객체</a>➡
+        </span>
+        
+      </div>
+
+      <footer>
+        <span>©2022 Quasar-Kim. 이 사이트는 <a href="https://11ty.dev">11ty</a>와 <a href="https://esdoc.org">esdoc</a>을 사용해 만들어졌습니다.</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

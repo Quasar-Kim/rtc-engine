@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">Channel | rtc-engine</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="WebRTC&#xB97C; &#xC774;&#xC6A9;&#xD55C; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xB77C;&#xC774;&#xBE0C;&#xB7EC;&#xB9AC;"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="rtc-engine"><meta property="twitter:description" content="WebRTC&#xB97C; &#xC774;&#xC6A9;&#xD55C; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xB77C;&#xC774;&#xBE0C;&#xB7EC;&#xB9AC;"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/Quasar-Kim/rtc-engine"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-EventListenerEntry">EventListenerEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Channel from &apos;<span><a href="file/js/Channel.js.html#lineNumber6">rtc-engine/js/Channel.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/js/Channel.js.html#lineNumber6">source</a></span></span>
+</div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">Channel</h1>
+
+  
+
+  
+  
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span> &#x2192; Channel</div></div>
+  
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>&#xC591;&#xBC29;&#xD5A5; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xC778;&#xD130;&#xD398;&#xC774;&#xC2A4;. RTCSocket&#xC744; &#xC774;&#xC6A9;&#xD574; &#xB370;&#xC774;&#xD130;&#xB97C; &#xC804;&#xC1A1;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+  
+
+  
+
+  
+
+  
+
+  
+</div>
+
+
+
+<div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/Channel.js~Channel.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(socket: <span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>, engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC8FC;&#xC758;: &#xC774; &#xC0DD;&#xC131;&#xC790;&#xB294; RTCEngine &#xB0B4;&#xBD80;&#xC5D0;&#xC11C;&#xB9CC; &#xD638;&#xCD9C;&#xB418;&#xC5B4;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="memberSummary"><h2>Member Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/Channel.js~Channel.html#instance-member-engine">engine</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/Channel.js~Channel.html#instance-member-filesSent">filesSent</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/Channel.js~Channel.html#instance-member-label">label</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/Channel.js~Channel.html#instance-member-socket">socket</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/Channel.js~Channel.html#instance-method-receiveTransaction">receiveTransaction</a></span></span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        <div class="deprecated" data-ice="deprecated">this method was deprecated.</div>
+        
+        <div data-ice="description"><p>&#xC0C1;&#xB300;&#xAC00; &#xD30C;&#xC77C;&#xC744; &#xBCF4;&#xB0B4;&#xAE30; &#xC704;&#xD574; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4E4;&#xC5C8;&#xC744;&#xB54C; &#xD30C;&#xC77C;&#xC744; &#xBC1B;&#xAE30; &#xC704;&#xD55C; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xC0DD;&#xC131;&#xD558;&#xACE0; <code>transaction</code> &#xC774;&#xBCA4;&#xD2B8;&#xB85C; &#xC54C;&#xB9BD;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/Channel.js~Channel.html#instance-method-send">send</a></span></span><span class="code" data-ice="signature">(data: <span>*</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span>|<span>void</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        <div class="deprecated" data-ice="deprecated">this method was deprecated.</div>
+        
+        <div data-ice="description"><p>&#xCC44;&#xB110;&#xC744; &#xD1B5;&#xD574;&#xC11C; &#xB370;&#xC774;&#xD130;&#xB97C; &#xC804;&#xC1A1;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-member-all">all</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>|<span>symbol</span>, <span><span>EventHandler&lt;any&gt;</span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC774;&#xBCA4;&#xD2B8;&#xBCC4; &#xC774;&#xBCA4;&#xD2B8; &#xD578;&#xB4E4;&#xB7EC;&#xB4E4;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-addEventListener">addEventListener</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, handler: <span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span>&lt;<span>any</span>&gt;): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p><code>on()</code> &#xBA54;&#xC18C;&#xB4DC;&#xC758; alias</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-emit">emit</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, evt: <span>Any</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Invoke all handlers for the given type.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-off">off</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, handler: <span>EventHandler&lt;any&gt;}</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Remove an event handler for the given type.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-on">on</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, handler: <span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span>&lt;<span>any</span>&gt;): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Register an event handler for the given type.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-once">once</a></span></span><span class="code" data-ice="signature">(type: <span>*</span>, handler: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-removeEventListener">removeEventListener</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, handler: <span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span>&lt;<span>any</span>&gt;): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p><code>off()</code> &#xBA54;&#xC18C;&#xB4DC;&#xC758; alias</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+
+<div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-constructor-constructor">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(socket: <span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>, engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/Channel.js.html#lineNumber12">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC8FC;&#xC758;: &#xC774; &#xC0DD;&#xC131;&#xC790;&#xB294; RTCEngine &#xB0B4;&#xBD80;&#xC5D0;&#xC11C;&#xB9CC; &#xD638;&#xCD9C;&#xB418;&#xC5B4;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/js/util/Mitt.js~Mitt.html#instance-constructor-constructor">Mitt#constructor</a></span></div>
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">socket</td>
+      <td data-ice="type" class="code"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC5D0; &#xC0AC;&#xC6A9;&#xD560; RTCSocket</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">engine</td>
+      <td data-ice="type" class="code"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xC774; &#xCC44;&#xB110;&#xC744; &#xC0DD;&#xC131;&#xD55C; &#xC5D4;&#xC9C4;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+<div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-engine">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">engine</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/Channel.js.html#lineNumber15">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-filesSent">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">filesSent</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/Channel.js.html#lineNumber19">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-label">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">label</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/Channel.js.html#lineNumber18">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-socket">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">socket</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/Channel.js.html#lineNumber16">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-receiveTransaction">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">receiveTransaction</span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/Channel.js.html#lineNumber31">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  <div class="deprecated" data-ice="deprecated">this method was deprecated.</div>
+  
+  <div data-ice="description"><p>&#xC0C1;&#xB300;&#xAC00; &#xD30C;&#xC77C;&#xC744; &#xBCF4;&#xB0B4;&#xAE30; &#xC704;&#xD574; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4E4;&#xC5C8;&#xC744;&#xB54C; &#xD30C;&#xC77C;&#xC744; &#xBC1B;&#xAE30; &#xC704;&#xD55C; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xC0DD;&#xC131;&#xD558;&#xACE0; <code>transaction</code> &#xC774;&#xBCA4;&#xD2B8;&#xB85C; &#xC54C;&#xB9BD;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">label</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xC2DD;&#xBCC4;&#xC790;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-send">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">send</span><span class="code" data-ice="signature">(data: <span>*</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span>|<span>void</span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/Channel.js.html#lineNumber43">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  <div class="deprecated" data-ice="deprecated">this method was deprecated.</div>
+  
+  <div data-ice="description"><p>&#xCC44;&#xB110;&#xC744; &#xD1B5;&#xD574;&#xC11C; &#xB370;&#xC774;&#xD130;&#xB97C; &#xC804;&#xC1A1;&#xD569;&#xB2C8;&#xB2E4;. <code>File</code> &#xB370;&#xC774;&#xD130;&#xB97C; &#xBC1B;&#xC73C;&#xBA74; &#xC0C8;&#xB85C;&#xC6B4; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4E4;&#xACE0; &#xADF8;&#xAC78; &#xD1B5;&#xD574; &#xD30C;&#xC77C;&#xC758; &#xB370;&#xC774;&#xD130;&#xB97C; &#xC804;&#xC1A1;&#xD569;&#xB2C8;&#xB2E4;.
+&#xBC1B;&#xB294;&#xCABD;&#xC5D0;&#xC11C;&#xB294; <code>transaction</code> &#xC774;&#xBCA4;&#xD2B8;&#xB97C; &#xD1B5;&#xD574; &#xD30C;&#xC77C;&#xC744; &#xBC1B;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">data</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xC804;&#xC1A1;&#xD560; &#xB370;&#xC774;&#xD130;. <code>JSON.stringify()</code>&#xB85C; JSON &#xBB38;&#xC790;&#xC5F4;&#xB85C; &#xBC14;&#xAFC0; &#xC218; &#xC788;&#xAC70;&#xB098; <code>ArrayBuffer</code>&#xC758; &#xD0C0;&#xC785;&#xC740; &#xADF8;&#xB0E5; &#xC804;&#xC1A1;&#xD558;&#xACE0;, <code>File</code>&#xC778; &#xACBD;&#xC6B0; &#xC0C8;&#xB85C;&#xC6B4; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span>|<span>void</span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>&#xD30C;&#xC77C; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xD2B8;&#xB80C;&#xC81D;&#xC158; &#xB610;&#xB294; &#xB370;&#xC774;&#xD130;&#xAC00; &#xC131;&#xACF5;&#xC801;&#xC73C;&#xB85C; &#xC804;&#xC1A1;&#xB418;&#xBA74; resolve&#xD558;&#xB294; promise</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

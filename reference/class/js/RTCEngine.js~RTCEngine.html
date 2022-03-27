@@ -1,0 +1,3129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">RTCEngine | rtc-engine</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="WebRTC&#xB97C; &#xC774;&#xC6A9;&#xD55C; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xB77C;&#xC774;&#xBE0C;&#xB7EC;&#xB9AC;"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="rtc-engine"><meta property="twitter:description" content="WebRTC&#xB97C; &#xC774;&#xC6A9;&#xD55C; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xB77C;&#xC774;&#xBE0C;&#xB7EC;&#xB9AC;"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/Quasar-Kim/rtc-engine"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-EventListenerEntry">EventListenerEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import RTCEngine from &apos;<span><a href="file/js/RTCEngine.js.html#lineNumber18">rtc-engine/js/RTCEngine.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/js/RTCEngine.js.html#lineNumber18">source</a></span></span>
+</div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">RTCEngine</h1>
+
+  
+
+  
+  
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span> &#x2192; RTCEngine</div></div>
+  
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>RTC &#xC5F0;&#xACB0;&#xC744; &#xAD00;&#xB9AC;&#xD558;&#xB294; &#xC5D4;&#xC9C4;.</p>
+</div>
+  
+
+  
+
+  
+
+  
+
+  
+</div>
+
+
+<div data-ice="staticMethodSummary"><h2>Static Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#static-method-plugin">plugin</a></span></span><span class="code" data-ice="signature">(plugin: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xD50C;&#xB7EC;&#xADF8;&#xC778;&#xC744; &#xC0AC;&#xC6A9;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(signaler: <span>*</span>, userOptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>RTCEngine&#xC744; &#xC0DD;&#xC131;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="memberSummary"><h2>Member Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-closed">closed</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC5F0;&#xACB0;&#xC774; &#xB2EB;&#xD614;&#xB294;&#xC9C0; &#xB098;&#xD0C0;&#xB0B4;&#xB294; &#xC18D;&#xC131;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-connection">connection</a></span></span><span class="code" data-ice="signature">: <span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span>&lt;<span>&apos;inactive&apos;</span>|<span>&apos;connecting&apos;</span>|<span>&apos;connected&apos;</span>|<span>&apos;disconnected&apos;</span>|<span>&apos;failed&apos;</span>|<span>&apos;closed&apos;</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC5F0;&#xACB0;&#xC758; &#xC0C1;&#xD0DC;&#xB97C; &#xB098;&#xD0C0;&#xB0C4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-ignoreOffer">ignoreOffer</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>offer collision &#xBC29;&#xC9C0;&#xB97C; &#xC704;&#xD574; role&#xC774;&#xB098; signalingState&#xB4F1;&#xC5D0; &#xAE30;&#xBC18;&#xD574; &#xBC1B;&#xC740; offer&#xC744; &#xBC1B;&#xC744;&#xC9C0; &#xACB0;&#xC815;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-listenerManager">listenerManager</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC678;&#xBD80; API&#xC5D0; &#xAC74; &#xC774;&#xBCA4;&#xD2B8; &#xB9AC;&#xC2A4;&#xB108;&#xB4E4;&#xC744; &#xAD00;&#xB9AC;&#xD558;&#xB294; &#xAC1D;&#xCCB4;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-makingOffer">makingOffer</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>offer collision &#xBC29;&#xC9C0;&#xB97C; &#xC704;&#xD574; offer&#xC744; &#xB9CC;&#xB4DC;&#xB294; &#xB3D9;&#xC548;&#xC774;&#xBA74; &#xAE30;&#xB85D;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-negotiatedDataChannels">negotiatedDataChannels</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC0C1;&#xB300;&#xBC29;&#xC774; socket()&#xC744; &#xB808;&#xC774;&#xBE14;&#xACFC; &#xD568;&#xAED8; &#xD638;&#xCD9C;&#xD55C; &#xACB0;&#xACFC; &#xC774;&#xCABD;&#xC5D0;&#xC11C; &#xBC1B;&#xC740; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xB4E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-options">options</a></span></span><span class="code" data-ice="signature">: {&quot;autoConnect&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, &quot;iceServers&quot;: <span>*</span>, &quot;waitOnlineOnReconnection&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, ...signalerOptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, ...userOptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>}</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-pc">pc</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xD53C;&#xC5B4; &#xCEE4;&#xB125;&#xC158; &#xAC1D;&#xCCB4;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-polite">polite</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>perfect negotiation pattern&#xC5D0;&#xC11C; &#xC0AC;&#xC6A9;&#xD558;&#xB294; role</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-seed">seed</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>role &#xBC30;&#xC815;&#xC744; &#xC704;&#xD55C; &#xB09C;&#xC218;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-signaler">signaler</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xC804;&#xB2EC;&#xD558;&#xB294;&#xB370; &#xC0AC;&#xC6A9;&#xB418;&#xB294; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-unnegotiatedDataChannels">unnegotiatedDataChannels</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC0C1;&#xB300;&#xBC29;&#xC774; socket()&#xC744; &#xB808;&#xC774;&#xBE14; &#xC5C6;&#xC774; &#xD638;&#xCD9C;&#xD55C; &#xACB0;&#xACFC; &#xC774;&#xCABD;&#xC5D0;&#xC11C; &#xBC1B;&#xC740; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xB4E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-unnegotiatedSocketCount">unnegotiatedSocketCount</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC774;&#xB54C;&#xAE4C;&#xC9C0; &#xC0DD;&#xC131;&#xB41C; unnegotiated socket&#xC758; &#xAC1C;&#xC218;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-unnegotiatedTransactionCount">unnegotiatedTransactionCount</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC774;&#xB54C;&#xAE4C;&#xC9C0; &#xC0DD;&#xC131;&#xB41C; unnegotiated transaction&#xC758; &#xAC1C;&#xC218;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-member-unnegotiatedTransactions">unnegotiatedTransactions</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC0C1;&#xB300;&#xBC29;&#xC774; writable()&#xC744; &#xB808;&#xC774;&#xBE14; &#xC5C6;&#xC774; &#xD638;&#xCD9C;&#xD55C; &#xACB0;&#xACFC; &#xC774;&#xCABD;&#xC5D0;&#xC11C; &#xBC1B;&#xC740; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xB4E4;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-abort">abort</a></span></span><span class="code" data-ice="signature">(errorStr: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC5D0;&#xC11C; &#xC2EC;&#xAC01;&#xD55C; &#xC624;&#xB958;&#xAC00; &#xBC1C;&#xC0DD;&#xD574; &#xC5F0;&#xACB0;&#xC744; &#xACC4;&#xC18D; &#xC9C4;&#xD589;&#xD560; &#xC218; &#xC5C6;&#xB294; &#xACBD;&#xC6B0; &#xC5F0;&#xACB0;&#xC744; &#xAC15;&#xC81C;&#xB85C; &#xB2EB;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-channel">channel</a></span></span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/Channel.js~Channel.html">Channel</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC591;&#xBC29;&#xD5A5; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xCC44;&#xB110;&#xC744; &#xC5FD;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-close">close</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC5F0;&#xACB0;&#xC744; &#xB2EB;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-connect">connect</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>void</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC5F0;&#xACB0;&#xC744; &#xC2DC;&#xC791;&#xD558;&#xACE0;, &#xC5F0;&#xACB0;&#xC774; &#xC131;&#xACF5;&#xD560;&#xB54C;&#xAE4C;&#xC9C0; &#xAE30;&#xB2E4;&#xB9BD;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-getReport">getReport</a></span></span><span class="code" data-ice="signature">(socket: <span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>): <span>RTCStatsReport</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC18C;&#xCF13;&#xC774; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xB808;&#xD3EC;&#xD2B8;&#xB97C; &#xAC00;&#xC838;&#xC635;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-readable">readable</a></span></span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xB370;&#xC774;&#xD130;&#xB97C; &#xBC1B;&#xAE30; &#xC704;&#xD55C; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          <span data-ice="generator">*</span>
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-readables">readables</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-restartIce">restartIce</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>RTCPeerConnection&#xC758; restartIce&#xB97C; &#xD638;&#xCD9C;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-socket">socket</a></span></span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC591;&#xCABD; &#xD53C;&#xC5B4;&#xC5D0;&#xC11C; &#xC0AC;&#xC6A9; &#xAC00;&#xB2A5;&#xD55C; RTCSocket&#xC744; &#xC5FD;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          <span data-ice="generator">*</span>
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-sockets">sockets</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC0C1;&#xB300;&#xAC00; &#xB808;&#xC774;&#xBE14; &#xC5C6;&#xC774; &#xC0DD;&#xC131;&#xD55C; &#xC18C;&#xCF13;(unnegotiated socket)&#xC744; &#xBC1B;&#xC544;&#xC11C; &#xB0B4;&#xBCF4;&#xB0B4;&#xB294; async generator</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-start">start</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC5D4;&#xC9C4;&#xC744; &#xC2DC;&#xC791;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-writable">writable</a></span></span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span>, metadata: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xB370;&#xC774;&#xD130;&#xB97C; &#xBCF4;&#xB0B4;&#xAE30; &#xC704;&#xD55C; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Private Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-assignRole">assignRole</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>void</span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xBB34;&#xC791;&#xC704;&#xB85C; &#xB450; &#xD53C;&#xC5B4;&#xC758; &#xC5ED;&#xD560;&#xC744; &#xC815;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-createNegotiatedSocket">createNegotiatedSocket</a></span></span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xB808;&#xC774;&#xBE14;&#xB85C; &#xC2DD;&#xBCC4;&#xB418;&#xB294; &#xC18C;&#xCF13;&#xC744; &#xC0DD;&#xC131;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-createUnnegotiatedSocket">createUnnegotiatedSocket</a></span></span><span class="code" data-ice="signature">(labelOverride: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xB808;&#xC774;&#xBE14; &#xC5C6;&#xC774; &#xB3D9;&#xC801;&#xC73C;&#xB85C; &#xC18C;&#xCF13;&#xC744; &#xC0DD;&#xC131;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html#instance-method-sendSignal">sendSignal</a></span></span><span class="code" data-ice="signature">(msg: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xB97C; &#xD1B5;&#xD574;&#xC11C; &#xC2DC;&#xADF8;&#xB110; &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xC804;&#xC1A1;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-member-all">all</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>|<span>symbol</span>, <span><span>EventHandler&lt;any&gt;</span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#xC774;&#xBCA4;&#xD2B8;&#xBCC4; &#xC774;&#xBCA4;&#xD2B8; &#xD578;&#xB4E4;&#xB7EC;&#xB4E4;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-addEventListener">addEventListener</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, handler: <span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span>&lt;<span>any</span>&gt;): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p><code>on()</code> &#xBA54;&#xC18C;&#xB4DC;&#xC758; alias</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-emit">emit</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, evt: <span>Any</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Invoke all handlers for the given type.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-off">off</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, handler: <span>EventHandler&lt;any&gt;}</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Remove an event handler for the given type.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-on">on</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, handler: <span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span>&lt;<span>any</span>&gt;): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Register an event handler for the given type.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-once">once</a></span></span><span class="code" data-ice="signature">(type: <span>*</span>, handler: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html#instance-method-removeEventListener">removeEventListener</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>symbol</span>, handler: <span><a href="typedef/index.html#static-typedef-EventHandler">EventHandler</a></span>&lt;<span>any</span>&gt;): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p><code>off()</code> &#xBA54;&#xC18C;&#xB4DC;&#xC758; alias</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+<div data-ice="staticMethodDetails"><h2 data-ice="title">Static Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-plugin">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">plugin</span><span class="code" data-ice="signature">(plugin: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber554">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xD50C;&#xB7EC;&#xADF8;&#xC778;&#xC744; &#xC0AC;&#xC6A9;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">plugin</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xD50C;&#xB7EC;&#xADF8;&#xC778; &#xD568;&#xC218;. &#xCCAB;&#xBC88;&#xC9F8; &#xC778;&#xC790;&#xB85C; RTCEngine &#xD074;&#xB798;&#xC2A4;&#xAC00; &#xC804;&#xB2EC;&#xB429;&#xB2C8;&#xB2E4;. &#xD50C;&#xB7EC;&#xADF8;&#xC778; &#xD568;&#xC218;&#xB294; &#xD504;&#xB85C;&#xD1A0;&#xD0C0;&#xC785;&#xC744; &#xD1B5;&#xD574; &#xC6D0;&#xD558;&#xB294; &#xBA54;&#xC18C;&#xB4DC;&#xB97C; &#xCD94;&#xAC00;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+<div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-constructor-constructor">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(signaler: <span>*</span>, userOptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber28">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>RTCEngine&#xC744; &#xC0DD;&#xC131;&#xD569;&#xB2C8;&#xB2E4;. autoConnect &#xC635;&#xC158;&#xC774; true&#xC77C;&#xACBD;&#xC6B0;(&#xAE30;&#xBCF8;&#xAC12;) &#xC790;&#xB3D9;&#xC73C;&#xB85C; &#xC5F0;&#xACB0;&#xC744; &#xC2DC;&#xC791;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/js/util/Mitt.js~Mitt.html#instance-constructor-constructor">Mitt#constructor</a></span></div>
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">signaler</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xBA54;&#xC2DC;&#xC9C0; &#xC1A1;&#xC218;&#xC2E0;&#xC5D0; &#xC0AC;&#xC6A9;&#xD560; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">userOptions</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">userOptions.autoConnect</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>RTCEngine &#xC0DD;&#xC131;&#xC2DC; &#xC790;&#xB3D9; &#xC5F0;&#xACB0; &#xC5EC;&#xBD80;&#xB97C; &#xACB0;&#xC815;&#xD558;&#xB294; &#xC635;&#xC158;.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">userOptions.iceServers</td>
+      <td data-ice="type" class="code"><span><span>RTCIceServer</span><span>[]</span></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xC5F0;&#xACB0;&#xC5D0; &#xC0AC;&#xC6A9;&#xD560; ICE &#xC11C;&#xBC84;&#xB4E4;.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">userOptions.role</td>
+      <td data-ice="type" class="code"><span>&apos;polite&apos;</span> | <span>&apos;impolite&apos;</span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xC5F0;&#xACB0;&#xC5D0;&#xC11C; &#xC774; &#xD53C;&#xC5B4;&#xC758; &#xC5ED;&#xD560;&#xC744; &#xC218;&#xB3D9;&#xC73C;&#xB85C; &#xC124;&#xC815;&#xD568;.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">userOptions.waitOnlineOnReconnection</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xC7AC;&#xC5F0;&#xACB0;&#xC2DC; &#xC778;&#xD130;&#xB137;&#xC774; &#xC5F0;&#xACB0;&#xB420;&#xB54C;&#xAE4C;&#xC9C0; &#xB300;&#xAE30;&#xD588;&#xB2E4;&#xAC00; &#xC5F0;&#xACB0;&#xD568;.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+<div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-closed">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">closed</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber118">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC5F0;&#xACB0;&#xC774; &#xB2EB;&#xD614;&#xB294;&#xC9C0; &#xB098;&#xD0C0;&#xB0B4;&#xB294; &#xC18D;&#xC131;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-connection">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">connection</span><span class="code" data-ice="signature">: <span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span>&lt;<span>&apos;inactive&apos;</span>|<span>&apos;connecting&apos;</span>|<span>&apos;connected&apos;</span>|<span>&apos;disconnected&apos;</span>|<span>&apos;failed&apos;</span>|<span>&apos;closed&apos;</span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber98">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC5F0;&#xACB0;&#xC758; &#xC0C1;&#xD0DC;&#xB97C; &#xB098;&#xD0C0;&#xB0C4;. inactive, closed&#xB97C; &#xC81C;&#xC678;&#xD558;&#xACE0;&#xB294; RTCPeerConnection&#xC758; connectionState&#xC640; &#xB3D9;&#xC77C;&#xD568;.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-ignoreOffer">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">ignoreOffer</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber92">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>offer collision &#xBC29;&#xC9C0;&#xB97C; &#xC704;&#xD574; role&#xC774;&#xB098; signalingState&#xB4F1;&#xC5D0; &#xAE30;&#xBC18;&#xD574; &#xBC1B;&#xC740; offer&#xC744; &#xBC1B;&#xC744;&#xC9C0; &#xACB0;&#xC815;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-listenerManager">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">listenerManager</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber103">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC678;&#xBD80; API&#xC5D0; &#xAC74; &#xC774;&#xBCA4;&#xD2B8; &#xB9AC;&#xC2A4;&#xB108;&#xB4E4;&#xC744; &#xAD00;&#xB9AC;&#xD558;&#xB294; &#xAC1D;&#xCCB4;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-makingOffer">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">makingOffer</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber87">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>offer collision &#xBC29;&#xC9C0;&#xB97C; &#xC704;&#xD574; offer&#xC744; &#xB9CC;&#xB4DC;&#xB294; &#xB3D9;&#xC548;&#xC774;&#xBA74; &#xAE30;&#xB85D;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-negotiatedDataChannels">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">negotiatedDataChannels</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber72">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC0C1;&#xB300;&#xBC29;&#xC774; socket()&#xC744; &#xB808;&#xC774;&#xBE14;&#xACFC; &#xD568;&#xAED8; &#xD638;&#xCD9C;&#xD55C; &#xACB0;&#xACFC; &#xC774;&#xCABD;&#xC5D0;&#xC11C; &#xBC1B;&#xC740; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xB4E4;.
+&#xD0A4;: &#xB808;&#xC774;&#xBE14;
+&#xAC12;: &#xC18C;&#xCF13;&#xC774; &#xC0AC;&#xC6A9;&#xD560; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;(RTCDataChannel)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-options">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">options</span><span class="code" data-ice="signature">: {&quot;autoConnect&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, &quot;iceServers&quot;: <span>*</span>, &quot;waitOnlineOnReconnection&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>, ...signalerOptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>, ...userOptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>}</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber33">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-pc">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">pc</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber63">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xD53C;&#xC5B4; &#xCEE4;&#xB125;&#xC158; &#xAC1D;&#xCCB4;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-polite">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">polite</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber58">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>perfect negotiation pattern&#xC5D0;&#xC11C; &#xC0AC;&#xC6A9;&#xD558;&#xB294; role</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-seed">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">seed</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber113">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>role &#xBC30;&#xC815;&#xC744; &#xC704;&#xD55C; &#xB09C;&#xC218;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-signaler">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">signaler</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber108">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xC804;&#xB2EC;&#xD558;&#xB294;&#xB370; &#xC0AC;&#xC6A9;&#xB418;&#xB294; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-unnegotiatedDataChannels">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">unnegotiatedDataChannels</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber77">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC0C1;&#xB300;&#xBC29;&#xC774; socket()&#xC744; &#xB808;&#xC774;&#xBE14; &#xC5C6;&#xC774; &#xD638;&#xCD9C;&#xD55C; &#xACB0;&#xACFC; &#xC774;&#xCABD;&#xC5D0;&#xC11C; &#xBC1B;&#xC740; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xB4E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-unnegotiatedSocketCount">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">unnegotiatedSocketCount</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber124">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC774;&#xB54C;&#xAE4C;&#xC9C0; &#xC0DD;&#xC131;&#xB41C; unnegotiated socket&#xC758; &#xAC1C;&#xC218;.
+unnegotiated socket &#xC0DD;&#xC131;&#xC2DC; &#xB808;&#xC774;&#xBE14;&#xC744; &#xB9CC;&#xB4E4; &#xB54C; &#xC0AC;&#xC6A9;&#xB429;&#xB2C8;&#xB2E4;. (&#xC608;&#xC2DC;: RTCEngine-unnegotiated-socket_0)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-unnegotiatedTransactionCount">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">unnegotiatedTransactionCount</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber129">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC774;&#xB54C;&#xAE4C;&#xC9C0; &#xC0DD;&#xC131;&#xB41C; unnegotiated transaction&#xC758; &#xAC1C;&#xC218;.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-unnegotiatedTransactions">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">unnegotiatedTransactions</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber82">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC0C1;&#xB300;&#xBC29;&#xC774; writable()&#xC744; &#xB808;&#xC774;&#xBE14; &#xC5C6;&#xC774; &#xD638;&#xCD9C;&#xD55C; &#xACB0;&#xACFC; &#xC774;&#xCABD;&#xC5D0;&#xC11C; &#xBC1B;&#xC740; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xB4E4;</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-abort">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">abort</span><span class="code" data-ice="signature">(errorStr: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber525">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC5D0;&#xC11C; &#xC2EC;&#xAC01;&#xD55C; &#xC624;&#xB958;&#xAC00; &#xBC1C;&#xC0DD;&#xD574; &#xC5F0;&#xACB0;&#xC744; &#xACC4;&#xC18D; &#xC9C4;&#xD589;&#xD560; &#xC218; &#xC5C6;&#xB294; &#xACBD;&#xC6B0; &#xC5F0;&#xACB0;&#xC744; &#xAC15;&#xC81C;&#xB85C; &#xB2EB;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">errorStr</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xC624;&#xB958; &#xBA54;&#xC2DC;&#xC9C0;.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-channel">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">channel</span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/Channel.js~Channel.html">Channel</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber482">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC591;&#xBC29;&#xD5A5; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC744; &#xC704;&#xD55C; &#xCC44;&#xB110;&#xC744; &#xC5FD;&#xB2C8;&#xB2E4;. &#xC591;&#xCABD; &#xD53C;&#xC5B4; &#xBAA8;&#xB450; &#xB3D9;&#xC77C;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;&#xB85C; &#xC774; &#xBA54;&#xC18C;&#xB4DC;&#xB97C; &#xD638;&#xCD9C;&#xD558;&#xBA74; &#xCC44;&#xB110;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9D1;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">label</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xCC44;&#xB110;&#xC744; &#xC2DD;&#xBCC4;&#xD558;&#xAE30; &#xC704;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;. <strong>&#xC911;&#xBCF5;&#xC774; &#xBD88;&#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;.</strong> (RTCDataChannel&#xACFC;&#xB294; &#xB2E4;&#xB985;&#xB2C8;&#xB2E4;)</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/Channel.js~Channel.html">Channel</a></span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>&#xCC44;&#xB110;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C0;&#xBA74; &#xADF8;&#xAC78; resolve&#xD558;&#xB294; promise</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-close">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">close</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber509">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC5F0;&#xACB0;&#xC744; &#xB2EB;&#xC2B5;&#xB2C8;&#xB2E4;. &#xB450; &#xD53C;&#xC5B4; &#xC0AC;&#xC774;&#xC5D0; &#xD615;&#xC131;&#xB41C; &#xBAA8;&#xB4E0; &#xC5F0;&#xACB0;(&#xD2B8;&#xB80C;&#xC81D;&#xC158;, &#xCC44;&#xB110; &#xB4F1;)&#xC774; &#xB2EB;&#xD799;&#xB2C8;&#xB2E4;.
+&#xC774; &#xBA54;&#xC18C;&#xB4DC;&#xB97C; &#xD638;&#xCD9C;&#xD55C; &#xD6C4; &#xC5D4;&#xC9C4;&#xC740; garbage collect&#xB420; &#xC218; &#xC788;&#xAC8C; &#xB429;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-connect">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">connect</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>void</span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber349">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC5F0;&#xACB0;&#xC744; &#xC2DC;&#xC791;&#xD558;&#xACE0;, &#xC5F0;&#xACB0;&#xC774; &#xC131;&#xACF5;&#xD560;&#xB54C;&#xAE4C;&#xC9C0; &#xAE30;&#xB2E4;&#xB9BD;&#xB2C8;&#xB2E4;.
+&#xB610; navigator.onLine&#xC774; false&#xC778; &#xC0C1;&#xD0DC;&#xC5D0;&#xC11C; &#xC218;&#xB3D9;&#xC73C;&#xB85C; &#xC7AC;&#xC5F0;&#xACB0;&#xC744; &#xC2DC;&#xB3C4;&#xD558;&#xAE30; &#xC704;&#xD574;&#xC11C;&#xB3C4; &#xC0AC;&#xC6A9;&#xB429;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>void</span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>&#xC5F0;&#xACB0;&#xC774; &#xC131;&#xACF5;&#xD558;&#xBA74; resolve&#xD558;&#xB294; promise</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getReport">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">getReport</span><span class="code" data-ice="signature">(socket: <span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>): <span>RTCStatsReport</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber542">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC18C;&#xCF13;&#xC774; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xB808;&#xD3EC;&#xD2B8;&#xB97C; &#xAC00;&#xC838;&#xC635;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">socket</td>
+      <td data-ice="type" class="code"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xB808;&#xD3EC;&#xD2B8;&#xB97C; &#xC77D;&#xACE0; &#xC2F6;&#xC740; &#xB300;&#xC0C1; &#xC18C;&#xCF13;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>RTCStatsReport</span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>&#xC18C;&#xCF13;&#xC774; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xB808;&#xD3EC;&#xD2B8;</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-readable">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">readable</span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber433">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xB370;&#xC774;&#xD130;&#xB97C; &#xBC1B;&#xAE30; &#xC704;&#xD55C; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;. &#xC591;&#xCABD; &#xD53C;&#xC5B4; &#xBAA8;&#xB450; &#xB3D9;&#xC77C;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;&#xB85C; &#xC774; &#xBA54;&#xC18C;&#xB4DC;&#xB97C; &#xD638;&#xCD9C;&#xD558;&#xBA74; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9D1;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">label</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xC2DD;&#xBCC4;&#xD558;&#xAE30; &#xC704;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;. <strong>&#xC911;&#xBCF5;&#xC774; &#xBD88;&#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;.</strong> (RTCDataChannel&#xACFC;&#xB294; &#xB2E4;&#xB985;&#xB2C8;&#xB2E4;)</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C0;&#xBA74; &#xADF8;&#xAC78; resolve&#xD558;&#xB294; promise</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-readables">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    <span data-ice="generator">*</span>
+    <span class="code" data-ice="name">readables</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber467">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-restartIce">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">restartIce</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber500">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>RTCPeerConnection&#xC758; restartIce&#xB97C; &#xD638;&#xCD9C;&#xD569;&#xB2C8;&#xB2E4;. &#xC7AC;&#xC5F0;&#xACB0;&#xC744; &#xC704;&#xD574;&#xC11C;&#xB294; connect()&#xB97C; &#xC0AC;&#xC6A9;&#xD558;&#xC138;&#xC694;.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-socket">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">socket</span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber364">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC591;&#xCABD; &#xD53C;&#xC5B4;&#xC5D0;&#xC11C; &#xC0AC;&#xC6A9; &#xAC00;&#xB2A5;&#xD55C; RTCSocket&#xC744; &#xC5FD;&#xB2C8;&#xB2E4;. &#xC591;&#xCABD; &#xD53C;&#xC5B4; &#xBAA8;&#xB450; &#xB3D9;&#xC77C;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;&#xB85C; &#xC774; &#xBA54;&#xC18C;&#xB4DC;&#xB97C; &#xD638;&#xCD9C;&#xD558;&#xBA74; RTCSocket&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9D1;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">label</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xC18C;&#xCF13;&#xC744; &#xC2DD;&#xBCC4;&#xD558;&#xAE30; &#xC704;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;. <strong>&#xC911;&#xBCF5;&#xC774; &#xBD88;&#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;.</strong> &#xBE44;&#xC6CC;&#xB450;&#xBA74; unnegotiated socket&#xC744; &#xC0DD;&#xC131;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>RTCSocket&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C0;&#xBA74; &#xADF8;&#xAC78; resolve&#xD558;&#xB294; promise</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-sockets">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    <span data-ice="generator">*</span>
+    <span class="code" data-ice="name">sockets</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber392">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC0C1;&#xB300;&#xAC00; &#xB808;&#xC774;&#xBE14; &#xC5C6;&#xC774; &#xC0DD;&#xC131;&#xD55C; &#xC18C;&#xCF13;(unnegotiated socket)&#xC744; &#xBC1B;&#xC544;&#xC11C; &#xB0B4;&#xBCF4;&#xB0B4;&#xB294; async generator</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-start">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">start</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber187">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC5D4;&#xC9C4;&#xC744; &#xC2DC;&#xC791;&#xD569;&#xB2C8;&#xB2E4;. &#xC2DC;&#xC791;&#xC2DC; Perfect Negotiation Pattern&#xC744; &#xC774;&#xC6A9;&#xD574; &#xC0C1;&#xB300;&#xBC29;&#xACFC; RTC&#xB97C; &#xD615;&#xC131; &#xBC0F; &#xAD00;&#xB9AC;&#xD569;&#xB2C8;&#xB2E4;.
+&#xC5F0;&#xACB0;&#xC774; &#xB04A;&#xC5B4;&#xC9C8; &#xACBD;&#xC6B0; &#xC778;&#xD130;&#xB137;&#xC774; &#xB2E4;&#xC2DC; &#xC5F0;&#xACB0;&#xB420;&#xB54C;&#xAE4C;&#xC9C0; &#xB300;&#xAE30;&#xD588;&#xB2E4;&#xAC00; ice restart&#xB97C; &#xC2DC;&#xB3C4;&#xD569;&#xB2C8;&#xB2E4;. &#xC774;&#xB54C; &#xBA54;&#xC2DC;&#xC9C0;&#xAC00; &#xC131;&#xACF5;&#xC801;&#xC73C;&#xB85C; &#xAD50;&#xD658;&#xB41C;&#xB2E4;&#xBA74; &#xC5F0;&#xACB0;&#xC774; &#xB2E4;&#xC2DC; &#xD615;&#xC131;&#xB429;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-writable">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">writable</span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span>, metadata: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber447">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xB370;&#xC774;&#xD130;&#xB97C; &#xBCF4;&#xB0B4;&#xAE30; &#xC704;&#xD55C; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;. &#xC591;&#xCABD; &#xD53C;&#xC5B4; &#xBAA8;&#xB450; &#xB3D9;&#xC77C;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;&#xB85C; &#xC774; &#xBA54;&#xC18C;&#xB4DC;&#xB97C; &#xD638;&#xCD9C;&#xD558;&#xBA74; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9D1;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">label</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xC2DD;&#xBCC4;&#xD558;&#xAE30; &#xC704;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;. <strong>&#xC911;&#xBCF5;&#xC774; &#xBD88;&#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;.</strong> &#xBE44;&#xC6CC;&#xB450;&#xBA74; unnegotiated transaction&#xC744; &#xC0DD;&#xC131;&#xD569;&#xB2C8;&#xB2E4;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">metadata</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;. &#xC544;&#xBB34; &#xC815;&#xBCF4;&#xB098; &#xB123;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C0;&#xBA74; &#xADF8;&#xAC78; resolve&#xD558;&#xB294; promise</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<h2 data-ice="title">Private Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-assignRole">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">assignRole</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>void</span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber142">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xBB34;&#xC791;&#xC704;&#xB85C; &#xB450; &#xD53C;&#xC5B4;&#xC758; &#xC5ED;&#xD560;&#xC744; &#xC815;&#xD569;&#xB2C8;&#xB2E4;. &#xC5EC;&#xAE30;&#xC11C; &#xC5ED;&#xD560;&#xC740; Perfect Negotiation Pattern&#xC5D0;&#xC11C; &#xC0AC;&#xC639;&#xB418;&#xB294; polite/impolite &#xD53C;&#xC5B4;&#xB97C; &#xC758;&#xBBF8;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>void</span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>&#xC5ED;&#xD560; &#xBC30;&#xC815;&#xC774; &#xB05D;&#xB098;&#xBA74; resolve&#xB418;&#xB294; promise</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createNegotiatedSocket">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">createNegotiatedSocket</span><span class="code" data-ice="signature">(label: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber405">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xB808;&#xC774;&#xBE14;&#xB85C; &#xC2DD;&#xBCC4;&#xB418;&#xB294; &#xC18C;&#xCF13;&#xC744; &#xC0DD;&#xC131;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">label</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xC18C;&#xCF13;&#xC744; &#xC2DD;&#xBCC4;&#xD558;&#xAE30; &#xC704;&#xD55C; &#xC2DD;&#xBCC4;&#xC790;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createUnnegotiatedSocket">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">createUnnegotiatedSocket</span><span class="code" data-ice="signature">(labelOverride: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber380">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xB808;&#xC774;&#xBE14; &#xC5C6;&#xC774; &#xB3D9;&#xC801;&#xC73C;&#xB85C; &#xC18C;&#xCF13;&#xC744; &#xC0DD;&#xC131;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">labelOverride</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xB808;&#xC774;&#xBE14;. &#xC2DD;&#xBCC4;&#xC790;&#xB85C; &#xC0AC;&#xC6A9;&#xB418;&#xC9C0; &#xC54A;&#xACE0; &#xC911;&#xBCF5;&#xC774; &#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;. &#xC774; &#xD30C;&#xB77C;&#xBBF8;&#xD130;&#xAC00; <code>undefined</code>&#xBA74; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xB808;&#xC774;&#xBE14;&#xC740; &#xAE30;&#xBCF8;&#xAC12;&#xC73C;&#xB85C; &#xC124;&#xC815;&#xB429;&#xB2C8;&#xB2E4;.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>&gt;</td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-sendSignal">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">sendSignal</span><span class="code" data-ice="signature">(msg: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCEngine.js.html#lineNumber492">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xB97C; &#xD1B5;&#xD574;&#xC11C; &#xC2DC;&#xADF8;&#xB110; &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xC804;&#xC1A1;&#xD569;&#xB2C8;&#xB2E4;.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">msg</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xC804;&#xC1A1;&#xD560; &#xC2DC;&#xADF8;&#xB110; &#xBA54;&#xC2DC;&#xC9C0;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
