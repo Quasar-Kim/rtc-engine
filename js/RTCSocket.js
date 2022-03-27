@@ -55,9 +55,11 @@ export default class RTCSocket extends Mitt {
     }
 
     // 커스텀 이벤트 처리
-    if ('_channelEngineCustomEvent' in data) {
-      this.emit(data.event, data.payload)
-      return
+    if (typeof data === 'object') {
+      if ('_channelEngineCustomEvent' in data) {
+        this.emit(data.event, data.payload)
+        return
+      }
     }
 
     this.emit('data', data)
@@ -86,7 +88,7 @@ export default class RTCSocket extends Mitt {
       console.log(`[RTCSocket:${this.label}] 바이너리 데이터 전송함`)
     } else {
       msg = JSON.stringify(data)
-      console.log(`[RTCSocket:${this.label}] 메시지 전송함`)
+      console.log(`[RTCSocket:${this.label}] 메시지 전송함`, msg)
     }
 
     if (this.dataChannel.readyState !== 'open') {
