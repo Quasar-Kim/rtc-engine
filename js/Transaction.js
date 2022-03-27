@@ -3,7 +3,7 @@ import { ObservableEntry, wait } from './util/ObservableEntry.js'
 import progressTracker from './util/eta.js'
 import prettyBytes from './util/prettyBytes.js'
 
-/** @typedef {import('./RTCSocket.js').default} RTCSocket */
+// /** @typedef {import('./RTCSocket.js').default} RTCSocket */
 
 /**
  * 단방향 데이터 전송을 위한 인터페이스. 한 피어에서 다른 피어로 파일과 같은 데이터를 전송할 때 사용됩니다.
@@ -21,7 +21,7 @@ export default class Transaction extends Mitt {
   constructor (socket, metadata) {
     super()
 
-    /** @type {RTCDataChannel} */
+    /** @type {RTCSocket} */
     this.socket = socket
     this.metadata = metadata
     this.label = this.socket.label
@@ -73,14 +73,14 @@ export default class Transaction extends Mitt {
     }
 
     if (this.paused.get()) {
-      return Math.round(this.progressTracker?.estimate(this.lastPausedTimestamp))
+      return Math.round(this.progressTracker.estimate(this.lastPausedTimestamp))
     }
 
     if (this.processed.get() === this.metadata.size) {
       return 0
     }
 
-    return Math.round(this.progressTracker?.estimate(Date.now() - this.pausedMilliSeconds)) // 결과는 초
+    return Math.round(this.progressTracker.estimate(Date.now() - this.pausedMilliSeconds)) // 결과는 초
   }
 
   get progress () {
@@ -96,7 +96,7 @@ export default class Transaction extends Mitt {
       return '0B/s'
     }
 
-    return prettyBytes(this.progressTracker?.rate()) + '/s'
+    return prettyBytes(this.progressTracker.rate()) + '/s'
   }
 
   pause () {

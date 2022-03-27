@@ -55,7 +55,7 @@ export default class RTCSocket extends Mitt {
     }
 
     // 커스텀 이벤트 처리
-    if (data?._channelEngineCustomEvent) {
+    if ('_channelEngineCustomEvent' in data) {
       this.emit(data.event, data.payload)
       return
     }

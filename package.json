@@ -20,7 +20,7 @@
     "test:unit": "wtr --watch",
     "test:coverage": "wtr --coverage",
     "test:e2e": "mocha test/e2e/backend/*.test.mjs",
-    "prepare": "eslint js/**/*.js && wtr && npm run build"
+    "prepublishOnly": "eslint js/**/*.js && wtr && esdoc && npm run build"
   },
   "author": "Quasar-Kim",
   "license": "MIT",
@@ -33,6 +33,9 @@
     "@web/test-runner": "^0.13.27",
     "chai": "^4.3.6",
     "chai-spies": "^1.0.0",
+    "esdoc": "^1.1.0",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",

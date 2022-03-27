@@ -17,9 +17,9 @@ source -> chunkingStream -> writable --- socket --- readable -> destination
  - 일시정지(readable): readable에서 'pause', 'resume' 이벤트 발생 -> writable에서 받아서 흐름 조절
 */
 
-/**
- * @typedef {import('./RTCSocket.js').default} RTCSocket
- */
+// /**
+//  * @typedef {import('./RTCSocket.js').default} RTCSocket
+//  */
 
 export default class WritableTransaction extends Transaction {
   /**

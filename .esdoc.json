@@ -1,0 +1,8 @@
+{
+  "source": "./js",
+  "destination": "./docs/reference",
+  "plugins": [
+    { "name": "esdoc-standard-plugin" },
+    { "name": "esdoc-ecmascript-proposal-plugin", "option": { "all": true } }
+  ]
+}

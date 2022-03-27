@@ -1,14 +1,14 @@
 import Mitt from '../util/Mitt.js'
 import { ObservableEntry } from '../util/ObservableEntry.js'
 
-/**
- * @template T
- * @typedef {import('../util/Mitt.js').EventHandler<T>} EventHandler<T>
- */
+// /**
+//  * @template T
+//  * @typedef {import('../util/Mitt.js').EventHandler<T>} EventHandler<T>
+//  */
 
-/**
- * @typedef {import('../RTCEngine.js').default} RTCEngine
- */
+// /**
+//  * @typedef {import('../RTCEngine.js').default} RTCEngine
+//  */
 
 /**
  * 시그널러에 필수적인 기능들을 제공하는 베이스 클래스. 시그널러는 반드시 이 클래스를 확장해야 합니다.

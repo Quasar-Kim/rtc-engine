@@ -29,7 +29,7 @@ export default class RTCEngine extends Mitt {
     super()
 
     // 옵션 합치기
-    const signalerOptions = signaler.options ?? {}
+    const signalerOptions = signaler.options
     this.options = {
       autoConnect: true,
       iceServers: [
