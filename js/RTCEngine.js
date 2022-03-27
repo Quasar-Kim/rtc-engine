@@ -508,6 +508,22 @@ export default class RTCEngine extends Mitt {
   }
 
   /**
+   * 시그널러에서 심각한 오류가 발생해 연결을 계속 진행할 수 없는 경우 연결을 강제로 닫습니다.
+   * @param {string} errorStr 오류 메시지.
+   */
+  abort (errorStr) {
+    console.log('[RTCEngine]', '오류가 발생해 연결을 닫음.')
+    this.close()
+
+    const error = new Error(errorStr)
+    if (this.all.has('error')) {
+      this.emit('error', error)
+    } else {
+      throw error
+    }
+  }
+
+  /**
    * 소켓이 사용하는 데이터 채널의 레포트를 가져옵니다.
    * @param {RTCSocket} socket 레포트를 읽고 싶은 대상 소켓
    * @returns {RTCStatsReport} 소켓이 사용하는 데이터 채널의 레포트
