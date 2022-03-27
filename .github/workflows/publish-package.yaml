@@ -1,0 +1,60 @@
+name: Publish package to npm
+on:
+  release:
+    types: [created]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test:unit
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - run: npm ci
+      
+      - name: Generate Reference
+        run: npx esdoc
+
+      - name: Generate Demo
+        run: node "${GITHUB_WORKSPACE}/script/createDemoForRelease.mjs"
+
+      - name: Generate Documentation
+        run: eleventy
+
+      - name: Checkout website branch
+        uses: actions/checkout@v2
+        with:
+          ref: website
+
+      - name: Commit result
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          
