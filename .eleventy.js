@@ -16,6 +16,7 @@ module.exports = function (eleventyConfig) {
     dir: {
       input: 'docu',
       output: 'docs'
-    }
+    },
+    pathPrefix: '/rtc-engine/docs/'
   }
 }
