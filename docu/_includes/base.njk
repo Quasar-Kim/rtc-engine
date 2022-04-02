@@ -40,8 +40,8 @@
 
     nav.toc {
       border: 1px solid gray;
-      padding-top: 1.5em;
-      padding-right: 1.5em;
+      padding-top: 2em;
+      padding-right: 2em;
       padding-bottom: 1em;
       padding-left: 1em;
       width: fit-content;
@@ -101,12 +101,12 @@
       <div class="docs-navigation">
         {% if previousPost %}
         <span>
-          ⬅<a href="{{ previousPost.url | url }}">{{ previousPost.data.title }}</a>
+          ⬅ <a href="{{ previousPost.url | url }}">{{ previousPost.data.title }}</a>
         </span>
         {% endif %}
         {% if nextPost %}
         <span class="next-post">
-          <a href="{{ nextPost.url | url }}">{{ nextPost.data.title }}</a>➡
+          <a href="{{ nextPost.url | url }}">{{ nextPost.data.title }}</a> ➡
         </span>
         {% endif %}
       </div>
@@ -124,12 +124,12 @@
       <div class="docs-navigation">
         {% if previousPost %}
         <span>
-          ⬅<a href="{{ previousPost.url | url }}">{{ previousPost.data.title }}</a>
+          ⬅ <a href="{{ previousPost.url | url }}">{{ previousPost.data.title }}</a>
         </span>
         {% endif %}
         {% if nextPost %}
         <span class="next-post">
-          <a href="{{ nextPost.url | url }}">{{ nextPost.data.title }}</a>➡
+          <a href="{{ nextPost.url | url }}">{{ nextPost.data.title }}</a> ➡
         </span>
         {% endif %}
       </div>
