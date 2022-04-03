@@ -318,26 +318,28 @@ export default class RTCEngine extends Mitt {
 
     // 3. 재연결
     // connection이 failed이고, 인터넷에 연결되어 있고, 시그널러가 준비되어 있을 때 ice restart를 시도함
-    observe(this.connection).onChange(() => {
-      if (this.connection.get() !== 'failed') return
+    observe(this.connection).toBe('failed').then(async () => {
+      // await wait(this.signaler.ready).toBe(true)
+      this.restartIce()
 
-      const reconnect = async () => {
-        console.log('[RTCEngine]', '시그널러 ready 대기중')
-        await wait(this.signaler.ready).toBe(true)
+      // if (this.connection.get() !== 'failed') return
 
-        // wait하는 중 close()가 호출되었을수도 있음
-        if (this.closed.get()) return
+      // const reconnect = async () => {
+      // console.log('[RTCEngine]', '시그널러 ready 대기중')
+      // await wait(this.signaler.ready).toBe(true)
 
-        this.restartIce()
-        console.log('[RTCEngine]', '재연결 시도하는 중...')
-      }
+      // // wait하는 중 close()가 호출되었을수도 있음
+      // if (this.closed.get()) return
+      // this.restartIce()
+      // console.log('[RTCEngine]', '재연결 시도하는 중...')
+      // }
 
-      if (navigator.onLine || !this.options.waitOnlineOnReconnection) {
-        reconnect()
-      } else {
-        console.log('[RTCEngine]', '오프라인 상태, 인터넷 연결 대기 중')
-        this.listenerManager.add(window, 'online', reconnect, { once: true })
-      }
+      // if (navigator.onLine || !this.options.waitOnlineOnReconnection) {
+      //   reconnect()
+      // } else {
+      //   console.log('[RTCEngine]', '오프라인 상태, 인터넷 연결 대기 중')
+      //   this.listenerManager.add(window, 'online', reconnect, { once: true })
+      // }
     })
   }
 
