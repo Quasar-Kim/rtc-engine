@@ -12,6 +12,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "rtc-engine/js/util/intervaltimer.js~intervaltimer",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html",
+    "<span>IntervalTimer</span> <span class=\"search-result-import-path\">rtc-engine/js/util/IntervalTimer.js</span>",
+    "class"
+  ],
+  [
     "rtc-engine/js/util/listenermanager.js~listenermanager",
     "class/js/util/ListenerManager.js~ListenerManager.html",
     "<span>ListenerManager</span> <span class=\"search-result-import-path\">rtc-engine/js/util/ListenerManager.js</span>",
@@ -54,12 +60,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "rtc-engine/js/rtcengine.js~rtcengine",
-    "class/js/RTCEngine.js~RTCEngine.html",
-    "<span>RTCEngine</span> <span class=\"search-result-import-path\">rtc-engine/js/RTCEngine.js</span>",
-    "class"
-  ],
-  [
     "rtc-engine/js/rtcsocket.js~rtcsocket",
     "class/js/RTCSocket.js~RTCSocket.html",
     "<span>RTCSocket</span> <span class=\"search-result-import-path\">rtc-engine/js/RTCSocket.js</span>",
@@ -75,6 +75,12 @@ window.esdocSearchIndex = [
     "rtc-engine/js/signaler/base.js~signalerbase",
     "class/js/signaler/Base.js~SignalerBase.html",
     "<span>SignalerBase</span> <span class=\"search-result-import-path\">rtc-engine/js/signaler/Base.js</span>",
+    "class"
+  ],
+  [
+    "rtc-engine/js/util/timeouttimer.js~timeouttimer",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html",
+    "<span>TimeoutTimer</span> <span class=\"search-result-import-path\">rtc-engine/js/util/TimeoutTimer.js</span>",
     "class"
   ],
   [
@@ -94,6 +100,18 @@ window.esdocSearchIndex = [
     "class/js/WritableTransaction.js~WritableTransaction.html",
     "<span>WritableTransaction</span> <span class=\"search-result-import-path\">rtc-engine/js/WritableTransaction.js</span>",
     "class"
+  ],
+  [
+    "rtc-engine/js/util/createlogger.js~createlogger",
+    "function/index.html#static-function-createLogger",
+    "<span>createLogger</span> <span class=\"search-result-import-path\">rtc-engine/js/util/createLogger.js</span>",
+    "function"
+  ],
+  [
+    "rtc-engine/js/util/createlogger.js~disablelog",
+    "function/index.html#static-function-disableLog",
+    "<span>disableLog</span> <span class=\"search-result-import-path\">rtc-engine/js/util/createLogger.js</span>",
+    "function"
   ],
   [
     "rtc-engine/js/util/eta.js~makeeta",
@@ -498,210 +516,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "js/rtcengine.js",
-    "file/js/RTCEngine.js.html",
-    "js/RTCEngine.js",
-    "file"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#abort",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-abort",
-    "js/RTCEngine.js~RTCEngine#abort",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#assignrole",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-assignRole",
-    "js/RTCEngine.js~RTCEngine#assignRole",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#channel",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-channel",
-    "js/RTCEngine.js~RTCEngine#channel",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#close",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-close",
-    "js/RTCEngine.js~RTCEngine#close",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#closed",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-closed",
-    "js/RTCEngine.js~RTCEngine#closed",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#connect",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-connect",
-    "js/RTCEngine.js~RTCEngine#connect",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#connection",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-connection",
-    "js/RTCEngine.js~RTCEngine#connection",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#constructor",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-constructor-constructor",
-    "js/RTCEngine.js~RTCEngine#constructor",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#createnegotiatedsocket",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-createNegotiatedSocket",
-    "js/RTCEngine.js~RTCEngine#createNegotiatedSocket",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#createunnegotiatedsocket",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-createUnnegotiatedSocket",
-    "js/RTCEngine.js~RTCEngine#createUnnegotiatedSocket",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#getreport",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-getReport",
-    "js/RTCEngine.js~RTCEngine#getReport",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#ignoreoffer",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-ignoreOffer",
-    "js/RTCEngine.js~RTCEngine#ignoreOffer",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#listenermanager",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-listenerManager",
-    "js/RTCEngine.js~RTCEngine#listenerManager",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#makingoffer",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-makingOffer",
-    "js/RTCEngine.js~RTCEngine#makingOffer",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#negotiateddatachannels",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-negotiatedDataChannels",
-    "js/RTCEngine.js~RTCEngine#negotiatedDataChannels",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#options",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-options",
-    "js/RTCEngine.js~RTCEngine#options",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#pc",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-pc",
-    "js/RTCEngine.js~RTCEngine#pc",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#polite",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-polite",
-    "js/RTCEngine.js~RTCEngine#polite",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#readable",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-readable",
-    "js/RTCEngine.js~RTCEngine#readable",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#readables",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-readables",
-    "js/RTCEngine.js~RTCEngine#readables",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#restartice",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-restartIce",
-    "js/RTCEngine.js~RTCEngine#restartIce",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#seed",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-seed",
-    "js/RTCEngine.js~RTCEngine#seed",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#sendsignal",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-sendSignal",
-    "js/RTCEngine.js~RTCEngine#sendSignal",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#signaler",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-signaler",
-    "js/RTCEngine.js~RTCEngine#signaler",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#socket",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-socket",
-    "js/RTCEngine.js~RTCEngine#socket",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#sockets",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-sockets",
-    "js/RTCEngine.js~RTCEngine#sockets",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#start",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-start",
-    "js/RTCEngine.js~RTCEngine#start",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#unnegotiateddatachannels",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-unnegotiatedDataChannels",
-    "js/RTCEngine.js~RTCEngine#unnegotiatedDataChannels",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#unnegotiatedsocketcount",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-unnegotiatedSocketCount",
-    "js/RTCEngine.js~RTCEngine#unnegotiatedSocketCount",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#unnegotiatedtransactioncount",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-unnegotiatedTransactionCount",
-    "js/RTCEngine.js~RTCEngine#unnegotiatedTransactionCount",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#unnegotiatedtransactions",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-member-unnegotiatedTransactions",
-    "js/RTCEngine.js~RTCEngine#unnegotiatedTransactions",
-    "member"
-  ],
-  [
-    "js/rtcengine.js~rtcengine#writable",
-    "class/js/RTCEngine.js~RTCEngine.html#instance-method-writable",
-    "js/RTCEngine.js~RTCEngine#writable",
-    "method"
-  ],
-  [
-    "js/rtcengine.js~rtcengine.plugin",
-    "class/js/RTCEngine.js~RTCEngine.html#static-method-plugin",
-    "js/RTCEngine.js~RTCEngine.plugin",
-    "method"
-  ],
-  [
     "js/rtcsocket.js",
     "file/js/RTCSocket.js.html",
     "js/RTCSocket.js",
@@ -735,6 +549,12 @@ window.esdocSearchIndex = [
     "js/rtcsocket.js~rtcsocket#label",
     "class/js/RTCSocket.js~RTCSocket.html#instance-member-label",
     "js/RTCSocket.js~RTCSocket#label",
+    "member"
+  ],
+  [
+    "js/rtcsocket.js~rtcsocket#logger",
+    "class/js/RTCSocket.js~RTCSocket.html#instance-member-logger",
+    "js/RTCSocket.js~RTCSocket#logger",
     "member"
   ],
   [
@@ -867,6 +687,12 @@ window.esdocSearchIndex = [
     "js/transaction.js~transaction#lastpausedtimestamp",
     "class/js/Transaction.js~Transaction.html#instance-member-lastPausedTimestamp",
     "js/Transaction.js~Transaction#lastPausedTimestamp",
+    "member"
+  ],
+  [
+    "js/transaction.js~transaction#logger",
+    "class/js/Transaction.js~Transaction.html#instance-member-logger",
+    "js/Transaction.js~Transaction#logger",
     "member"
   ],
   [
@@ -1116,15 +942,15 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "js/signaler/localsignaler.js~localsignaler#heartbeatintervalid",
-    "class/js/signaler/LocalSignaler.js~LocalSignaler.html#instance-member-heartbeatIntervalId",
-    "js/signaler/LocalSignaler.js~LocalSignaler#heartbeatIntervalId",
+    "js/signaler/localsignaler.js~localsignaler#heartbeattimeouttimer",
+    "class/js/signaler/LocalSignaler.js~LocalSignaler.html#instance-member-heartbeatTimeoutTimer",
+    "js/signaler/LocalSignaler.js~LocalSignaler#heartbeatTimeoutTimer",
     "member"
   ],
   [
-    "js/signaler/localsignaler.js~localsignaler#heartbeattimeoutid",
-    "class/js/signaler/LocalSignaler.js~LocalSignaler.html#instance-member-heartbeatTimeoutId",
-    "js/signaler/LocalSignaler.js~LocalSignaler#heartbeatTimeoutId",
+    "js/signaler/localsignaler.js~localsignaler#id",
+    "class/js/signaler/LocalSignaler.js~LocalSignaler.html#instance-member-id",
+    "js/signaler/LocalSignaler.js~LocalSignaler#id",
     "member"
   ],
   [
@@ -1140,16 +966,76 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "js/signaler/localsignaler.js~localsignaler#setheartbeattimeout",
-    "class/js/signaler/LocalSignaler.js~LocalSignaler.html#instance-method-setHeartbeatTimeout",
-    "js/signaler/LocalSignaler.js~LocalSignaler#setHeartbeatTimeout",
-    "method"
+    "js/signaler/localsignaler.js~localsignaler#sendheartbeattimer",
+    "class/js/signaler/LocalSignaler.js~LocalSignaler.html#instance-member-sendHeartbeatTimer",
+    "js/signaler/LocalSignaler.js~LocalSignaler#sendHeartbeatTimer",
+    "member"
+  ],
+  [
+    "js/signaler/localsignaler.js~localsignaler#sender",
+    "class/js/signaler/LocalSignaler.js~LocalSignaler.html#instance-member-sender",
+    "js/signaler/LocalSignaler.js~LocalSignaler#sender",
+    "member"
   ],
   [
     "js/signaler/index.js",
     "file/js/signaler/index.js.html",
     "js/signaler/index.js",
     "file"
+  ],
+  [
+    "js/util/intervaltimer.js",
+    "file/js/util/IntervalTimer.js.html",
+    "js/util/IntervalTimer.js",
+    "file"
+  ],
+  [
+    "js/util/intervaltimer.js~intervaltimer#callback",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html#instance-member-callback",
+    "js/util/IntervalTimer.js~IntervalTimer#callback",
+    "member"
+  ],
+  [
+    "js/util/intervaltimer.js~intervaltimer#clear",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html#instance-method-clear",
+    "js/util/IntervalTimer.js~IntervalTimer#clear",
+    "method"
+  ],
+  [
+    "js/util/intervaltimer.js~intervaltimer#constructor",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html#instance-constructor-constructor",
+    "js/util/IntervalTimer.js~IntervalTimer#constructor",
+    "method"
+  ],
+  [
+    "js/util/intervaltimer.js~intervaltimer#interval",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html#instance-member-interval",
+    "js/util/IntervalTimer.js~IntervalTimer#interval",
+    "member"
+  ],
+  [
+    "js/util/intervaltimer.js~intervaltimer#intervalid",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html#instance-member-intervalID",
+    "js/util/IntervalTimer.js~IntervalTimer#intervalID",
+    "member"
+  ],
+  [
+    "js/util/intervaltimer.js~intervaltimer#options",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html#instance-member-options",
+    "js/util/IntervalTimer.js~IntervalTimer#options",
+    "member"
+  ],
+  [
+    "js/util/intervaltimer.js~intervaltimer#reset",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html#instance-method-reset",
+    "js/util/IntervalTimer.js~IntervalTimer#reset",
+    "method"
+  ],
+  [
+    "js/util/intervaltimer.js~intervaltimer#set",
+    "class/js/util/IntervalTimer.js~IntervalTimer.html#instance-method-set",
+    "js/util/IntervalTimer.js~IntervalTimer#set",
+    "method"
   ],
   [
     "js/util/listenermanager.js",
@@ -1516,6 +1402,66 @@ window.esdocSearchIndex = [
     "class/js/util/Queue.js~Queue.html#instance-member-tail",
     "js/util/Queue.js~Queue#tail",
     "member"
+  ],
+  [
+    "js/util/timeouttimer.js",
+    "file/js/util/TimeoutTimer.js.html",
+    "js/util/TimeoutTimer.js",
+    "file"
+  ],
+  [
+    "js/util/timeouttimer.js~timeouttimer#callback",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html#instance-member-callback",
+    "js/util/TimeoutTimer.js~TimeoutTimer#callback",
+    "member"
+  ],
+  [
+    "js/util/timeouttimer.js~timeouttimer#clear",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html#instance-method-clear",
+    "js/util/TimeoutTimer.js~TimeoutTimer#clear",
+    "method"
+  ],
+  [
+    "js/util/timeouttimer.js~timeouttimer#constructor",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html#instance-constructor-constructor",
+    "js/util/TimeoutTimer.js~TimeoutTimer#constructor",
+    "method"
+  ],
+  [
+    "js/util/timeouttimer.js~timeouttimer#options",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html#instance-member-options",
+    "js/util/TimeoutTimer.js~TimeoutTimer#options",
+    "member"
+  ],
+  [
+    "js/util/timeouttimer.js~timeouttimer#reset",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html#instance-method-reset",
+    "js/util/TimeoutTimer.js~TimeoutTimer#reset",
+    "method"
+  ],
+  [
+    "js/util/timeouttimer.js~timeouttimer#set",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html#instance-method-set",
+    "js/util/TimeoutTimer.js~TimeoutTimer#set",
+    "method"
+  ],
+  [
+    "js/util/timeouttimer.js~timeouttimer#timeout",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html#instance-member-timeout",
+    "js/util/TimeoutTimer.js~TimeoutTimer#timeout",
+    "member"
+  ],
+  [
+    "js/util/timeouttimer.js~timeouttimer#timeoutid",
+    "class/js/util/TimeoutTimer.js~TimeoutTimer.html#instance-member-timeoutID",
+    "js/util/TimeoutTimer.js~TimeoutTimer#timeoutID",
+    "member"
+  ],
+  [
+    "js/util/createlogger.js",
+    "file/js/util/createLogger.js.html",
+    "js/util/createLogger.js",
+    "file"
   ],
   [
     "js/util/eta.js",

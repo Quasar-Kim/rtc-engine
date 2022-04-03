@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -61,6 +64,7 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Mitt from &apos;./util/Mitt.js&apos;
 import { ObservableEntry } from &apos;./util/ObservableEntry.js&apos;
 import once from &apos;./util/once.js&apos;
+import createLogger from &apos;./util/createLogger.js&apos;
 
 // RTCDataChannel&#xC740; &#xC2E4;&#xC81C; &#xBC84;&#xD37C; &#xC0AC;&#xC774;&#xC988;&#xB97C; &#xBCF4;&#xC5EC;&#xC8FC;&#xC9C0; &#xC54A;&#xC73C;&#xB098; &#xC0AC;&#xC774;&#xC988;&#xB97C; &#xB118;&#xAC8C; &#xB370;&#xC774;&#xD130;&#xAC00; &#xB4E4;&#xC5B4;&#xAC00;&#xBA74; &#xCC44;&#xB110;&#xC774; &#xD130;&#xC838;&#xBC84;&#xB9BC;
 // &#xB530;&#xB77C;&#xC11C; 10MB&#xB97C; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xBC84;&#xD37C; &#xC0AC;&#xC774;&#xC988;&#xB85C; &#xC0DD;&#xAC01;
@@ -83,7 +87,7 @@ export default class RTCSocket extends Mitt {
 
       // close() &#xD638;&#xCD9C; &#xC774;&#xC678;&#xC758; &#xC774;&#xC720;&#xB85C; &#xB2EB;&#xD78C; &#xACBD;&#xC6B0;
       this.ready.set(false)
-      console.log(`[RTCSocket:${this.label}] &#xC0C1;&#xB300;&#xC5D0; &#xC758;&#xD574;&#xC11C; &#xC18C;&#xCF13; &#xB2EB;&#xD798;`)
+      this.logger.log(&apos;&#x1F6AB; &#xC0C1;&#xB300;&#xBC29;&#xC5D0; &#xC758;&#xD574;&#xC11C; &#xC18C;&#xCF13;&#xC774; &#xB2EB;&#xD614;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
     })
     this.label = this.dataChannel.label
 
@@ -92,12 +96,15 @@ export default class RTCSocket extends Mitt {
     this.ready = new ObservableEntry(true)
     this.closed = false
 
+    this.logger = createLogger(`Socket:${this.label}`)
+
     if (options.received) {
       this.writeEvent(&apos;__received&apos;)
     }
   }
 
   async writeEvent (eventName, payload) {
+    this.logger.debug(`&#xCEE4;&#xC2A4;&#xD140; &#xC774;&#xBCA4;&#xD2B8; ${eventName} &#xC804;&#xC1A1;&#xC744; &#xC694;&#xCCAD;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;. &#xD398;&#xC774;&#xB85C;&#xB4DC;:`, payload)
     return this.write({
       _channelEngineCustomEvent: true,
       event: eventName,
@@ -109,9 +116,10 @@ export default class RTCSocket extends Mitt {
     let data
     if (msg instanceof ArrayBuffer) {
       data = msg
+      this.logger.debug(&apos;&#xC774;&#xC9C4; &#xB370;&#xC774;&#xD130;&#xB97C; &#xC804;&#xC1A1;&#xBC1B;&#xC558;&#xC2B5;&#xB2C8;&#xB2E4;. &#xC0AC;&#xC774;&#xC988;:&apos;, msg.byteLength)
     } else {
       data = JSON.parse(msg)
-      console.log(`[RTCSocket:${this.label}] &#xBA54;&#xC2DC;&#xC9C0; &#xBC1B;&#xC74C;`, data)
+      this.logger.debug(&apos;&#xB370;&#xC774;&#xD130;&#xB97C; &#xC804;&#xC1A1;&#xBC1B;&#xC558;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;, data)
     }
 
     // &#xCEE4;&#xC2A4;&#xD140; &#xC774;&#xBCA4;&#xD2B8; &#xCC98;&#xB9AC;
@@ -134,21 +142,23 @@ export default class RTCSocket extends Mitt {
     if (data instanceof ArrayBuffer) {
       // &#xB370;&#xC774;&#xD130;&#xCC44;&#xB110; &#xBC84;&#xD37C; &#xAD00;&#xB9AC;
       if (data.byteLength &gt; DATA_CHANNEL_BUFFER_SIZE) {
-        throw new Error(&apos;data size exceeds datachannel buffer size&apos;)
+        throw new Error(&apos;&#xB370;&#xC774;&#xD130; &#xD06C;&#xAE30;&#xAC00; &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xBC84;&#xD37C; &#xC0AC;&#xC774;&#xC988;&#xBCF4;&#xB2E4; &#xCEE4;&#xC11C; &#xC804;&#xC1A1;&#xD560; &#xC218; &#xC5C6;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
       }
 
       if (data.byteLength + this.dataChannel.bufferedAmount &gt; DATA_CHANNEL_BUFFER_SIZE) {
         this.ready.set(false)
         this.dataChannel.bufferedAmountLowThreshold = DATA_CHANNEL_BUFFER_SIZE - data.byteLength
+        this.logger.debug(`&#xBC84;&#xD37C;&#xC5D0; &#xACF5;&#xAC04;&#xC774; &#xD655;&#xBCF4;&#xB418;&#xAE30;&#xB97C; &#xB300;&#xAE30;&#xD558;&#xB294; &#xC911;&#xC785;&#xB2C8;&#xB2E4;. &#xBA54;&#xC2DC;&#xC9C0; &#xC0AC;&#xC774;&#xC988;: ${data.byteLength}, &#xBC84;&#xD37C; &#xACF5;&#xAC04;: ${DATA_CHANNEL_BUFFER_SIZE - this.dataChannel.bufferedAmount}`)
         await once(this.dataChannel, &apos;bufferedamountlow&apos;)
+        this.logger.debug(&apos;&#xBC84;&#xD37C;&#xC5D0; &#xACF5;&#xAC04;&#xC774; &#xD655;&#xBCF4;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
         this.dataChannel.bufferedAmountLowThreshold = 0
       }
 
       msg = data
-      console.log(`[RTCSocket:${this.label}] &#xBC14;&#xC774;&#xB108;&#xB9AC; &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xD568;`)
+      this.logger.debug(&apos;&#xC774;&#xC9C4; &#xB370;&#xC774;&#xD130;&#xB97C; &#xC804;&#xC1A1;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;. &#xC0AC;&#xC774;&#xC988;:&apos;, msg.byteLength)
     } else {
       msg = JSON.stringify(data)
-      console.log(`[RTCSocket:${this.label}] &#xBA54;&#xC2DC;&#xC9C0; &#xC804;&#xC1A1;&#xD568;`, msg)
+      this.logger.debug(&apos;&#xB370;&#xC774;&#xD130;&#xB97C; &#xC804;&#xC1A1;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;. &apos;, data)
     }
 
     if (this.dataChannel.readyState !== &apos;open&apos;) {
@@ -163,7 +173,7 @@ export default class RTCSocket extends Mitt {
     this.dataChannel.close()
     this.ready.set(false)
     this.closed = true
-    console.log(`[RTCSocket:${this.label}] &#xC18C;&#xCF13; &#xB2EB;&#xC74C;`)
+    this.logger.log(&apos;&#x1F6AB; close() &#xBA54;&#xC18C;&#xB4DC;&#xAC00; &#xD638;&#xCD9C;&#xB418;&#xC11C; &#xC18C;&#xCF13;&#xC744; &#xB2EB;&#xC558;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
   }
 }
 </code></pre>

@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -57,7 +60,9 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="rtcengine">RTCEngine</h1><p><a href="https://github.com/standard/standard"><img src="https://cdn.rawgit.com/standard/standard/master/badge.svg" alt="JavaScript Style Guide"></a></p>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="rtcengine">RTCEngine</h1><p><a href="https://github.com/standard/standard"><img src="https://cdn.rawgit.com/standard/standard/master/badge.svg" alt="JavaScript Style Guide"></a>
+<a href="https://badge.fury.io/js/rtc-engine"><img src="https://badge.fury.io/js/rtc-engine.svg" alt="npm version"></a>
+<img src="https://img.shields.io/bundlephobia/min/rtc-engine" alt="npm bundle size"></p>
 <p>WebRTC&#xB97C; &#xC774;&#xC6A9;&#xD55C; <strong>&#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;</strong> &#xC744; &#xC704;&#xD55C; &#xB77C;&#xC774;&#xBE0C;&#xB7EC;&#xB9AC;&#xC785;&#xB2C8;&#xB2E4;. </p>
 <p>&#xBE44;&#xB514;&#xC624;&#xC640; &#xC624;&#xB514;&#xC624; &#xC804;&#xC1A1;&#xC744; &#xC8FC;&#xC694; &#xAE30;&#xB2A5;&#xC73C;&#xB85C; &#xD558;&#xB294; &#xB2E4;&#xB978; &#xB77C;&#xC774;&#xBE0C;&#xB7EC;&#xB9AC;&#xC640; &#xB2E4;&#xB974;&#xAC8C; &#xD14D;&#xC2A4;&#xD2B8;&#xC640; &#xD30C;&#xC77C;&#xC744; &#xC27D;&#xAC8C; &#xC804;&#xC1A1;&#xD558;&#xACE0; &#xBC1B;&#xC744; &#xC218; &#xC788;&#xB3C4;&#xB85D; &#xD558;&#xB294;&#xAC78; &#xBAA9;&#xD45C;&#xB85C; &#xD569;&#xB2C8;&#xB2E4;.</p>
 <h2 id="&#xC8FC;&#xC758;-&#xC0AC;&#xD56D;">&#xC8FC;&#xC758; &#xC0AC;&#xD56D;</h2><p>&#xCD5C;&#xC18C; ES2020&#xC744; &#xC9C0;&#xC6D0;&#xD558;&#xB294; &#xBE0C;&#xB77C;&#xC6B0;&#xC800;&#xC5D0;&#xC11C;&#xB9CC; &#xC791;&#xB3D9;&#xD569;&#xB2C8;&#xB2E4;.</p>
@@ -79,19 +84,19 @@ import RTCEngine, { LocalSignaler } from &apos;https://jspm.dev/rtc-engine@1&apo
 const signaler = new LocalSignaler()
 const engine = new RTCEngine(signaler)
 
-// &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xC8FC;&#xACE0;&#xBC1B;&#xC744; &#xC218; &#xC788;&#xB294; &#xCC44;&#xB110;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.
-engine.channel(&apos;hello&apos;).then(channel =&gt; {
-  channel.on(&apos;message&apos;, msg =&gt; {
-    console.log(msg)
+// &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xC8FC;&#xACE0;&#xBC1B;&#xC744; &#xC218; &#xC788;&#xB294; &#xC18C;&#xCF13;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.
+engine.socket(&apos;hello&apos;).then(socket =&gt; {
+  socket.on(&apos;data&apos;, data =&gt; {
+    console.log(data)
   })
-  channel.send(&apos;helloo RTCEngine!&apos;)
+  socket.write(&apos;helloo RTCEngine!&apos;)
 })</code>
 </code></pre>
 <p>&#xADF8;&#xB2E4;&#xC74C; &#xB85C;&#xCEEC; &#xC11C;&#xBC84;&#xB97C; &#xC5F4;&#xC5B4;&#xC8FC;&#xC138;&#xC694;.</p>
 <pre><code><code class="source-code prettyprint">npx serve</code>
 </code></pre><p>&#xADF8;&#xB9AC;&#xACE0; <code>localhost</code>&#xB85C; &#xAC00;&#xC11C; index.html&#xC744; &#xC11C;&#xB85C; &#xB2E4;&#xB978; &#xB450; &#xD0ED;&#xC5D0;&#xC11C; &#xC5F4;&#xACE0; &#xBE0C;&#xB77C;&#xC6B0;&#xC800; &#xCF58;&#xC194;&#xC744; &#xC5F4;&#xC5B4;&#xBCF4;&#xC138;&#xC694;.
 &#xC11C;&#xB85C; &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xC8FC;&#xACE0; &#xBC1B;&#xC740; &#xBAA8;&#xC2B5;&#xC744; &#xBCFC; &#xC218; &#xC788;&#xC744; &#xAC81;&#xB2C8;&#xB2E4;.</p>
-<h2 id="&#xB354;-&#xC54C;&#xC544;&#xBCF4;&#xAE30;">&#xB354; &#xC54C;&#xC544;&#xBCF4;&#xAE30;</h2><p>RTCEngine&#xC5D0; &#xB300;&#xD574; &#xB354; &#xC790;&#xC138;&#xD788; &#xC54C;&#xC544;&#xBCF4;&#xAE30; &#xC2F6;&#xC73C;&#xBA74; <a href="https://quasar-kim.github.io/rtc-engine">&#xC6F9;&#xC0AC;&#xC774;&#xD2B8;</a>&#xC744; &#xB458;&#xB7EC;&#xBCF4;&#xC138;&#xC694;!</p>
+<h2 id="&#xB354;-&#xC54C;&#xC544;&#xBCF4;&#xAE30;">&#xB354; &#xC54C;&#xC544;&#xBCF4;&#xAE30;</h2><p>RTCEngine&#xC5D0; &#xB300;&#xD574; &#xB354; &#xC790;&#xC138;&#xD788; &#xC54C;&#xC544;&#xBCF4;&#xAE30; &#xC2F6;&#xC73C;&#xBA74; <a href="https://quasar-kim.github.io/rtc-engine/docs">&#xBB38;&#xC11C;</a>&#xC640; <a href="https://quasar-kim.github.io/rtc-engine/demo">&#xB370;&#xBAA8;</a>&#xB97C; &#xB458;&#xB7EC;&#xBCF4;&#xC138;&#xC694;!</p>
 </div>
 </div>
 

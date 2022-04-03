@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -59,6 +62,8 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">js/signaler/LocalSignaler.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import SignalerBase from &apos;./Base.js&apos;
+import IntervalTimer from &apos;../util/IntervalTimer.js&apos;
+import TimeoutTimer from &apos;../util/TimeoutTimer.js&apos;
 
 /**
  * &#xD55C; &#xAE30;&#xAE30;&#xC5D0;&#xC11C; &#xD0ED;&#xB07C;&#xB9AC; &#xC5F0;&#xACB0;&#xD558;&#xB294;&#xB370; &#xC0AC;&#xC6A9;&#xD560; &#xC218; &#xC788;&#xB294; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;. `BroadcastChannel`&#xC744; &#xC774;&#xC6A9;&#xD574; &#xC2DC;&#xADF8;&#xB110;&#xC744; &#xC8FC;&#xACE0;&#xBC1B;&#xC2B5;&#xB2C8;&#xB2E4;.
@@ -80,13 +85,35 @@ export default class LocalSignaler extends SignalerBase {
     }
     Object.assign(this.config, userConfig)
 
-    // &#xD1B5;&#xC2E0;&#xC774; &#xC774;&#xB8E8;&#xC5B4;&#xC9C8; broadcast channel &#xC0DD;&#xC131;
+    /**
+     * &#xD53C;&#xC5B4;&#xB97C; &#xAD6C;&#xBD84;&#xD558;&#xB294; id. &#xD0ED;&#xC744; &#xB450;&#xAC1C; &#xC5F4;&#xC5B4;&#xB193;&#xACE0; &#xD55C;&#xCABD;&#xC744; &#xC0C8;&#xB85C;&#xACE0;&#xCE68;&#xC2DC; &#xC7AC;&#xC5F0;&#xACB0;&#xD558;&#xB294;&#xAC78; &#xB9C9;&#xAE30; &#xC704;&#xD574;&#xC11C; &#xB3C4;&#xC785;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.
+     */
+    this.id = Math.random().toString(36).substring(2)
+
+    /**
+     * &#xC5F0;&#xACB0;&#xB418;&#xC5B4; &#xC788;&#xB294; sender&#xC758; id
+     */
+    this.sender = null
+
+    /**
+     * &#xD1B5;&#xC2E0;&#xC774; &#xC774;&#xB8E8;&#xC5B4;&#xC9C8; BroadcastChannel
+     */
     this.bc = new BroadcastChannel(&apos;broadcast-channel-signaler&apos;)
 
-    // &#xC8FC;&#xAE30;&#xC801;&#xC73C;&#xB85C; heartbeat &#xBA54;&#xC2DC;&#xC9C0; &#xC804;&#xC1A1;
-    this.heartbeatIntervalId = setInterval(() =&gt; {
-      this.bc.postMessage(JSON.stringify({ type: &apos;heartbeat&apos; }))
+    /**
+     * &#xC124;&#xC815;&#xB41C; &#xC8FC;&#xAE30;&#xB9C8;&#xB2E4; heartbeat &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xBCF4;&#xB0B4;&#xB294; &#xD0C0;&#xC774;&#xBA38;
+     */
+    this.sendHeartbeatTimer = new IntervalTimer(() =&gt; {
+      const heartbeatMsg = JSON.stringify({ type: &apos;heartbeat&apos;, src: this.id })
+      this.bc.postMessage(heartbeatMsg)
     }, this.config.heartbeatInterval)
+
+    /**
+     * &#xC124;&#xC815;&#xB41C; &#xC2DC;&#xAC04; &#xB3D9;&#xC548; heartbeat&#xB97C; &#xBC1B;&#xC9C0; &#xBABB;&#xD558;&#xBA74; &#xC5F0;&#xACB0;&#xC774; &#xAFBE;&#xC5B4;&#xC9C4; &#xAC83;&#xC73C;&#xB85C; &#xD310;&#xC815;&#xD558;&#xB294; &#xD0C0;&#xC774;&#xBA38;
+     */
+    this.heartbeatTimeoutTimer = new TimeoutTimer(() =&gt; {
+      this.ready.set(false)
+    }, this.config.heartbeatTimeout, { autoStart: false })
 
     // broadcast channel&#xB85C;&#xBD80;&#xD130; &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xBC1B;&#xB294; &#xD5E8;&#xB4E4;&#xB7EC;
     this.bc.addEventListener(&apos;message&apos;, evt =&gt; {
@@ -94,7 +121,7 @@ export default class LocalSignaler extends SignalerBase {
 
       // heartbeat &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xBC1B;&#xC73C;&#xBA74; &#xC5F0;&#xACB0;&#xB41C;&#xAC78;&#xB85C; &#xAC04;&#xC8FC;
       if (msg.type === &apos;heartbeat&apos;) {
-        this.receiveHeartbeat()
+        this.receiveHeartbeat(msg.src)
         return
       }
 
@@ -108,23 +135,20 @@ export default class LocalSignaler extends SignalerBase {
   }
 
   /**
-   * heartbeat timeout&#xC744; &#xAC81;&#xB2C8;&#xB2E4;.
-   * @private
-   */
-  setHeartbeatTimeout () {
-    this.heartbeatTimeoutId = setTimeout(() =&gt; {
-      this.ready.set(false)
-    }, this.config.heartbeatTimeout)
-  }
-
-  /**
    * heartbeat timeout&#xC744; &#xCDE8;&#xC18C;&#xD558;&#xACE0; ready&#xB97C; false&#xB85C; &#xC124;&#xC815;&#xD569;&#xB2C8;&#xB2E4;.
    * @private
    */
-  receiveHeartbeat () {
-    clearTimeout(this.heartbeatTimeoutId)
+  receiveHeartbeat (sender) {
+    if (this.sender === null) {
+      // &#xBA54;&#xC2DC;&#xC9C0;&#xB97C; &#xCC98;&#xC74C; &#xBC1B;&#xC558;&#xC744; &#xACBD;&#xC6B0;
+      this.sender = sender
+    } else if (sender !== this.sender) {
+      // &#xBCF4;&#xB0B8; &#xC0AC;&#xB78C;&#xC758; id&#xAC00; &#xC77C;&#xCE58;&#xD558;&#xC9C0; &#xC54A;&#xC744; &#xACBD;&#xC6B0;
+      return
+    }
+
     this.ready.set(true)
-    this.setHeartbeatTimeout()
+    this.heartbeatTimeoutTimer.reset()
   }
 
   /**
@@ -144,12 +168,8 @@ export default class LocalSignaler extends SignalerBase {
    * close &#xD6C5;. Broadcast Channel&#xC744; &#xB2EB;&#xC2B5;&#xB2C8;&#xB2E4;.
    */
   close () {
-    if (this.ready.val === true) {
-      clearTimeout(this.heartbeatTimeoutId)
-      this.ready.set(false)
-    }
-
-    clearInterval(this.heartbeatIntervalId)
+    this.heartbeatTimeoutTimer.clear()
+    this.sendHeartbeatTimer.clear()
     this.bc.close()
   }
 }

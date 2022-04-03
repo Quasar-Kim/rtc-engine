@@ -23,7 +23,8 @@ describe('LocalSignaler', function () {
     const callback = signaler.bc.addEventListener.firstCall.lastArg
     const evt = {
       data: JSON.stringify({
-        type: 'heartbeat'
+        type: 'heartbeat',
+        src: 'test'
       })
     }
     callback.apply(signaler, [evt])
@@ -40,7 +41,8 @@ describe('LocalSignaler', function () {
       const callback = signaler.bc.addEventListener.firstCall.lastArg
       const evt = {
         data: JSON.stringify({
-          type: 'heartbeat'
+          type: 'heartbeat',
+          src: 'test'
         })
       }
       callback.apply(signaler, [evt])
@@ -53,6 +55,36 @@ describe('LocalSignaler', function () {
     // 20ms 대기
     await new Promise(resolve => setTimeout(resolve, 20))
 
+    expect(signaler.ready.val).to.equal(false)
+  })
+
+  it('처음 받은 heartbeat 메시지의 src를 기억하고 이후 src가 다른 메시지는 무시해야 함', async function () {
+    const signaler = new LocalSignaler({
+      heartbeatTimeout: 10
+    })
+
+    const injectHeartbeat = src => {
+      const callback = signaler.bc.addEventListener.firstCall.lastArg
+      const evt = {
+        data: JSON.stringify({
+          type: 'heartbeat',
+          src
+        })
+      }
+      callback.apply(signaler, [evt])
+    }
+
+    // 먼저 ready를 true로 만들어주고
+    injectHeartbeat('test')
+    expect(signaler.ready.val).to.equal(true)
+
+    // 20ms 대기
+    await new Promise(resolve => setTimeout(resolve, 20))
+
+    // src를 바꿔서 전송
+    injectHeartbeat('test2')
+
+    // 위의 메시지에 영향받지 않고 ready가 여전히 false여야 함
     expect(signaler.ready.val).to.equal(false)
   })
 

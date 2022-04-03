@@ -1,7 +1,7 @@
 {
-  "coverage": "37.79%",
-  "expectCount": 209,
-  "actualCount": 79,
+  "coverage": "34%",
+  "expectCount": 200,
+  "actualCount": 68,
   "files": {
     "js/Channel.js": {
       "expectCount": 8,
@@ -33,68 +33,59 @@
         65
       ]
     },
-    "js/RTCEngine.js": {
-      "expectCount": 36,
-      "actualCount": 32,
-      "undocumentLines": [
-        12,
-        13,
-        33,
-        467
-      ]
-    },
     "js/RTCSocket.js": {
-      "expectCount": 11,
+      "expectCount": 12,
       "actualCount": 2,
       "undocumentLines": [
-        8,
-        10,
-        12,
-        28,
-        32,
+        9,
+        11,
+        13,
+        29,
         33,
-        40,
-        48,
-        102
+        34,
+        36,
+        43,
+        52,
+        109
       ]
     },
     "js/ReadableTransaction.js": {
       "expectCount": 11,
-      "actualCount": 0,
+      "actualCount": 1,
       "undocumentLines": [
         3,
-        4,
-        7,
-        8,
-        9,
-        10,
-        12,
-        71,
-        84,
-        88,
-        93
+        13,
+        14,
+        15,
+        16,
+        18,
+        86,
+        99,
+        103,
+        108
       ]
     },
     "js/Transaction.js": {
-      "expectCount": 19,
+      "expectCount": 20,
       "actualCount": 3,
       "undocumentLines": [
-        26,
         27,
         28,
         29,
-        32,
+        30,
         33,
         34,
-        36,
-        41,
-        49,
-        70,
-        86,
-        90,
-        102,
+        35,
+        37,
+        38,
+        43,
+        63,
+        87,
+        103,
         107,
-        112
+        119,
+        125,
+        131
       ]
     },
     "js/WritableTransaction.js": {
@@ -106,10 +97,10 @@
         34,
         35,
         36,
-        111,
-        119,
-        133,
-        138
+        124,
+        132,
+        146,
+        151
       ]
     },
     "js/signaler/Base.js": {
@@ -120,13 +111,17 @@
       ]
     },
     "js/signaler/LocalSignaler.js": {
-      "expectCount": 10,
-      "actualCount": 6,
+      "expectCount": 11,
+      "actualCount": 10,
       "undocumentLines": [
-        17,
-        24,
-        27,
-        55
+        19
+      ]
+    },
+    "js/util/IntervalTimer.js": {
+      "expectCount": 9,
+      "actualCount": 8,
+      "undocumentLines": [
+        33
       ]
     },
     "js/util/ListenerManager.js": {
@@ -212,6 +207,25 @@
         24,
         28,
         34
+      ]
+    },
+    "js/util/TimeoutTimer.js": {
+      "expectCount": 9,
+      "actualCount": 8,
+      "undocumentLines": [
+        33
+      ]
+    },
+    "js/util/createLogger.js": {
+      "expectCount": 6,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        2,
+        4,
+        19,
+        44,
+        55
       ]
     },
     "js/util/eta.js": {

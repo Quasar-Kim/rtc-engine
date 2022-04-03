@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -58,13 +61,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import RTCSocket from &apos;<span><a href="file/js/RTCSocket.js.html#lineNumber10">rtc-engine/js/RTCSocket.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import RTCSocket from &apos;<span><a href="file/js/RTCSocket.js.html#lineNumber11">rtc-engine/js/RTCSocket.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/js/RTCSocket.js.html#lineNumber10">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/js/RTCSocket.js.html#lineNumber11">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -208,6 +211,34 @@
           
           
           <span class="code" data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html#instance-member-label">label</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html#instance-member-logger">logger</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
         </p>
       </div>
       <div>
@@ -598,7 +629,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber12">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber13">source</a></span></span>
     </span>
   </h3>
 
@@ -644,7 +675,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber33">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber34">source</a></span></span>
     </span>
   </h3>
 
@@ -687,7 +718,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber16">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber17">source</a></span></span>
     </span>
   </h3>
 
@@ -730,7 +761,50 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber28">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber29">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-logger">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">logger</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber36">source</a></span></span>
     </span>
   </h3>
 
@@ -773,7 +847,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber32">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber33">source</a></span></span>
     </span>
   </h3>
 
@@ -819,7 +893,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber102">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber109">source</a></span></span>
     </span>
   </h3>
 
@@ -862,7 +936,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber48">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber52">source</a></span></span>
     </span>
   </h3>
 
@@ -921,7 +995,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber72">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber77">source</a></span></span>
     </span>
   </h3>
 
@@ -980,7 +1054,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber40">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/RTCSocket.js.html#lineNumber43">source</a></span></span>
     </span>
   </h3>
 

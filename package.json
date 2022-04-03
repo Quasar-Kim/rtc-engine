@@ -1,6 +1,6 @@
 {
   "name": "rtc-engine",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "WebRTC를 이용한 데이터 전송을 위한 라이브러리",
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   "license": "MIT",
   "devDependencies": {
     "@11ty/eleventy": "^1.0.0",
+    "@11ty/eleventy-img": "^2.0.0",
     "@11ty/eleventy-plugin-syntaxhighlight": "^4.0.0",
     "@esm-bundle/chai": "^4.3.4-fix.0",
     "@rollup/plugin-commonjs": "^21.0.1",

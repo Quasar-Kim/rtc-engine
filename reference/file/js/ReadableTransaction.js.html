@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -61,7 +64,13 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Transaction from &apos;./Transaction.js&apos;
 
 export default class ReadableTransaction extends Transaction {
-  constructor (socket, metadata = { size: 0 }) {
+  /**
+   * &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.
+   * @param {RTCSocket} socket &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC5D0; &#xC0AC;&#xC6A9;&#xD560; RTCSocket
+   * @param {object} [metadata] &#xC0C1;&#xB300;&#xC5D0;&#xAC8C; &#xC804;&#xC1A1;&#xD560; &#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;. &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C4; &#xD6C4; `metadata` &#xC18D;&#xC131;&#xC73C;&#xB85C; &#xC77D;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. Progress Tracking&#xC744; &#xC0AC;&#xC6A9;&#xD558;&#xB824;&#xBA74; `size` &#xC18D;&#xC131;&#xC774; &#xD544;&#xC694;&#xD569;&#xB2C8;&#xB2E4;. &#xADF8; &#xC774;&#xC678;&#xC758; &#xC18D;&#xC131;&#xC740; &#xC784;&#xC758;&#xB85C; &#xCD94;&#xAC00;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
+   * @param {number} [metadata.size] &#xBC14;&#xC774;&#xD2B8;&#xB85C; &#xB098;&#xD0C0;&#xB0B8; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xD06C;&#xAE30;.
+   */
+  constructor (socket, metadata = {}) {
     super(socket, metadata)
 
     this.bufferFullInformed = false
@@ -82,12 +91,14 @@ export default class ReadableTransaction extends Transaction {
           if (controller.desiredSize &lt; 0 &amp;&amp; !this.bufferFullInformed) {
             this.bufferFullInformed = true
             socket.writeEvent(&apos;buffer-full&apos;)
+            this.logger.debug(&apos;ReadableStream &#xBC84;&#xD37C;&#xAC00; &#xAC00;&#xB4DD; &#xCC3C;&#xC2B5;&#xB2C8;&#xB2E4;. &#xC804;&#xC1A1; &#xC77C;&#xC2DC;&#xC911;&#xC9C0;&#xB97C; &#xC694;&#xCCAD;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
           }
 
           if (isDone()) {
             socket.close()
             controller.close()
             this.done.set(true)
+            this.logger.log(&apos;&#x26A1; &#xC804;&#xC1A1;&#xC774; &#xC644;&#xB8CC;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
           }
         })
 
@@ -99,28 +110,35 @@ export default class ReadableTransaction extends Transaction {
             if (this.cancelReason instanceof Error) {
               controller.error(this.cancelReason)
             } else {
-              controller.error(&apos;Transaction canceled: &apos; + this.cancelReason)
+              controller.error(&apos;&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; Cancel&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;. &#xC774;&#xC720;: &apos; + this.cancelReason)
             }
           }
 
-          controller.error(new Error(&apos;Socket has been closed unexpectedly&apos;))
+          controller.error(new Error(&apos;&#xC608;&#xC0C1;&#xCE58; &#xBABB;&#xD558;&#xAC8C; &#xC18C;&#xCF13;&#xC774; &#xB2EB;&#xD614;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;))
         })
 
         socket.once(&apos;abort&apos;, errMsg =&gt; {
           this.aborted = true
           socket.close()
-          controller.error(new Error(&apos;Transaction aborted: &apos; + errMsg))
+          controller.error(new Error(&apos;&#xC0C1;&#xB300;&#xBC29;&#xC774; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; WritableStream&#xC744; Abort&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos; + errMsg))
         })
 
         // writer&#xCE21;&#xC5D0;&#xC11C; &#xC77C;&#xC2DC;&#xC815;&#xC9C0;/&#xC7AC;&#xAC1C;&#xB42C;&#xC744;&#xB54C;
-        socket.on(&apos;pause&apos;, () =&gt; super.pause())
-        socket.on(&apos;resume&apos;, () =&gt; super.resume())
+        socket.on(&apos;pause&apos;, () =&gt; {
+          this.logger.debug(&apos;&#xC0C1;&#xB300;&#xBC29;&#xC774; &#xD2B8;&#xB80C;&#xC81D;&#xC158; &#xC77C;&#xC2DC;&#xC911;&#xC9C0;&#xB97C; &#xC694;&#xCCAD;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+          super.pause()
+        })
+        socket.on(&apos;resume&apos;, () =&gt; {
+          this.logger.debug(&apos;&#xC0C1;&#xB300;&#xBC29;&#xC774; &#xD2B8;&#xB80C;&#xC81D;&#xC158; &#xC7AC;&#xC2DC;&#xC791;&#xC744; &#xC694;&#xCCAD;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+          super.resume()
+        })
       },
       pull: () =&gt; {
         if (!this.bufferFullInformed) return
 
         socket.writeEvent(&apos;pull&apos;)
         this.bufferFullInformed = false
+        this.logger.debug(&apos;ReadableStream &#xBC84;&#xD37C;&#xAC00; &#xACF5;&#xAC04;&#xC774; &#xD655;&#xBCF4;&#xB418;&#xC5B4;&#xC11C; &#xC804;&#xC1A1; &#xC7AC;&#xAC1C;&#xB97C; &#xC694;&#xCCAD;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
       },
       cancel: reason =&gt; {
         this.cancel(reason)
@@ -138,11 +156,11 @@ export default class ReadableTransaction extends Transaction {
       this.socket.writeEvent(&apos;cancel&apos;, reason)
     }
 
-    console.log(`[Transaction:${this.label}] cancel&#xB428;`)
+    this.logger.warn(&apos;&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; ReadableStream&#xC774; Cancel&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;. &#xC774;&#xC720;: &apos;, reason)
   }
 
   stop () {
-    this.cancel(&apos;stop() called by receiver&apos;)
+    this.cancel(&apos;&#xBC1B;&#xB294; &#xCABD;&#xC5D0;&#xC11C; stop() &#xBA54;&#xC18C;&#xB4DC;&#xB97C; &#xD638;&#xCD9C;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
   }
 
   pause () {

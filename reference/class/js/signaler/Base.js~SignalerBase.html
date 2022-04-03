@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -253,7 +256,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-close">close</a></span></span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-close">close</a></span></span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
         </p>
       </div>
       <div>
@@ -281,7 +284,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-connected">connected</a></span></span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-connected">connected</a></span></span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
         </p>
       </div>
       <div>
@@ -309,7 +312,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-disconnected">disconnected</a></span></span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-disconnected">disconnected</a></span></span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
         </p>
       </div>
       <div>
@@ -337,7 +340,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-failed">failed</a></span></span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-failed">failed</a></span></span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
         </p>
       </div>
       <div>
@@ -451,7 +454,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-start">start</a></span></span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html#instance-method-start">start</a></span></span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
         </p>
       </div>
       <div>
@@ -874,7 +877,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     <span class="abstract" data-ice="abstract">abstract</span>
     
     
-    <span class="code" data-ice="name">close</span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+    <span class="code" data-ice="name">close</span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
     <span class="right-info">
       
       
@@ -899,7 +902,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">engine</td>
-      <td data-ice="type" class="code"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></td>
+      <td data-ice="type" class="code"><span>RTCEngine</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#xC5D4;&#xC9C4; &#xC778;&#xC2A4;&#xD134;&#xC2A4;</p>
 </td>
@@ -934,7 +937,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     <span class="abstract" data-ice="abstract">abstract</span>
     
     
-    <span class="code" data-ice="name">connected</span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+    <span class="code" data-ice="name">connected</span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
     <span class="right-info">
       
       
@@ -959,7 +962,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">engine</td>
-      <td data-ice="type" class="code"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></td>
+      <td data-ice="type" class="code"><span>RTCEngine</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#xC5D4;&#xC9C4; &#xC778;&#xC2A4;&#xD134;&#xC2A4;</p>
 </td>
@@ -994,7 +997,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     <span class="abstract" data-ice="abstract">abstract</span>
     
     
-    <span class="code" data-ice="name">disconnected</span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+    <span class="code" data-ice="name">disconnected</span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
     <span class="right-info">
       
       
@@ -1019,7 +1022,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">engine</td>
-      <td data-ice="type" class="code"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></td>
+      <td data-ice="type" class="code"><span>RTCEngine</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#xC5D4;&#xC9C4; &#xC778;&#xC2A4;&#xD134;&#xC2A4;</p>
 </td>
@@ -1054,7 +1057,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     <span class="abstract" data-ice="abstract">abstract</span>
     
     
-    <span class="code" data-ice="name">failed</span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+    <span class="code" data-ice="name">failed</span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
     <span class="right-info">
       
       
@@ -1079,7 +1082,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">engine</td>
-      <td data-ice="type" class="code"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></td>
+      <td data-ice="type" class="code"><span>RTCEngine</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#xC5D4;&#xC9C4; &#xC778;&#xC2A4;&#xD134;&#xC2A4;</p>
 </td>
@@ -1303,7 +1306,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     <span class="abstract" data-ice="abstract">abstract</span>
     
     
-    <span class="code" data-ice="name">start</span><span class="code" data-ice="signature">(engine: <span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span>)</span>
+    <span class="code" data-ice="name">start</span><span class="code" data-ice="signature">(engine: <span>RTCEngine</span>)</span>
     <span class="right-info">
       
       
@@ -1328,7 +1331,7 @@ RTCEngine&#xC740; &#xC2DC;&#xADF8;&#xB110;&#xB7EC;&#xC640; &#xC0C1;&#xD638;&#xC7
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">engine</td>
-      <td data-ice="type" class="code"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></td>
+      <td data-ice="type" class="code"><span>RTCEngine</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#xC5D4;&#xC9C4; &#xC778;&#xC2A4;&#xD134;&#xC2A4;</p>
 </td>

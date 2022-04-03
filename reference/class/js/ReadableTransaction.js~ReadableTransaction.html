@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -116,13 +119,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">()</span>
+          <span class="code" data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(socket: <span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>, metadata: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.</p>
+</div>
       </div>
     </td>
     <td>
@@ -795,6 +799,34 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html#instance-member-logger">logger</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html#instance-member-metadata">metadata</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
         </p>
       </div>
@@ -1105,11 +1137,11 @@
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">()</span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(socket: <span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span>, metadata: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber4">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber10">source</a></span></span>
     </span>
   </h3>
 
@@ -1121,7 +1153,38 @@
 
   <div data-ice="override"><h4>Override:</h4><span><a href="class/js/Transaction.js~Transaction.html#instance-constructor-constructor">Transaction#constructor</a></span></div>
 
-  <div data-ice="properties">
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">socket</td>
+      <td data-ice="type" class="code"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC5D0; &#xC0AC;&#xC6A9;&#xD560; RTCSocket</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">metadata</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xC0C1;&#xB300;&#xC5D0;&#xAC8C; &#xC804;&#xC1A1;&#xD560; &#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;. &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C4; &#xD6C4; <code>metadata</code> &#xC18D;&#xC131;&#xC73C;&#xB85C; &#xC77D;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. Progress Tracking&#xC744; &#xC0AC;&#xC6A9;&#xD558;&#xB824;&#xBA74; <code>size</code> &#xC18D;&#xC131;&#xC774; &#xD544;&#xC694;&#xD569;&#xB2C8;&#xB2E4;. &#xADF8; &#xC774;&#xC678;&#xC758; &#xC18D;&#xC131;&#xC740; &#xC784;&#xC758;&#xB85C; &#xCD94;&#xAC00;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">metadata.size</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#xBC14;&#xC774;&#xD2B8;&#xB85C; &#xB098;&#xD0C0;&#xB0B8; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xD06C;&#xAE30;.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
 </div>
 
   
@@ -1156,7 +1219,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber8">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber14">source</a></span></span>
     </span>
   </h3>
 
@@ -1199,7 +1262,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber7">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber13">source</a></span></span>
     </span>
   </h3>
 
@@ -1242,7 +1305,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber10">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber16">source</a></span></span>
     </span>
   </h3>
 
@@ -1285,7 +1348,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber9">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber15">source</a></span></span>
     </span>
   </h3>
 
@@ -1328,7 +1391,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber12">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber18">source</a></span></span>
     </span>
   </h3>
 
@@ -1374,7 +1437,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber71">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber86">source</a></span></span>
     </span>
   </h3>
 
@@ -1434,7 +1497,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber88">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber103">source</a></span></span>
     </span>
   </h3>
 
@@ -1477,7 +1540,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber93">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber108">source</a></span></span>
     </span>
   </h3>
 
@@ -1520,7 +1583,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber84">source</a></span></span>
+      <span data-ice="source"><span><a href="file/js/ReadableTransaction.js.html#lineNumber99">source</a></span></span>
     </span>
   </h3>
 

@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -62,6 +65,7 @@
 import { ObservableEntry, wait } from &apos;./util/ObservableEntry.js&apos;
 import progressTracker from &apos;./util/eta.js&apos;
 import prettyBytes from &apos;./util/prettyBytes.js&apos;
+import createLogger from &apos;./util/createLogger.js&apos;
 
 // /** @typedef {import(&apos;./RTCSocket.js&apos;).default} RTCSocket */
 
@@ -75,10 +79,10 @@ export default class Transaction extends Mitt {
   /**
    * &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.
    * @param {RTCSocket} socket &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC5D0; &#xC0AC;&#xC6A9;&#xD560; RTCSocket
-   * @param {object} metadata &#xC0C1;&#xB300;&#xC5D0;&#xAC8C; &#xC804;&#xC1A1;&#xD560; &#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;. &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C4; &#xD6C4; `metadata` &#xC18D;&#xC131;&#xC73C;&#xB85C; &#xC77D;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. `size` &#xC18D;&#xC131;&#xC740; &#xD544;&#xC218;&#xC774;&#xBA70; &#xADF8; &#xC774;&#xC678;&#xC758; &#xC18D;&#xC131;&#xC740; &#xC784;&#xC758;&#xB85C; &#xCD94;&#xAC00;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
-   * @param {number} metadata.size &#xBC14;&#xC774;&#xD2B8;&#xB85C; &#xB098;&#xD0C0;&#xB0B8; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xD06C;&#xAE30;.
+   * @param {object} [metadata] &#xC0C1;&#xB300;&#xC5D0;&#xAC8C; &#xC804;&#xC1A1;&#xD560; &#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;. &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C4; &#xD6C4; `metadata` &#xC18D;&#xC131;&#xC73C;&#xB85C; &#xC77D;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. Progress Tracking&#xC744; &#xC0AC;&#xC6A9;&#xD558;&#xB824;&#xBA74; `size` &#xC18D;&#xC131;&#xC774; &#xD544;&#xC694;&#xD569;&#xB2C8;&#xB2E4;. &#xADF8; &#xC774;&#xC678;&#xC758; &#xC18D;&#xC131;&#xC740; &#xC784;&#xC758;&#xB85C; &#xCD94;&#xAC00;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
+   * @param {number} [metadata.size] &#xBC14;&#xC774;&#xD2B8;&#xB85C; &#xB098;&#xD0C0;&#xB0B8; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xD06C;&#xAE30;.
    */
-  constructor (socket, metadata) {
+  constructor (socket, metadata = {}) {
     super()
 
     /** @type {RTCSocket} */
@@ -93,17 +97,30 @@ export default class Transaction extends Mitt {
     this.pausedMilliSeconds = 0
     this.processed = new ObservableEntry(0) // byte or length
 
-    this.timeout = -1
+    this.timeout = NaN
+    this.logger = createLogger(`Transaction:${this.label}`)
 
     this.initProgressTracking()
   }
 
   async initProgressTracking () {
+    // size&#xAC00; &#xC124;&#xC815;&#xB418;&#xC5B4; &#xC788;&#xC9C0; &#xC54A;&#xB2E4;&#xBA74; progress tracking&#xC744; &#xC0AC;&#xC6A9;&#xD558;&#xC9C0; &#xC54A;&#xC74C;
+    if (this.metadata === undefined) {
+      this.logger.warn(&apos;&#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;&#xAC00; undefined&#xC785;&#xB2C8;&#xB2E4;. Progress Tracking &#xAE30;&#xB2A5;&#xC774; &#xB3D9;&#xC791;&#xD558;&#xC9C0; &#xC54A;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+      return
+    }
+    if (typeof this.metadata.size !== &apos;number&apos;) {
+      this.logger.warn(&apos;&#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;&#xC758; size &#xD544;&#xB4DC;&#xAC00; &#xC22B;&#xC790;&#xAC00; &#xC544;&#xB2C8;&#xAC70;&#xB098; &#xC815;&#xC758;&#xB418;&#xC9C0; &#xC54A;&#xC558;&#xC2B5;&#xB2C8;&#xB2E4;. Progress Tracking &#xAE30;&#xB2A5;&#xC774; &#xB3D9;&#xC791;&#xD558;&#xC9C0; &#xC54A;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+      return
+    }
+
     await wait(this.processed).toBeChanged()
 
     // transaction writer &#xCABD;&#xC5D0;&#xC120; &#xCC98;&#xC74C; &#xC2DC;&#xC791;&#xBD80;&#xD130; &#xC18D;&#xB3C4; &#xCE21;&#xC815;&#xC2DC;
     // &#xB370;&#xC774;&#xD130; &#xCC44;&#xB110;&#xC758; &#xBC84;&#xD37C;&#xAC00; &#xB2E4; &#xCC28;&#xAE30; &#xC804;&#xC774;&#xB77C; &#xC18D;&#xB3C4;&#xAC00; &#xBE44;&#xC815;&#xC0C1;&#xC801;&#xC73C;&#xB85C; &#xBE60;&#xB974;&#xAC8C; &#xCE21;&#xC815;&#xB418;&#xBBC0;&#xB85C; 1&#xCD08; &#xD6C4; &#xC2DC;&#xC791;
     await new Promise(resolve =&gt; setTimeout(resolve, 1000))
+
+    if (this.done.get()) return
 
     const processed = this.processed.get()
     this.progressTracker = progressTracker({
@@ -118,12 +135,15 @@ export default class Transaction extends Mitt {
       const timestamp = Date.now() - this.pausedMilliSeconds
       this.progressTracker.report(this.processed.get(), timestamp)
 
-      this.emit(&apos;report&apos;, {
+      const report = {
         processed: this.processed.get(),
         progress: this.progress,
         eta: this.eta,
         speed: this.speed
-      })
+      }
+
+      this.logger.debug(&apos;&#xD1B5;&#xACC4; &#xB370;&#xC774;&#xD130;&#xB97C; &#xC0DD;&#xC131;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;, report)
+      this.emit(&apos;report&apos;, report)
     }, 500)
   }
 
@@ -160,17 +180,20 @@ export default class Transaction extends Mitt {
   }
 
   pause () {
+    this.logger.debug(&apos;&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xC77C;&#xC2DC;&#xC911;&#xC9C0;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
     this.paused.set(true)
     this.lastPausedTimestamp = Date.now()
   }
 
   resume () {
+    this.logger.debug(&apos;&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xC7AC;&#xC2DC;&#xC791;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
     this.paused.set(false)
     this.pausedMilliSeconds += (Date.now() - this.lastPausedTimestamp)
   }
 
   stopReport () {
-    if (this.timeout === -1) return
+    this.logger.debug(&apos;&#xD1B5;&#xACC4; &#xB370;&#xC774;&#xD130; &#xC0DD;&#xC131;&#xC774; &#xC911;&#xB2E8;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+    if (isNaN(this.timeout)) return
     clearInterval(this.timeout)
   }
 }

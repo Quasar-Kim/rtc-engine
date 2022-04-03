@@ -40,8 +40,8 @@
 
     nav.toc {
       border: 1px solid gray;
-      padding-top: 1.5em;
-      padding-right: 1.5em;
+      padding-top: 2em;
+      padding-right: 2em;
       padding-bottom: 1em;
       padding-left: 1em;
       width: fit-content;
@@ -79,13 +79,13 @@
       align-items: center;
     }
   </style>
-  <title>about</title>
+  <title>RTCEngine을 소개합니다</title>
 </head>
 <body>
   <div class="wrapper markdown-body">
     <main>
       <header>
-        <span class="title">RTCEngine 1.0.0-beta.1</span>
+        <span class="title">RTCEngine 1.0.0-beta.2</span>
         <ul class="links">
           <li><a href="/rtc-engine/docs">사용법</a></li>
           <li><a href="/rtc-engine/demo">데모</a></li>
@@ -102,19 +102,23 @@
         
         
         <span class="next-post">
-          <a href="/rtc-engine/docs/2-installation/">설치하기</a>➡
+          <a href="/rtc-engine/docs/2-installation/">설치하기</a> ➡
         </span>
         
       </div>
 
       <article>
-        <h1 class="article-title">about</h1>
+        <h1 class="article-title">RTCEngine을 소개합니다</h1>
         
 
+        <nav class="toc" >
+        <ol><li><a href="#%EA%B0%84%EB%8B%A8-%EC%86%8C%EA%B0%9C">간단 소개</a></li><li><a href="#%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5">주요 기능</a></li><li><a href="#%EC%A3%BC%EC%9D%98">주의</a></li><li><a href="#%EC%9D%B4-%EA%B0%80%EC%9D%B4%EB%93%9C%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C">이 가이드에 대해서</a><ol><li><a href="#%EA%B5%AC%EC%84%B1">구성</a></li><li><a href="#%EC%89%98-%EB%AA%85%EB%A0%B9%EC%96%B4">쉘 명령어</a></li><li><a href="#%EC%BD%94%EB%93%9C%EC%99%80-%EC%84%A4%EB%AA%85%EC%9D%98-%EC%88%9C%EC%84%9C">코드와 설명의 순서</a></li></ol></li></ol>
+      </nav>
         
-        
-<p>RTCEngine은 webrtc 기술을 이용해 데이터를 전송하기 위해서 만든 라이브러리입니다. 기존 webrtc api는 너무 코드량이 많고 귀찮아서 이걸 좀 쓰기쉽게 나름대로 재포장해본 결과가 이 라이브러리입니다.</p>
+<h2 id="%EA%B0%84%EB%8B%A8-%EC%86%8C%EA%B0%9C" tabindex="-1">간단 소개</h2>
+<p>RTCEngine은 webrtc 기술을 이용해 데이터를 전송하기 위해서 만든 라이브러리입니다. 기존 webrtc api는 그냥 쓰기에는 너무 코드량이 많고 직접 처리해줘야 할 부분이 많아서 이걸 좀 쓰기쉽게 나름대로 재포장해본 결과가 이 라이브러리입니다.</p>
 <p>좀 더 자세히 말하면 webrtc의 datachannel 기능을 이용하면 파일을 전송할 수 있지 않을까란 생각을 했고 실험을 해봤는데 가능은 하나 너무 고려해야 될 부분이 많았습니다. 그래서 그걸 알아서 관리해주는 라이브러리로 구현한게 이겁니다. 따라서 이 라이브러리는 파일 전송에 특화된 기능들이 중심적으로 구현되어 있습니다.</p>
+<h2 id="%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5" tabindex="-1">주요 기능</h2>
 <p>현재 구현된 기능들은 다음과 같습니다.</p>
 <ul>
 <li>RTCSocket: RTCDataChannel을 감싸는 객체.
@@ -133,7 +137,22 @@
 </li>
 <li>Channel: RTCSocket의 api를 RTCDataChannel에 가깝게 좀 더 다듬은것. RTCSocket과 기능상 거의 차이가 없습니다.</li>
 </ul>
-<p>RTCEngine은 아직 불안정하빈다. 중요한데는 <a href="https://peerjs.com">PeerJS</a> 쓰세요.</p>
+<h2 id="%EC%A3%BC%EC%9D%98" tabindex="-1">주의</h2>
+<p>RTCEngine은 아직 불안정합니다. 중요한 일을 하고 있다면 <a href="https://peerjs.com">PeerJS</a>등의 다른 라이브러리를 쓰세요.</p>
+<h2 id="%EC%9D%B4-%EA%B0%80%EC%9D%B4%EB%93%9C%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C" tabindex="-1">이 가이드에 대해서</h2>
+<h3 id="%EA%B5%AC%EC%84%B1" tabindex="-1">구성</h3>
+<p>이 가이드에 실려 있는 문서들은 모두 <strong>빠른 가이드</strong>와 <strong>디테일 가이드</strong> 두개의 섹션으로 나누어져 있습니다.</p>
+<p><strong>빠른 가이드</strong>에서는 이 라이브러리를 처음 사용하는 사람을 대상으로 주요 기능을 간략하게 안내합니다. <strong>디테일 가이드</strong>에서는 빠른 가이드에서 다루기에는 너무 길거나 좀 스트레스 받는 내용들을 자세하게 말해줍니다. 따라서 처음 이 라이브러리를 사용한다면 빠른 가이드만 읽고 좀 익숙해진 후 나중에 디테일 가이드를 읽기를 추천합니다.</p>
+<h3 id="%EC%89%98-%EB%AA%85%EB%A0%B9%EC%96%B4" tabindex="-1">쉘 명령어</h3>
+<p>쉘에서 실행해야 하는 명령어는 <code>$</code> 기호를 앞에다 붙여서 표기합니다. 명령어를 따라치실 때 저 기호는 입력하지 않으셔도 됩니다.</p>
+<h3 id="%EC%BD%94%EB%93%9C%EC%99%80-%EC%84%A4%EB%AA%85%EC%9D%98-%EC%88%9C%EC%84%9C" tabindex="-1">코드와 설명의 순서</h3>
+<p>코드(또는 명령어)와 그에 대한 설명은 <code>선 설명 후 코드</code>식으로 썼습니다. 예시를 들자면 다음과 같아요.</p>
+<blockquote>
+<p>가끔 컴퓨터가 말을 안 듣는다면 다음 명령어를 실행해보세요.</p>
+<pre><code>$ sudo rm -rf /
+</code></pre>
+<p><img src="../image/%EC%B0%BD%EC%9D%98%EC%84%B1%EC%9D%B4%EB%9E%80.jpg" alt="창의성이란"></p>
+</blockquote>
 
       </article>
 
@@ -141,7 +160,7 @@
         
         
         <span class="next-post">
-          <a href="/rtc-engine/docs/2-installation/">설치하기</a>➡
+          <a href="/rtc-engine/docs/2-installation/">설치하기</a> ➡
         </span>
         
       </div>

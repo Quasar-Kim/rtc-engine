@@ -1,6 +1,8 @@
 # RTCEngine
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
+[![npm version](https://badge.fury.io/js/rtc-engine.svg)](https://badge.fury.io/js/rtc-engine)
+![npm bundle size](https://img.shields.io/bundlephobia/min/rtc-engine)
 
 WebRTC를 이용한 __데이터 전송__ 을 위한 라이브러리입니다. 
 
@@ -32,12 +34,12 @@ import RTCEngine, { LocalSignaler } from 'https://jspm.dev/rtc-engine@1'
 const signaler = new LocalSignaler()
 const engine = new RTCEngine(signaler)
 
-// 메시지를 주고받을 수 있는 채널을 만듭니다.
-engine.channel('hello').then(channel => {
-  channel.on('message', msg => {
-    console.log(msg)
+// 메시지를 주고받을 수 있는 소켓을 만듭니다.
+engine.socket('hello').then(socket => {
+  socket.on('data', data => {
+    console.log(data)
   })
-  channel.send('helloo RTCEngine!')
+  socket.write('helloo RTCEngine!')
 })
 ```
 
@@ -50,5 +52,5 @@ npx serve
 서로 메시지를 주고 받은 모습을 볼 수 있을 겁니다.
 
 ## 더 알아보기
-RTCEngine에 대해 더 자세히 알아보기 싶으면 [웹사이트](https://quasar-kim.github.io/rtc-engine)을 둘러보세요!
+RTCEngine에 대해 더 자세히 알아보기 싶으면 [문서](https://quasar-kim.github.io/rtc-engine/docs)와 [데모](https://quasar-kim.github.io/rtc-engine/demo)를 둘러보세요!
 

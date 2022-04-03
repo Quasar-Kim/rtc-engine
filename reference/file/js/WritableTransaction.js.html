@@ -31,23 +31,26 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Channel.js~Channel.html">Channel</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ChunkProducer.js~ChunkProducer.html">ChunkProducer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCEngine.js~RTCEngine.html">RTCEngine</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/RTCSocket.js~RTCSocket.html">RTCSocket</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/ReadableTransaction.js~ReadableTransaction.html">ReadableTransaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/Transaction.js~Transaction.html">Transaction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/WritableTransaction.js~WritableTransaction.html">WritableTransaction</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#signaler">signaler</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/Base.js~SignalerBase.html">SignalerBase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/signaler/LocalSignaler.js~LocalSignaler.html">LocalSignaler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/IntervalTimer.js~IntervalTimer.html">IntervalTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ListenerManager.js~ListenerManager.html">ListenerManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Mitt.js~Mitt.html">Mitt</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~ObservableEntry.html">ObservableEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableEntry.js~WaitEntry.html">WaitEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableMap.js~ObservableMap.html">ObservableMap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/ObservableQueue.js~ObservableQueue.html">ObservableQueue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/Queue.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/js/util/TimeoutTimer.js~TimeoutTimer.html">TimeoutTimer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-observe">observe</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wait">wait</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitAll">waitAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createLogger">createLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-disableLog">disableLog</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeEta">makeEta</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-once">once</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prettyBytes">prettyBytes</a></span></span></li>
@@ -85,10 +88,10 @@ export default class WritableTransaction extends Transaction {
   /**
    * &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC744; &#xB9CC;&#xB4ED;&#xB2C8;&#xB2E4;.
    * @param {RTCSocket} socket &#xB370;&#xC774;&#xD130; &#xC804;&#xC1A1;&#xC5D0; &#xC0AC;&#xC6A9;&#xD560; RTCSocket
-   * @param {object} metadata &#xC0C1;&#xB300;&#xC5D0;&#xAC8C; &#xC804;&#xC1A1;&#xD560; &#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;. &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C4; &#xD6C4; `metadata` &#xC18D;&#xC131;&#xC73C;&#xB85C; &#xC77D;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. `size` &#xC18D;&#xC131;&#xC740; &#xD544;&#xC218;&#xC774;&#xBA70; &#xADF8; &#xC774;&#xC678;&#xC758; &#xC18D;&#xC131;&#xC740; &#xC784;&#xC758;&#xB85C; &#xCD94;&#xAC00;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
-   * @param {number} metadata.size &#xBC14;&#xC774;&#xD2B8;&#xB85C; &#xB098;&#xD0C0;&#xB0B8; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xD06C;&#xAE30;.
+   * @param {object} [metadata] &#xC0C1;&#xB300;&#xC5D0;&#xAC8C; &#xC804;&#xC1A1;&#xD560; &#xBA54;&#xD0C0;&#xB370;&#xC774;&#xD130;. &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC774; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9C4; &#xD6C4; `metadata` &#xC18D;&#xC131;&#xC73C;&#xB85C; &#xC77D;&#xC744; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. Progress Tracking&#xC744; &#xC0AC;&#xC6A9;&#xD558;&#xB824;&#xBA74; `size` &#xC18D;&#xC131;&#xC774; &#xD544;&#xC694;&#xD569;&#xB2C8;&#xB2E4;. &#xADF8; &#xC774;&#xC678;&#xC758; &#xC18D;&#xC131;&#xC740; &#xC784;&#xC758;&#xB85C; &#xCD94;&#xAC00;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
+   * @param {number} [metadata.size] &#xBC14;&#xC774;&#xD2B8;&#xB85C; &#xB098;&#xD0C0;&#xB0B8; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; &#xD06C;&#xAE30;.
    */
-  constructor (socket, metadata) {
+  constructor (socket, metadata = {}) {
     super(socket, metadata)
 
     this.readableBufferFull = new ObservableEntry(false)
@@ -103,22 +106,34 @@ export default class WritableTransaction extends Transaction {
         socket.once(&apos;cancel&apos;, errMsg =&gt; {
           this.canceled = true
           socket.close()
-          controller.error(new Error(&apos;Transaction canceled: &apos; + errMsg))
+          controller.error(new Error(&apos;&#xC0C1;&#xB300;&#xBC29;&#xC774; &#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; ReadableStream&#xC744; Cancel&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos; + errMsg))
         })
 
         socket.once(&apos;close&apos;, () =&gt; {
           this.stopReport()
           if (this.aborted || this.canceled || isDone()) return
 
-          controller.error(new Error(&apos;Socket has been closed unexpectedly&apos;))
+          controller.error(new Error(&apos;&#xC608;&#xC0C1;&#xCE58; &#xBABB;&#xD558;&#xAC8C; &#xC18C;&#xCF13;&#xC774; &#xB2EB;&#xD614;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;))
         })
 
         // readable&#xCE21;&#xC5D0;&#xC11C; &#xC694;&#xCCAD;&#xD558;&#xB294; pause / resume &#xC774;&#xBCA4;&#xD2B8; &#xBC1B;&#xAE30;
-        socket.on(&apos;pause&apos;, () =&gt; super.pause())
-        socket.on(&apos;resume&apos;, () =&gt; super.resume())
+        socket.on(&apos;pause&apos;, () =&gt; {
+          this.logger.debug(&apos;&#xC0C1;&#xB300;&#xBC29;&#xC774; &#xD2B8;&#xB80C;&#xC81D;&#xC158; &#xC77C;&#xC2DC;&#xC911;&#xC9C0;&#xB97C; &#xC694;&#xCCAD;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+          super.pause()
+        })
+        socket.on(&apos;resume&apos;, () =&gt; {
+          this.logger.debug(&apos;&#xC0C1;&#xB300;&#xBC29;&#xC774; &#xD2B8;&#xB80C;&#xC81D;&#xC158; &#xC7AC;&#xC2DC;&#xC791;&#xC744; &#xC694;&#xCCAD;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+          super.resume()
+        })
 
-        socket.on(&apos;buffer-full&apos;, () =&gt; this.readableBufferFull.set(true))
-        socket.on(&apos;pull&apos;, () =&gt; this.readableBufferFull.set(false))
+        socket.on(&apos;buffer-full&apos;, () =&gt; {
+          this.logger.debug(&apos;&#xC0C1;&#xB300;&#xBC29;&#xC758; &#xC2A4;&#xD2B8;&#xB9BC; &#xBC84;&#xD37C;&#xAC00; &#xAC00;&#xB4DD; &#xCC3C;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+          this.readableBufferFull.set(true)
+        })
+        socket.on(&apos;pull&apos;, () =&gt; {
+          this.logger.debug(&apos;&#xC0C1;&#xB300;&#xBC29;&#xC758; &#xC2A4;&#xD2B8;&#xB9BC; &#xBC84;&#xD37C;&#xC5D0; &#xACF5;&#xAC04;&#xC774; &#xD655;&#xBCF4;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
+          this.readableBufferFull.set(false)
+        })
       },
       /**
        * @param {Uint8Array} data
@@ -153,6 +168,7 @@ export default class WritableTransaction extends Transaction {
 
         // socket.close()
         this.done.set(true)
+        this.logger.log(&apos;&#x26A1; &#xC804;&#xC1A1;&#xC774; &#xC644;&#xB8CC;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
       },
       // abort&#xB418;&#xBA74; abort &#xC774;&#xBCA4;&#xD2B8; &#xC804;&#xB2EC;
       abort: reason =&gt; {
@@ -164,7 +180,7 @@ export default class WritableTransaction extends Transaction {
           socket.writeEvent(&apos;abort&apos;, reason)
         }
 
-        console.log(`[Transaction:${this.label}] Abort &#xB428;`)
+        this.logger.warn(&apos;&#xD2B8;&#xB80C;&#xC81D;&#xC158;&#xC758; WritableStream&#xC774; Abort&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;. &#xC774;&#xC720;: &apos;, reason)
       }
     })
 
@@ -187,7 +203,7 @@ export default class WritableTransaction extends Transaction {
     // &#xB530;&#xB77C;&#xC11C; &#xAC15;&#xC81C;&#xB85C; &#xC0C1;&#xD0DC; &#xC5C5;&#xB370;&#xC774;&#xD2B8;
     this.paused.set(false)
     this.readableBufferFull = false
-    this.abortController.abort(&apos;stop() called by sender&apos;)
+    this.abortController.abort(&apos;&#xBCF4;&#xB0B4;&#xB294; &#xCABD;&#xC5D0;&#xC11C; stop() &#xBA54;&#xC18C;&#xB4DC;&#xB97C; &#xD638;&#xCD9C;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.&apos;)
   }
 
   pause () {

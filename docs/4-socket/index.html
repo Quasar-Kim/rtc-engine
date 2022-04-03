@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css" integrity="sha512-KUoB3bZ1XRBYj1QcH4BHCQjurAZnCO3WdrswyLDtp7BMwCw7dPZngSLqILf68SGgvnWHTD5pPaYrXi6wiRJ65g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" integrity="sha512-c6S8OdtvoqZCbMfA1lWE0qd368pLdFvVHVILQzNizfowC+zV8rmVKdSlmL5SuidvATO0A7awDg53axd+s/9amw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      margin: 0;
+    }
+
+    article {
+      max-width: 900px;
+    }
+
+    main {
+      padding: 1em;
+    }
+
+    header ul > li {
+      display: inline-block;
+    }
+
+    ul.links > li:not(:last-child)::after {
+      content: '/';
+      padding-left: 0.5em;
+      padding-right: 0.2em;
+    }
+
+    ul.links {
+      display: inline;
+      padding-left: 0.5em;
+    }
+
+    .markdown-body code br {
+      display: initial;
+    }
+
+    nav.toc {
+      border: 1px solid gray;
+      padding-top: 2em;
+      padding-right: 2em;
+      padding-bottom: 1em;
+      padding-left: 1em;
+      width: fit-content;
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    span.title {
+      font-size: 30px;
+    }
+
+    span.creator {
+      display: block;
+    }
+
+    .docs-navigation {
+      padding-top: 1em;
+    }
+
+    .docs-navigation span.next-post {
+      float: right;
+    }
+
+    .article-title {
+      border: none !important;
+    }
+
+    footer {
+      height: 100px;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+  <title>데이터를 주고받는 RTCSocket</title>
+</head>
+<body>
+  <div class="wrapper markdown-body">
+    <main>
+      <header>
+        <span class="title">RTCEngine 1.0.0-beta.2</span>
+        <ul class="links">
+          <li><a href="/rtc-engine/docs">사용법</a></li>
+          <li><a href="/rtc-engine/demo">데모</a></li>
+          <li><a href="/rtc-engine/reference">API 레퍼런스</a></li>
+          <li><a href="https://github.com/Quasar-Kim/rtc-engine">Github</a></li>
+        </ul>
+        <span class="creator">Made with ❤ by Quasar-Kim</span>
+      </header>
+
+      
+      
+
+      <div class="docs-navigation">
+        
+        <span>
+          ⬅ <a href="/rtc-engine/docs/3-RTC-Engine/">연결을 형성하는 RTCEngine</a>
+        </span>
+        
+        
+        <span class="next-post">
+          <a href="/rtc-engine/docs/5-transaction/">파일을 전송하는 Transaction</a> ➡
+        </span>
+        
+      </div>
+
+      <article>
+        <h1 class="article-title">데이터를 주고받는 RTCSocket</h1>
+        
+        <p>텍스트, 이진 데이터 등 다양한 데이터를 주고 받을 수 있는 창구인 RTCSocket을 사용해 봅시다.</p>
+        
+
+        <nav class="toc" >
+        <ol><li><a href="#%EB%B9%A0%EB%A5%B8-%EA%B0%80%EC%9D%B4%EB%93%9C">빠른 가이드</a><ol><li><a href="#%EC%86%8C%EC%BC%93-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0">소켓 생성하기</a></li><li><a href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A3%BC%EA%B3%A0%EB%B0%9B%EA%B8%B0">데이터 주고받기</a></li><li><a href="#%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0">커스텀 이벤트 사용하기</a></li><li><a href="#%EB%8B%A4-%EC%93%B0%EA%B3%A0%EB%82%98%EB%A9%B4">다 쓰고나면</a></li></ol></li><li><a href="#%EB%94%94%ED%85%8C%EC%9D%BC-%EA%B0%80%EC%9D%B4%EB%93%9C">디테일 가이드</a><ol><li><a href="#%EC%83%9D%EC%84%B1-%EA%B3%BC%EC%A0%95">생성 과정</a></li><li><a href="#%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%84%EB%8B%AC">커스텀 이벤트 전달</a></li><li><a href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%B1%84%EB%84%90-%EB%B2%84%ED%8D%BC-%EA%B4%80%EB%A6%AC">데이터 채널 버퍼 관리</a></li></ol></li></ol>
+      </nav>
+        
+<h2 id="%EB%B9%A0%EB%A5%B8-%EA%B0%80%EC%9D%B4%EB%93%9C" tabindex="-1">빠른 가이드</h2>
+<p>두 탭을 연결시키는데까지 성공했으니, 이제 데이터를 주고받아 봅시다.</p>
+<p>데이터를 주고받는 건 <code>RTCSocket</code> 인스턴스(이하 <strong>소켓</strong>)가 담당합니다.
+소켓은 데이터를 양방향으로 주고받을 수 있는 일종의 창구입니다.
+한 엔진에서 여러개의 소켓을 열 수 있으며 각 소켓은 ID로 구분됩니다.</p>
+<p>이제 <code>chat</code>이라는 소켓을 열고 서로 인사를 보내봅시다.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> engine <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RTCEngine</span><span class="token punctuation">(</span>signaler<span class="token punctuation">)</span><br>engine<span class="token punctuation">.</span><span class="token function">socket</span><span class="token punctuation">(</span><span class="token string">'chat'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">socket</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  socket<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token parameter">data</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><br><br>  socket<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'hello RTCSocket!'</span><span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>파일을 저장하고 두 탭을 모두 새로고침하면 양쪽 모두 콘솔에 <code>hello RTCSocket!</code>이 떠있을겁니다.</p>
+<h3 id="%EC%86%8C%EC%BC%93-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0" tabindex="-1">소켓 생성하기</h3>
+<p>소켓을 생성하는 방법에는 크세 두가지가 있어요.</p>
+<p>첫번째는 위 예시에서처럼 동일한 ID로 양쪽에서 RTCEngine의 <code>socket()</code> 메소드를 호출하는 거에요. 이건 negotiated socket이라고 부를게요.</p>
+<p>다른 방법은 ID를 명시하지 않고 <code>socket()</code> 메소드를 호출하는 것입니다. 그러면 <code>sockets</code> async generator를 통해서 소켓을 받을 수 있습니다. 이건 unnegotiated socket이라고 부르겠습니다.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token comment">// async 함수 안이나 top level await가 지원되는 브라우저에서 실행되어야 합니다.</span><br><span class="token keyword">for</span> <span class="token keyword">await</span> <span class="token punctuation">(</span><span class="token keyword">const</span> socket <span class="token keyword">of</span> engine<span class="token punctuation">.</span><span class="token function">sockets</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// 무언가 하기...</span><br><span class="token punctuation">}</span></code></pre>
+<p>한가지 특이한 점은 WebRTC 연결이 형성되었는지 기다리지 않고 바로 소켓을 생성해도 괜찮다는 것입니다.
+RTCEngine은 대부분의 인터페이스가 연결 상태에 영향을 받지 않도록 설계되어 있어요.
+실제로는 <code>socket()</code>이 호출되면 내부적으로는 연결이 형성될때까지 기다렸다가 데이터 채널을 열고, 이 데이터 채널을 기반으로 소켓이 만듭니다.</p>
+<h3 id="%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A3%BC%EA%B3%A0%EB%B0%9B%EA%B8%B0" tabindex="-1">데이터 주고받기</h3>
+<p>소켓은 상당히 간단한 인터페이스를 가지고 있어요.</p>
+<p>먼저 데이터를 전송하려면 <code>write()</code> 메소드를 사용하세요.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token comment">// 텍스트 메시지 보내기</span><br>socket<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span><br><br><span class="token comment">// 이진 데이터(ArrayBuffer) 보내기</span><br><span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><br>socket<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>buffer<span class="token punctuation">)</span></code></pre>
+<p>소켓은 Node.js의 <code>EventEmitter</code>를 닮은 이벤트 인터페이스를 가지고 있어요. 데이터을 받으려면 <code>data</code> 이벤트에다가 이벤트 리스너를 설치하세요.</p>
+<pre class="language-javascript"><code class="language-javascript">socket<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token parameter">data</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// 첫번째 인자(payload)는 보낸 데이터</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<h3 id="%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0" tabindex="-1">커스텀 이벤트 사용하기</h3>
+<p><code>writeEvent()</code> 메소드를 사용하면 이벤트를 전송할수도 있어요.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token comment">// 피어 1</span><br><span class="token comment">// 첫번째 인자는 이벤트 이름, 두번째 인자는 payload입니다.</span><br><span class="token comment">// payload는 이벤트 리스너의 첫번째 인자로 전달됩니다.</span><br>socket<span class="token punctuation">.</span><span class="token function">writeEvent</span><span class="token punctuation">(</span><span class="token string">'question'</span><span class="token punctuation">,</span> <span class="token string">'고양이의 다리의 개수는?'</span><span class="token punctuation">)</span><br><br><span class="token comment">// 피어 2</span><br>socket<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'question'</span><span class="token punctuation">,</span> <span class="token parameter">question</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>`질문 받음<span class="token operator">:</span> $<span class="token punctuation">{</span>question<span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<h3 id="%EB%8B%A4-%EC%93%B0%EA%B3%A0%EB%82%98%EB%A9%B4" tabindex="-1">다 쓰고나면</h3>
+<p>소켓을 닫아주세요. <code>close()</code> 메소드로 닫을 수 있습니다.
+한쪽 피어에서만 <code>close()</code>를 호출해주세요.</p>
+<pre class="language-javascript"><code class="language-javascript">socket<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>소켓이 닫히면 <code>close</code> 이벤트가 발생해요.
+양쪽 모두 발생하는 이벤트여서 <code>close()</code> 메소드를 호출한 쪽에서도 발생하는 이벤트라는 점을 주의하세요.</p>
+<pre class="language-javascript"><code class="language-javascript">socket<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'close'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'소켓 닫힘'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<h2 id="%EB%94%94%ED%85%8C%EC%9D%BC-%EA%B0%80%EC%9D%B4%EB%93%9C" tabindex="-1">디테일 가이드</h2>
+<h3 id="%EC%83%9D%EC%84%B1-%EA%B3%BC%EC%A0%95" tabindex="-1">생성 과정</h3>
+<p>먼저 negotiated socket같은 경우 다음과 같은 과정으로 생성됩니다.</p>
+<p><code>socket(ID)</code> 호출 시:</p>
+<ul>
+<li>role이 <code>polite</code>라면
+<ol>
+<li>ID를 레이블로 unnegotiated data channel 만들기</li>
+<li><code>RTCSocket</code> 생성자를 호출해서 인스턴스 생성</li>
+<li><code>__received</code> 이벤트가 도착할때까지 대기</li>
+<li>만들어진 소켓 resolve</li>
+</ol>
+</li>
+<li>role이 <code>impolite</code>라면
+<ul>
+<li><code>start()</code> 메소드에서 설치된 <code>datachannel</code> 이벤트 핸들러: <code>negotiatedDataChannel</code> observable map에 키를 ID로, 값을 받은 데이터 채널 인스턴스로 설정.</li>
+<li><code>socket()</code> 메소드:
+<ol>
+<li><code>negotiatedDataChannel</code>의 ID를 키로 하는 값이 생기길 기다려서 데이터 채널 인스턴스 받기</li>
+<li>받은 데이터 채널로 <code>RTCSocket</code> 생성자를 호출해서 인스턴스 생성</li>
+<li><code>__received</code> 이벤트 보내기</li>
+<li>만들어진 소켓 resolve</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="../image/negotiated-socket-creation.svg" alt="negotiated socket 생성 과정 다이어그램"></p>
+<p>그리고 unnegotiated socket의 생성 과정은 다음과 같아요.</p>
+<ul>
+<li><code>socket()</code> 호출한 피어
+<ol>
+<li>레이블을 <code>RTCEngine-unnegotiated-socket</code>를 prefix로 해서 unnegotiated data channel 만들기</li>
+<li><code>RTCSocket</code> 생성자를 호출해서 인스턴스 생성</li>
+<li><code>__received</code> 이벤트가 도착할때까지 대기</li>
+<li>만들어진 소켓 resolve</li>
+</ol>
+</li>
+<li>받는 피어
+<ul>
+<li><code>start()</code> 메소드에서 설치된 <code>datachannel</code> 이벤트 핸들러: 받은 데이터 채널의 label이 <code>RTCEngine-unnegotiated-socket</code>으로 시작하면 <code>unnegotiatedDataChannels</code> observable queue에 push</li>
+<li><code>sockets()</code> generator: <code>unnegotiatedDataChannels</code>에 새 데이터 채널이 들어오면 그럴로 <code>RTCSocket</code> 인스턴스 생성하고 만들어진 소켓 resolve</li>
+</ul>
+</li>
+</ul>
+<p><img src="../image/unnegotiated-socket-creation.svg" alt="unnegotiated socket 생성 과정 다이어그램"></p>
+<h3 id="%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%84%EB%8B%AC" tabindex="-1">커스텀 이벤트 전달</h3>
+<p><code>writeEvent()</code> 메소드는 다음과 같은 메시지를 만들어 <code>write()</code>에 전달합니다.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token punctuation">{</span><br>  <span class="token literal-property property">_channelEngineCustomEvent</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token literal-property property">event</span><span class="token operator">:</span> <span class="token string">'&lt;첫번째 인자: 이벤트 이름>'</span><span class="token punctuation">,</span><br>  <span class="token literal-property property">payload</span><span class="token operator">:</span> <span class="token string">'&lt;두번째 인자: payload>'</span><br><span class="token punctuation">}</span></code></pre>
+<h3 id="%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%B1%84%EB%84%90-%EB%B2%84%ED%8D%BC-%EA%B4%80%EB%A6%AC" tabindex="-1">데이터 채널 버퍼 관리</h3>
+<p>데이터 채널을 그대로 사용하지 않고 <code>RTCSocket</code>으로 감싸는 가장 큰 이유는 버퍼 관리 때문입니다.
+데이터 채널은 메시지에 대해 다음과 같은 제약사항을 가지고 있어요.</p>
+<p><strong>주의</strong>: 이 제약사항들은 표준화되지 않은 implementation detail에 해당되요. 브라우저마다 달라질 수 있는 내용들이에요.</p>
+<ol>
+<li>각 메시지의 크기가 약 250KB를 넘기면 안됩니다.</li>
+<li>전체 버퍼 사이즈(<code>bufferedAmount</code>로 확인 가능)가 약 10MB를 넘기면 안됩니다.</li>
+</ol>
+<p>이 제약사항들을 위반 시 데이터 채널은 바로 닫혀 버려서 더이상 사용할 수가 없어요.</p>
+<p>첫번째 문제를 해결하기 위해서 <code>RTCSocket</code>은 250KB보다 큰 데이터는 전송하지 않고 거부해요.
+만약 이보다 큰 데이터를 전송해야 한다면 <code>Transaction</code>을 사용하세요.</p>
+<p>두번째 문제를 해결하기 위해서 <code>RTCSocket</code>은 데이터 채널의 <code>bufferedamountlow</code> 이벤트와 <code>bufferedAmountLowThreshold</code> 속성을 이용해요. <code>bufferedAmountLowThreshold</code>를 특정 값으로 설정 시, <code>bufferedAmount</code>가 이 값보다 낮아진다면 <code>bufferedamountlow</code> 이벤트를 발생시켜요.
+이걸 이용하면 버퍼에 원하는만큼의 빈자리가 날때까지 기다릴 수 있어요. <code>버퍼 사이즈 - 보낼 데이터의 크기</code>를 <code>bufferedAmountLowThreshold</code>로 설정하고 위 이벤트가 발생할때까지 기다리는거죠.</p>
+<p>실제 <code>RTCSocket</code>의 코드 일부분은 이렇게 짜여져 있습니다.</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token comment">// 실제 코드와 완전히 동일하지 않습니다.</span><br><br><span class="token comment">// 버퍼에 빈공간이 있나 확인</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span>data<span class="token punctuation">.</span>byteLength <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>dataChannel<span class="token punctuation">.</span>bufferedAmount <span class="token operator">></span> <span class="token constant">DATA_CHANNEL_BUFFER_SIZE</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br><br>  <span class="token comment">// 버퍼에 data.byteLength만큼의 빈공간이 날때까지 대기</span><br>  <span class="token keyword">this</span><span class="token punctuation">.</span>dataChannel<span class="token punctuation">.</span>bufferedAmountLowThreshold <span class="token operator">=</span> <span class="token constant">DATA_CHANNEL_BUFFER_SIZE</span> <span class="token operator">-</span> data<span class="token punctuation">.</span>byteLength<br>  <span class="token keyword">await</span> <span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>dataChannel<span class="token punctuation">,</span> <span class="token string">'bufferedamountlow'</span><span class="token punctuation">)</span><br><br>  <span class="token comment">// 초기화</span><br>  <span class="token keyword">this</span><span class="token punctuation">.</span>dataChannel<span class="token punctuation">.</span>bufferedAmountLowThreshold <span class="token operator">=</span> <span class="token number">0</span><br><span class="token punctuation">}</span><br><br><span class="token comment">// 데이터 전송</span><br><span class="token keyword">this</span><span class="token punctuation">.</span>dataChannel<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span></code></pre>
+<p>마지막으로, <code>ArrayBuffer</code> 타입이 아닌 데이터들은 모두 버퍼 공간과 상관없이 전송된다는 점을 주의해야 합니다. 확인하지 않는 이유는 예를 들어서 텍스트 하나가 얼마만큼의 버퍼 공간을 잡아먹을지는 implementation detail이여서 미리 알 수 없기 때문입니다.</p>
+
+      </article>
+
+      <div class="docs-navigation">
+        
+        <span>
+          ⬅ <a href="/rtc-engine/docs/3-RTC-Engine/">연결을 형성하는 RTCEngine</a>
+        </span>
+        
+        
+        <span class="next-post">
+          <a href="/rtc-engine/docs/5-transaction/">파일을 전송하는 Transaction</a> ➡
+        </span>
+        
+      </div>
+
+      <footer>
+        <span>©2022 Quasar-Kim. 이 사이트는 <a href="https://11ty.dev">11ty</a>와 <a href="https://esdoc.org">esdoc</a>을 사용해 만들어졌습니다.</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
