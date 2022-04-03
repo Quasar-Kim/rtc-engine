@@ -8,9 +8,12 @@ import ListenerManager from './util/ListenerManager.js'
 import ObservableQueue from './util/ObservableQueue.js'
 import Mitt from './util/Mitt.js'
 import { ObservableEntry, wait, observe } from './util/ObservableEntry.js'
+import createLogger, { disableLog } from './util/createLogger.js'
 
 const UNNEGOTIATED_SOCKET_PREFIX = 'RTCEngine-unnegotiated-socket'
 const UNNEGOTIATED_TRANSACTION_PREFIX = 'RTCEngine-unnegotiated-transaction'
+
+const logger = createLogger('RTCEngine')
 
 /**
  * RTC 연결을 관리하는 엔진.
@@ -25,6 +28,7 @@ export default class RTCEngine extends Mitt {
    * @param {'polite'|'impolite'} [userOptions.role] 연결에서 이 피어의 역할을 수동으로 설정함.
    * @param {boolean} [userOptions.waitOnlineOnReconnection] 재연결시 인터넷이 연결될때까지 대기했다가 연결함.
    * @param {object} [userOptions.pc] RTCPeerConnection 객체에 전달될 추가 설정들. 단 `iceServers`는 `userOptions.iceServers`로 설정한게 우선됩니다.
+   * @param {boolean} [userOptions.debug] 디버깅 로그를 출력할지 결정하는 옵션.
    */
   constructor (signaler, userOptions = {}) {
     super()
@@ -38,13 +42,18 @@ export default class RTCEngine extends Mitt {
       ],
       waitOnlineOnReconnection: true,
       pc: {},
+      debug: true,
       ...signalerOptions,
       ...userOptions
     }
     // ice servers 설정 오버라이드
     this.options.pc.iceServers = this.options.iceServers
 
-    console.log('[RTCEngine]', '사용할 옵션:', this.options)
+    if (!this.options.debug) {
+      disableLog()
+    }
+
+    logger.debug('⚙️ 최종 결정된 옵션', this.options)
 
     // role 설정
     // 만약 options.role이 설정되어 있지 않다면 나중에 start() 호출 시 assignRole()을 이용해 자동으로 role을 설정함
@@ -191,6 +200,12 @@ export default class RTCEngine extends Mitt {
     // 아래 내부 함수들은 모두 this로 RTCEngine 인스턴스에 접근할 수 있게 하기 위해
     // 모두 화살표 함수임
 
+    const createLocalDescription = async () => {
+      logger.debug('Local Description을 생성하는 중입니다.')
+      await this.pc.setLocalDescription()
+      logger.debug('Local Description이 생성되었습니다.', this.pc.localDescription)
+    }
+
     // role 메시지를 받은 경우
     // role이 설정되어 있지 않으면: 양쪽 다 role이 설정되어 있지 않다는 걸 의미. 즉 둘다 재연결이 아닌 처음으로 연결하는 것.
     //   이 경우 start() 호출 시 role 설정 메시지가 아래에서 보내질 것이므로 답장할 필요 없음.
@@ -199,64 +214,58 @@ export default class RTCEngine extends Mitt {
     const sendLocalDescription = async () => {
       try {
         this.makingOffer = true
-        await this.pc.setLocalDescription()
-        console.groupCollapsed('creating offer')
+        await createLocalDescription()
         await this.sendSignal({
           type: 'description',
           description: this.pc.localDescription
         })
-        console.groupEnd()
+        logger.debug('생성된 Local Description이 전송되었습니다.')
+      } catch {
+        logger.debug('Local Description 생성 및 전송 중 오류가 발생했습니다.')
       } finally {
         this.makingOffer = false
       }
     }
 
     const sendIceCandidate = async rtcIceCandidate => {
-      console.groupCollapsed('sending ice candidate')
       await this.sendSignal({
         type: 'icecandidate',
         candidate: rtcIceCandidate.candidate
       })
-      console.groupEnd('sending ice candidate')
+      logger.debug('ICE Candidate가 전송되었습니다.', rtcIceCandidate.candidate)
     }
 
     const setDescription = async description => {
-      console.log('[RTCEngine]', 'description 받음', description)
+      logger.debug('Remote Description을 받았습니다.', description)
       const makingOffer = this.makingOffer
       const offerCollision = description.type === 'offer' && (makingOffer || this.pc.signalingState !== 'stable')
       this.ignoreOffer = !this.polite.get() && offerCollision
 
       if (offerCollision) {
-        console.groupCollapsed('offer collision 발생함')
-        console.log('[RTCEngine]', 'makingOffer:', makingOffer)
-        console.log('[RTCEngine]', 'signaling state:', this.pc.signalingState)
+        logger.debug('offer collision이 발생했습니다.')
       }
 
       if (this.ignoreOffer) {
-        console.log('[RTCEngine]', '상대의 offer를 무시함')
-        console.groupEnd()
+        logger.debug('상대의 offer를 무시합니다.')
         return
       }
 
-      console.log('[RTCEngine]', '상대의 offer를 받음')
-      console.groupEnd()
+      logger.debug('상대의 offer를 받아들입니다.')
 
       await this.pc.setRemoteDescription(description)
       if (description.type === 'offer') {
-        await this.pc.setLocalDescription()
-        console.groupCollapsed('making answer')
+        await createLocalDescription()
         await this.sendSignal({
           type: 'description',
           description: this.pc.localDescription
         })
-        console.groupEnd()
       }
     }
 
     const setIceCandidate = async candidate => {
       try {
-        console.log('[RTCEngine]', 'ice candidate 받음', candidate)
         await this.pc.addIceCandidate(candidate)
+        logger.debug('상대방의 ICE Candidate를 성공적으로 description에 추가했습니다.', candidate)
       } catch (err) {
         if (!this.ignoreOffer) {
           throw err
@@ -265,7 +274,17 @@ export default class RTCEngine extends Mitt {
     }
 
     const updateConnectionState = () => {
-      console.log('[RTCEngine]', 'connection state:', this.pc.connectionState)
+      if (this.pc.connectionState === 'connecting') {
+        logger.log('🔄 WebRTC 연결을 형성하는 중입니다')
+      } else if (this.pc.connectionState === 'connected') {
+        logger.log('✔ WebRTC 연결이 형성되었습니다.')
+      } else if (this.pc.connectionState === 'failed') {
+        logger.log('❌ WebRTC 연결이 끊어졌습니다. ICE Restart가 필요합니다.')
+      } else if (this.pc.connectionState === 'disconnected') {
+        logger.log('⚠ WebRTC 연결이 끊어졌습니다. 다시 연결되기를 기다리는 중입니다.')
+      }
+
+      logger.debug('connectionState 변경됨:', this.pc.connectionState)
       this.connection.set(this.pc.connectionState)
     }
 
@@ -273,16 +292,19 @@ export default class RTCEngine extends Mitt {
       if (dataChannel.label.startsWith(UNNEGOTIATED_SOCKET_PREFIX)) {
         this.unnegotiatedSocketCount++
         this.unnegotiatedDataChannels.push(dataChannel)
+        logger.debug(`unnegotiated 소켓용 데이터 채널 ${dataChannel.label}을 받았습니다.`)
       } else if (dataChannel.label.startsWith(UNNEGOTIATED_TRANSACTION_PREFIX)) {
         this.unnegotiatedTransactionCount++
         this.unnegotiatedTransactions.push(dataChannel)
+        logger.debug(`unnegotiated transaction용 데이터 채널 ${dataChannel.label}을 받았습니다.`)
       } else {
         this.negotiatedDataChannels.set(dataChannel.label, dataChannel)
+        logger.debug(`데이터 채널 ${dataChannel.label}을 받았습니다.`)
       }
     }
 
     const logIceConnectionStateChange = () => {
-      console.log('[RTCEngine]', 'ice connection state:', this.pc.iceConnectionState)
+      logger.debug('ICE connection state 변경됨: ', this.pc.iceConnectionState)
     }
 
     this.listenerManager.add(this.pc, 'negotiationneeded', sendLocalDescription)
@@ -306,7 +328,7 @@ export default class RTCEngine extends Mitt {
     // 먼저 role 설정하기
     if (this.polite.get() === undefined) {
       await this.assignRole()
-      console.log('[RTCEngine]', 'polite', this.polite.get())
+      logger.debug('role:', this.polite.get() ? 'polite' : 'impolite')
     }
 
     // 소켓 만들면 연결 시작
@@ -324,20 +346,17 @@ export default class RTCEngine extends Mitt {
       if (this.connection.get() !== 'failed') return
 
       const reconnect = async () => {
-        console.log('[RTCEngine]', '시그널러 ready 대기중')
         await wait(this.signaler.ready).toBe(true)
 
         // wait하는 중 close()가 호출되었을수도 있음
         if (this.closed.get()) return
 
         this.restartIce()
-        console.log('[RTCEngine]', '재연결 시도하는 중...')
       }
 
       if (navigator.onLine || !this.options.waitOnlineOnReconnection) {
         reconnect()
       } else {
-        console.log('[RTCEngine]', '오프라인 상태, 인터넷 연결 대기 중')
         this.listenerManager.add(window, 'online', reconnect, { once: true })
       }
     })
@@ -383,7 +402,9 @@ export default class RTCEngine extends Mitt {
     const label = labelOverride || `${UNNEGOTIATED_SOCKET_PREFIX}_${this.unnegotiatedSocketCount++}`
     const dataChannel = this.pc.createDataChannel(label)
     const socket = new RTCSocket(dataChannel)
+    logger.debug(`RTCSocket ${label} 인스턴스를 생성했습니다. 상대방이 __receive 이벤트를 보내기를 대기하는 중입니다.`)
     await once(socket, '__received')
+    logger.log(`✔ unnegotiated RTCSocket ${label}이 만들어졌습니다.`)
     return socket
   }
 
@@ -395,6 +416,7 @@ export default class RTCEngine extends Mitt {
     for await (const dataChannel of this.unnegotiatedDataChannels.pushes()) {
       const socket = new RTCSocket(dataChannel, { received: true })
       yield socket
+      logger.log(`✔ unnegotiated RTCSocket ${socket.label}이 만들어졌습니다.`)
     }
   }
 
@@ -411,7 +433,9 @@ export default class RTCEngine extends Mitt {
     if (this.polite.get()) {
       const dataChannel = this.pc.createDataChannel(label)
       const socket = new RTCSocket(dataChannel)
+      logger.debug(`RTCSocket ${label} 인스턴스를 생성했습니다. 상대방이 __receive 이벤트를 보내기를 대기하는 중입니다.`)
       await once(socket, '__received')
+      logger.log(`✔ negotiated RTCSocket ${label}이 만들어졌습니다.`)
       return socket
     } else {
       let dataChannel
@@ -420,9 +444,11 @@ export default class RTCEngine extends Mitt {
       } else {
         // start() 안에서 pc의 'datachannel' 이벤트 발생시 this.dataChannels에 레이블을 키로 RTCDataChannel을 넣어줌
         // 그러면 아래 promise가 resolve됨
+        logger.debug(`RTCSocket ${label} 생성을 위한 데이터 채널이 만들어지기를 대기하는 중입니다.`)
         dataChannel = await this.negotiatedDataChannels.wait(label).toBeDefined()
       }
 
+      logger.log(`✔ negotiated RTCSocket ${label}이 만들어졌습니다.`)
       return new RTCSocket(dataChannel, { received: true })
     }
   }
@@ -434,9 +460,15 @@ export default class RTCEngine extends Mitt {
    */
   async readable (label) {
     const socket = await this.socket(label)
+
+    logger.debug(`Transaction ${label}에 대한 메타데이터가 전송되기를 대기하는 중입니다.`)
     const metadata = await once(socket, 'metadata')
+    logger.debug(`Transaction ${label}에 대한 메타데이터를 받았습니다.`, metadata)
+
     const transaction = new ReadableTransaction(socket, metadata)
     socket.writeEvent('__transaction-ready')
+    logger.log(`✔ ReadableTransaction ${label}이 만들어졌습니다.`)
+
     return transaction
   }
 
@@ -466,6 +498,8 @@ export default class RTCEngine extends Mitt {
       once(socket, '__transaction-ready'),
       socket.writeEvent('metadata', _metadata)
     ])
+
+    logger.log(`✔ WritableTransaction ${label}이 만들어졌습니다.`)
     return new WritableTransaction(socket, _metadata)
   }
 
@@ -473,9 +507,12 @@ export default class RTCEngine extends Mitt {
     for await (const dataChannel of this.unnegotiatedTransactions.pushes()) {
       const socket = new RTCSocket(dataChannel, { received: true })
       const metadata = await once(socket, 'metadata')
+      logger.debug(`ReadableTransaction ${socket.label}에 대한 메타데이터를 받았습니다.`, metadata)
+
       const transaction = new ReadableTransaction(socket, metadata)
       socket.writeEvent('__transaction-ready')
       yield transaction
+      logger.log(`✔ ReadableTransaction ${socket.label}이 만들어졌습니다.`)
     }
   }
 
@@ -495,8 +532,10 @@ export default class RTCEngine extends Mitt {
    * @param {object} msg 전송할 시그널 메시지
    */
   async sendSignal (msg) {
+    logger.debug('signaler.ready 속성이 true가 되기를 대기하는 중입니다.')
     await wait(this.signaler.ready).toBe(true)
     this.signaler.send(msg)
+    logger.debug('시그널 메시지를 전송했습니다.', msg)
   }
 
   /**
@@ -504,7 +543,7 @@ export default class RTCEngine extends Mitt {
    */
   restartIce () {
     this.pc.restartIce()
-    console.log('[RTCEngine]', 'ICE 재시작됨')
+    logger.warn('ICE Restart가 실행됬습니다.')
   }
 
   /**
@@ -518,9 +557,8 @@ export default class RTCEngine extends Mitt {
     this.negotiatedDataChannels.clear()
     this.closed.set(true)
     this.connection.set('closed')
-    console.log('[RTCEngine]', '연결 닫힘')
-
     this.signaler.close()
+    logger.log('🚫 WebRTC 연결이 완전히 닫혔습니다.')
   }
 
   /**
@@ -528,7 +566,6 @@ export default class RTCEngine extends Mitt {
    * @param {string} errorStr 오류 메시지.
    */
   abort (errorStr) {
-    console.log('[RTCEngine]', '오류가 발생해 연결을 닫음.')
     this.close()
 
     const error = new Error(errorStr)
@@ -547,6 +584,8 @@ export default class RTCEngine extends Mitt {
     if (typeof updates !== 'object') {
       throw new Error('설정을 업데이트할 수 없습니다. 받은 설정이 object형이 아닙니다.')
     }
+
+    logger.debug('updateOption가 호출되었습니다.', updates)
 
     // 옵션 덮어쓰기
     Object.assign(this.options, updates)
@@ -577,7 +616,7 @@ export default class RTCEngine extends Mitt {
    */
   static plugin (plugin) {
     if (typeof plugin !== 'function') {
-      throw new Error('only function-style plugin is supported')
+      throw new Error('첫번째 인자가 함수가 아닙니다.')
     }
 
     plugin(RTCEngine)

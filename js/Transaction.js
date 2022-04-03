@@ -2,6 +2,7 @@ import Mitt from './util/Mitt.js'
 import { ObservableEntry, wait } from './util/ObservableEntry.js'
 import progressTracker from './util/eta.js'
 import prettyBytes from './util/prettyBytes.js'
+import createLogger from './util/createLogger.js'
 
 // /** @typedef {import('./RTCSocket.js').default} RTCSocket */
 
@@ -33,21 +34,30 @@ export default class Transaction extends Mitt {
     this.pausedMilliSeconds = 0
     this.processed = new ObservableEntry(0) // byte or length
 
-    this.timeout = -1
+    this.timeout = NaN
+    this.logger = createLogger(`Transaction:${this.label}`)
 
     this.initProgressTracking()
   }
 
   async initProgressTracking () {
     // size가 설정되어 있지 않다면 progress tracking을 사용하지 않음
-    if (this.metadata === undefined) return
-    if (typeof this.metadata.size !== 'number') return
+    if (this.metadata === undefined) {
+      this.logger.warn('메타데이터가 undefined입니다. Progress Tracking 기능이 동작하지 않습니다.')
+      return
+    }
+    if (typeof this.metadata.size !== 'number') {
+      this.logger.warn('메타데이터의 size 필드가 숫자가 아니거나 정의되지 않았습니다. Progress Tracking 기능이 동작하지 않습니다.')
+      return
+    }
 
     await wait(this.processed).toBeChanged()
 
     // transaction writer 쪽에선 처음 시작부터 속도 측정시
     // 데이터 채널의 버퍼가 다 차기 전이라 속도가 비정상적으로 빠르게 측정되므로 1초 후 시작
     await new Promise(resolve => setTimeout(resolve, 1000))
+
+    if (this.done.get()) return
 
     const processed = this.processed.get()
     this.progressTracker = progressTracker({
@@ -62,12 +72,15 @@ export default class Transaction extends Mitt {
       const timestamp = Date.now() - this.pausedMilliSeconds
       this.progressTracker.report(this.processed.get(), timestamp)
 
-      this.emit('report', {
+      const report = {
         processed: this.processed.get(),
         progress: this.progress,
         eta: this.eta,
         speed: this.speed
-      })
+      }
+
+      this.logger.debug('통계 데이터를 생성했습니다.', report)
+      this.emit('report', report)
     }, 500)
   }
 
@@ -104,17 +117,20 @@ export default class Transaction extends Mitt {
   }
 
   pause () {
+    this.logger.debug('트렌젝션이 일시중지되었습니다.')
     this.paused.set(true)
     this.lastPausedTimestamp = Date.now()
   }
 
   resume () {
+    this.logger.debug('트렌젝션이 재시작되었습니다.')
     this.paused.set(false)
     this.pausedMilliSeconds += (Date.now() - this.lastPausedTimestamp)
   }
 
   stopReport () {
-    if (this.timeout === -1) return
+    this.logger.debug('통계 데이터 생성이 중단되었습니다.')
+    if (isNaN(this.timeout)) return
     clearInterval(this.timeout)
   }
 }

@@ -43,22 +43,34 @@ export default class WritableTransaction extends Transaction {
         socket.once('cancel', errMsg => {
           this.canceled = true
           socket.close()
-          controller.error(new Error('Transaction canceled: ' + errMsg))
+          controller.error(new Error('상대방이 트렌젝션의 ReadableStream을 Cancel했습니다.' + errMsg))
         })
 
         socket.once('close', () => {
           this.stopReport()
           if (this.aborted || this.canceled || isDone()) return
 
-          controller.error(new Error('Socket has been closed unexpectedly'))
+          controller.error(new Error('예상치 못하게 소켓이 닫혔습니다.'))
         })
 
         // readable측에서 요청하는 pause / resume 이벤트 받기
-        socket.on('pause', () => super.pause())
-        socket.on('resume', () => super.resume())
+        socket.on('pause', () => {
+          this.logger.debug('상대방이 트렌젝션 일시중지를 요청했습니다.')
+          super.pause()
+        })
+        socket.on('resume', () => {
+          this.logger.debug('상대방이 트렌젝션 재시작을 요청했습니다.')
+          super.resume()
+        })
 
-        socket.on('buffer-full', () => this.readableBufferFull.set(true))
-        socket.on('pull', () => this.readableBufferFull.set(false))
+        socket.on('buffer-full', () => {
+          this.logger.debug('상대방의 스트림 버퍼가 가득 찼습니다.')
+          this.readableBufferFull.set(true)
+        })
+        socket.on('pull', () => {
+          this.logger.debug('상대방의 스트림 버퍼에 공간이 확보되었습니다.')
+          this.readableBufferFull.set(false)
+        })
       },
       /**
        * @param {Uint8Array} data
@@ -93,6 +105,7 @@ export default class WritableTransaction extends Transaction {
 
         // socket.close()
         this.done.set(true)
+        this.logger.log('⚡ 전송이 완료되었습니다.')
       },
       // abort되면 abort 이벤트 전달
       abort: reason => {
@@ -104,7 +117,7 @@ export default class WritableTransaction extends Transaction {
           socket.writeEvent('abort', reason)
         }
 
-        console.log(`[Transaction:${this.label}] Abort 됨`)
+        this.logger.warn('트렌젝션의 WritableStream이 Abort되었습니다. 이유: ', reason)
       }
     })
 
@@ -127,7 +140,7 @@ export default class WritableTransaction extends Transaction {
     // 따라서 강제로 상태 업데이트
     this.paused.set(false)
     this.readableBufferFull = false
-    this.abortController.abort('stop() called by sender')
+    this.abortController.abort('보내는 쪽에서 stop() 메소드를 호출했습니다.')
   }
 
   pause () {
