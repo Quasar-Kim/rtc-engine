@@ -24,6 +24,7 @@ export default class RTCEngine extends Mitt {
    * @param {RTCIceServer[]} [userOptions.iceServers] 연결에 사용할 ICE 서버들.
    * @param {'polite'|'impolite'} [userOptions.role] 연결에서 이 피어의 역할을 수동으로 설정함.
    * @param {boolean} [userOptions.waitOnlineOnReconnection] 재연결시 인터넷이 연결될때까지 대기했다가 연결함.
+   * @param {object} [userOptions.pc] RTCPeerConnection 객체에 전달될 추가 설정들. 단 `iceServers`는 `userOptions.iceServers`로 설정한게 우선됩니다.
    */
   constructor (signaler, userOptions = {}) {
     super()
@@ -36,9 +37,12 @@ export default class RTCEngine extends Mitt {
         { urls: ['stun:stun.l.google.com:19302'] }
       ],
       waitOnlineOnReconnection: true,
+      pc: {},
       ...signalerOptions,
       ...userOptions
     }
+    // ice servers 설정 오버라이드
+    this.options.pc.iceServers = this.options.iceServers
 
     console.log('[RTCEngine]', '사용할 옵션:', this.options)
 
@@ -60,9 +64,7 @@ export default class RTCEngine extends Mitt {
     /**
      * 피어 커넥션 객체
      */
-    this.pc = new RTCPeerConnection({
-      iceServers: this.options.iceServers
-    })
+    this.pc = new RTCPeerConnection(this.options.pc)
 
     /**
      * 상대방이 socket()을 레이블과 함께 호출한 결과 이쪽에서 받은 데이터 채널들.
@@ -534,6 +536,25 @@ export default class RTCEngine extends Mitt {
       this.emit('error', error)
     } else {
       throw error
+    }
+  }
+
+  /**
+   * 옵션을 업데이트합니다. `pc` 또는 `iceServers`가 업데이트되었을 경우 내부 `RTCPeerConnection`의 설정도 업데이트됩니다.
+   * @param {object} updates 덮어쓸 설정값들. 각 키의 값들은 기존 설정에 덮어씌집니다. `RTCPeerConnection.setConfiguration`과 다르게 설정값을 교체하지 않습니다.
+   */
+  updateOptions (updates) {
+    if (typeof updates !== 'object') {
+      throw new Error('설정을 업데이트할 수 없습니다. 받은 설정이 object형이 아닙니다.')
+    }
+
+    // 옵션 덮어쓰기
+    Object.assign(this.options, updates)
+    // ice servers 설정 오버라이드
+    this.options.pc.iceServers = this.options.iceServers
+
+    if ('pc' in updates || 'iceServers' in updates) {
+      this.pc.setConfiguration(this.options.pc)
     }
   }
 
