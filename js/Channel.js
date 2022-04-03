@@ -18,8 +18,6 @@ export default class Channel extends Mitt {
     this.label = this.socket.dataChannel.label
     this.filesSent = 0
 
-    console.log(`[Channel:${this.label}] 생성됨`)
-
     this.socket.on('__file-transaction', label => this.receiveTransaction(label))
   }
 
