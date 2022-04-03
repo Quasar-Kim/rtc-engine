@@ -438,13 +438,14 @@ export default class RTCEngine extends Mitt {
     return transaction
   }
 
+  // TODO: jsdoc overload?
   /**
    * 데이터를 보내기 위한 트렌젝션을 만듭니다. 양쪽 피어 모두 동일한 식별자로 이 메소드를 호출하면 트렌젝션이 만들어집니다.
-   * @param {string|undefined} [label] 트렌젝션을 식별하기 위한 식별자. __중복이 불가능합니다.__ 비워두면 unnegotiated transaction을 생성합니다
+   * @param {string | undefined} [label] 트렌젝션을 식별하기 위한 식별자. __중복이 불가능합니다.__ 비워두면 unnegotiated transaction을 생성합니다
    * @param {object} [metadata] 트렌젝션의 메타데이터. 아무 정보나 넣을 수 있습니다.
    * @returns {Promise<WritableTransaction>} 트렌젝션이 만들어지면 그걸 resolve하는 promise
    */
-  async writable (label = undefined, metadata) {
+  async writable (label, metadata) {
     /**
      * @type {RTCSocket}
      */
@@ -457,11 +458,13 @@ export default class RTCEngine extends Mitt {
       socket = await this.createUnnegotiatedSocket(labelOverride)
     }
 
+    // unnegotiated transaction 생성시 첫번째 인자가 metadata임
+    const _metadata = metadata === undefined ? label : metadata
     await Promise.all([
       once(socket, '__transaction-ready'),
-      socket.writeEvent('metadata', metadata)
+      socket.writeEvent('metadata', _metadata)
     ])
-    return new WritableTransaction(socket, metadata)
+    return new WritableTransaction(socket, _metadata)
   }
 
   async * readables () {
