@@ -1,4 +1,6 @@
 import SignalerBase from './Base.js'
+import IntervalTimer from '../util/IntervalTimer.js'
+import TimeoutTimer from '../util/TimeoutTimer.js'
 
 /**
  * 한 기기에서 탭끼리 연결하는데 사용할 수 있는 시그널러. `BroadcastChannel`을 이용해 시그널을 주고받습니다.
@@ -20,13 +22,35 @@ export default class LocalSignaler extends SignalerBase {
     }
     Object.assign(this.config, userConfig)
 
-    // 통신이 이루어질 broadcast channel 생성
+    /**
+     * 피어를 구분하는 id. 탭을 두개 열어놓고 한쪽을 새로고침시 재연결하는걸 막기 위해서 도입되었습니다.
+     */
+    this.id = Math.random().toString(36).substring(2)
+
+    /**
+     * 연결되어 있는 sender의 id
+     */
+    this.sender = null
+
+    /**
+     * 통신이 이루어질 BroadcastChannel
+     */
     this.bc = new BroadcastChannel('broadcast-channel-signaler')
 
-    // 주기적으로 heartbeat 메시지 전송
-    this.heartbeatIntervalId = setInterval(() => {
-      this.bc.postMessage(JSON.stringify({ type: 'heartbeat' }))
+    /**
+     * 설정된 주기마다 heartbeat 메시지를 보내는 타이머
+     */
+    this.sendHeartbeatTimer = new IntervalTimer(() => {
+      const heartbeatMsg = JSON.stringify({ type: 'heartbeat', src: this.id })
+      this.bc.postMessage(heartbeatMsg)
     }, this.config.heartbeatInterval)
+
+    /**
+     * 설정된 시간 동안 heartbeat를 받지 못하면 연결이 꾾어진 것으로 판정하는 타이머
+     */
+    this.heartbeatTimeoutTimer = new TimeoutTimer(() => {
+      this.ready.set(false)
+    }, this.config.heartbeatTimeout, { autoStart: false })
 
     // broadcast channel로부터 메시지를 받는 헨들러
     this.bc.addEventListener('message', evt => {
@@ -34,7 +58,7 @@ export default class LocalSignaler extends SignalerBase {
 
       // heartbeat 메시지를 받으면 연결된걸로 간주
       if (msg.type === 'heartbeat') {
-        this.receiveHeartbeat()
+        this.receiveHeartbeat(msg.src)
         return
       }
 
@@ -48,23 +72,20 @@ export default class LocalSignaler extends SignalerBase {
   }
 
   /**
-   * heartbeat timeout을 겁니다.
-   * @private
-   */
-  setHeartbeatTimeout () {
-    this.heartbeatTimeoutId = setTimeout(() => {
-      this.ready.set(false)
-    }, this.config.heartbeatTimeout)
-  }
-
-  /**
    * heartbeat timeout을 취소하고 ready를 false로 설정합니다.
    * @private
    */
-  receiveHeartbeat () {
-    clearTimeout(this.heartbeatTimeoutId)
+  receiveHeartbeat (sender) {
+    if (this.sender === null) {
+      // 메시지를 처음 받았을 경우
+      this.sender = sender
+    } else if (sender !== this.sender) {
+      // 보낸 사람의 id가 일치하지 않을 경우
+      return
+    }
+
     this.ready.set(true)
-    this.setHeartbeatTimeout()
+    this.heartbeatTimeoutTimer.reset()
   }
 
   /**
@@ -84,12 +105,8 @@ export default class LocalSignaler extends SignalerBase {
    * close 훅. Broadcast Channel을 닫습니다.
    */
   close () {
-    if (this.ready.val === true) {
-      clearTimeout(this.heartbeatTimeoutId)
-      this.ready.set(false)
-    }
-
-    clearInterval(this.heartbeatIntervalId)
+    this.heartbeatTimeoutTimer.clear()
+    this.sendHeartbeatTimer.clear()
     this.bc.close()
   }
 }
