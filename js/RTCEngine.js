@@ -26,7 +26,6 @@ export default class RTCEngine extends Mitt {
    * @param {boolean} [userOptions.autoConnect] RTCEngine 생성시 자동 연결 여부를 결정하는 옵션.
    * @param {RTCIceServer[]} [userOptions.iceServers] 연결에 사용할 ICE 서버들.
    * @param {'polite'|'impolite'} [userOptions.role] 연결에서 이 피어의 역할을 수동으로 설정함.
-   * @param {boolean} [userOptions.waitOnlineOnReconnection] 재연결시 인터넷이 연결될때까지 대기했다가 연결함.
    * @param {object} [userOptions.pc] RTCPeerConnection 객체에 전달될 추가 설정들. 단 `iceServers`는 `userOptions.iceServers`로 설정한게 우선됩니다.
    * @param {boolean} [userOptions.debug] 디버깅 로그를 출력할지 결정하는 옵션.
    */
@@ -40,7 +39,6 @@ export default class RTCEngine extends Mitt {
       iceServers: [
         { urls: ['stun:stun.l.google.com:19302'] }
       ],
-      waitOnlineOnReconnection: true,
       pc: {},
       debug: true,
       ...signalerOptions,

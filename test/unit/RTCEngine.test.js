@@ -172,7 +172,7 @@ describe('RTCEngine', () => {
     })
 
     describe('connectionState가 failed가 되면', () => {
-      it('waitOnlineOnReconnection === false면 바로 재연결을 시도함', async function () {
+      it('바로 재연결을 시도함', async function () {
         const peer1 = createEngine(this.signaler1, { waitOnlineOnReconnection: false })
         const peer2 = createEngine(this.signaler2, { waitOnlineOnReconnection: false })
         await wait(peer1.connection).toBe('connected')
@@ -184,45 +184,6 @@ describe('RTCEngine', () => {
         await new Promise(resolve => setTimeout(resolve))
 
         expect(spy.called).to.equal(true)
-      })
-
-      it('waitOnlineOnReconnection === true고 navigator.onLine === true면 바로 재연결을 시도함', async function () {
-        const peer1 = createEngine(this.signaler1, { waitOnlineOnReconnection: true })
-        const peer2 = createEngine(this.signaler2, { waitOnlineOnReconnection: true })
-        await wait(peer1.connection).toBe('connected')
-
-        const spy = sinon.spy(RTCEngine.prototype, 'restartIce')
-        Object.defineProperty(window.navigator, 'onLine', {
-          value: true,
-          writable: true
-        })
-        peer1.connection.set('failed') // 재연결 로직이 불림
-
-        // 한 task 대기
-        await new Promise(resolve => setTimeout(resolve))
-
-        expect(spy.called).to.equal(true)
-      })
-
-      it('waitOnlineOnReconnection === true고 navigator.onLine === false면 window의 online 이벤트를 기다렸다 재연결을 시도함', async function () {
-        // const peer1 = createEngine(this.signaler1, { waitOnlineOnReconnection: true })
-        const peer1 = createEngine(this.signaler1, { waitOnlineOnReconnection: true })
-        const peer2 = createEngine(this.signaler2, { waitOnlineOnReconnection: true })
-        await wait(peer1.connection).toBe('connected')
-
-        const spy = sinon.spy(window, 'addEventListener')
-        Object.defineProperty(window.navigator, 'onLine', {
-          value: false,
-          writable: true
-        })
-        peer1.connection.set('failed') // 재연결 로직이 불림
-
-        // 한 task 대기
-        await new Promise(resolve => setTimeout(resolve))
-
-        window.navigator.onLine = true
-
-        expect(spy.getCall(0).args[0]).to.equal('online')
       })
     })
   })
